@@ -1,0 +1,136 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: BentoBox
+    network: mainnet
+    source:
+      address: "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966"
+      abi: BentoBox
+      startBlock: 12094175
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LogDeploy
+        - LogDeposit
+        - LogFlashLoan
+        - LogRegisterProtocol
+        - LogSetMasterContractApproval
+        - LogStrategyDivest
+        - LogStrategyInvest
+        - LogStrategyLoss
+        - LogStrategyProfit
+        - LogStrategyQueued
+        - LogStrategySet
+        - LogStrategyTargetPercentage
+        - LogTransfer
+        - LogWhiteListMasterContract
+        - LogWithdraw
+        - OwnershipTransferred
+      abis:
+        - name: BentoBox
+          file: ./abis/BentoBox.json
+      eventHandlers:
+        - event: LogDeploy(indexed address,bytes,indexed address)
+          handler: handleLogDeploy
+        - event: LogDeposit(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleLogDeposit
+        - event: LogFlashLoan(indexed address,indexed address,uint256,uint256,indexed address)
+          handler: handleLogFlashLoan
+        - event: LogRegisterProtocol(indexed address)
+          handler: handleLogRegisterProtocol
+        - event: LogSetMasterContractApproval(indexed address,indexed address,bool)
+          handler: handleLogSetMasterContractApproval
+        - event: LogStrategyDivest(indexed address,uint256)
+          handler: handleLogStrategyDivest
+        - event: LogStrategyInvest(indexed address,uint256)
+          handler: handleLogStrategyInvest
+        - event: LogStrategyLoss(indexed address,uint256)
+          handler: handleLogStrategyLoss
+        - event: LogStrategyProfit(indexed address,uint256)
+          handler: handleLogStrategyProfit
+        - event: LogStrategyQueued(indexed address,indexed address)
+          handler: handleLogStrategyQueued
+        - event: LogStrategySet(indexed address,indexed address)
+          handler: handleLogStrategySet
+        - event: LogStrategyTargetPercentage(indexed address,uint256)
+          handler: handleLogStrategyTargetPercentage
+        - event: LogTransfer(indexed address,indexed address,indexed address,uint256)
+          handler: handleLogTransfer
+        - event: LogWhiteListMasterContract(indexed address,bool)
+          handler: handleLogWhiteListMasterContract
+        - event: LogWithdraw(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleLogWithdraw
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/bento-box.ts
+  - kind: ethereum
+    name: DegenBox
+    network: mainnet
+    source:
+      address: "0xd96f48665a1410C0cd669A88898ecA36B9Fc2cce"
+      abi: DegenBox
+      startBlock: 13418156
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - DegenBoxLogDeploy
+        - DegenBoxLogDeposit
+        - DegenBoxLogFlashLoan
+        - DegenBoxLogRegisterProtocol
+        - DegenBoxLogSetMasterContractApproval
+        - DegenBoxLogStrategyDivest
+        - DegenBoxLogStrategyInvest
+        - DegenBoxLogStrategyLoss
+        - DegenBoxLogStrategyProfit
+        - DegenBoxLogStrategyQueued
+        - DegenBoxLogStrategySet
+        - DegenBoxLogStrategyTargetPercentage
+        - DegenBoxLogTransfer
+        - DegenBoxLogWhiteListMasterContract
+        - DegenBoxLogWithdraw
+        - DegenBoxOwnershipTransferred
+      abis:
+        - name: DegenBox
+          file: ./abis/DegenBox.json
+      eventHandlers:
+        - event: DegenBoxLogDeploy(indexed address,bytes,indexed address)
+          handler: handleDegenBoxLogDeploy
+        - event: DegenBoxLogDeposit(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleDegenBoxLogDeposit
+        - event: DegenBoxLogFlashLoan(indexed address,indexed address,uint256,uint256,indexed
+            address)
+          handler: handleDegenBoxLogFlashLoan
+        - event: DegenBoxLogRegisterProtocol(indexed address)
+          handler: handleDegenBoxLogRegisterProtocol
+        - event: DegenBoxLogSetMasterContractApproval(indexed address,indexed address,bool)
+          handler: handleDegenBoxLogSetMasterContractApproval
+        - event: DegenBoxLogStrategyDivest(indexed address,uint256)
+          handler: handleDegenBoxLogStrategyDivest
+        - event: DegenBoxLogStrategyInvest(indexed address,uint256)
+          handler: handleDegenBoxLogStrategyInvest
+        - event: DegenBoxLogStrategyLoss(indexed address,uint256)
+          handler: handleDegenBoxLogStrategyLoss
+        - event: DegenBoxLogStrategyProfit(indexed address,uint256)
+          handler: handleDegenBoxLogStrategyProfit
+        - event: DegenBoxLogStrategyQueued(indexed address,indexed address)
+          handler: handleDegenBoxLogStrategyQueued
+        - event: DegenBoxLogStrategySet(indexed address,indexed address)
+          handler: handleDegenBoxLogStrategySet
+        - event: DegenBoxLogStrategyTargetPercentage(indexed address,uint256)
+          handler: handleDegenBoxLogStrategyTargetPercentage
+        - event: DegenBoxLogTransfer(indexed address,indexed address,indexed address,uint256)
+          handler: handleDegenBoxLogTransfer
+        - event: DegenBoxLogWhiteListMasterContract(indexed address,bool)
+          handler: handleDegenBoxLogWhiteListMasterContract
+        - event: DegenBoxLogWithdraw(indexed address,indexed address,indexed
+            address,uint256,uint256)
+          handler: handleDegenBoxLogWithdraw
+        - event: DegenBoxOwnershipTransferred(indexed address,indexed address)
+          handler: handleDegenBoxOwnershipTransferred
+      file: ./src/degen-box.ts
