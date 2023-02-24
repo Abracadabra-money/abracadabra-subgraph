@@ -15,58 +15,21 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - LogDeploy
-        - LogDeposit
-        - LogFlashLoan
-        - LogRegisterProtocol
-        - LogSetMasterContractApproval
-        - LogStrategyDivest
-        - LogStrategyInvest
-        - LogStrategyLoss
-        - LogStrategyProfit
-        - LogStrategyQueued
-        - LogStrategySet
-        - LogStrategyTargetPercentage
-        - LogTransfer
-        - LogWhiteListMasterContract
-        - LogWithdraw
-        - OwnershipTransferred
       abis:
         - name: BentoBox
           file: ./abis/BentoBox.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: Cauldron
+          file: ./abis/Cauldron.json
       eventHandlers:
         - event: LogDeploy(indexed address,bytes,indexed address)
           handler: handleLogDeploy
-        - event: LogDeposit(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleLogDeposit
-        - event: LogFlashLoan(indexed address,indexed address,uint256,uint256,indexed address)
-          handler: handleLogFlashLoan
-        - event: LogRegisterProtocol(indexed address)
-          handler: handleLogRegisterProtocol
-        - event: LogSetMasterContractApproval(indexed address,indexed address,bool)
-          handler: handleLogSetMasterContractApproval
-        - event: LogStrategyDivest(indexed address,uint256)
-          handler: handleLogStrategyDivest
-        - event: LogStrategyInvest(indexed address,uint256)
-          handler: handleLogStrategyInvest
-        - event: LogStrategyLoss(indexed address,uint256)
-          handler: handleLogStrategyLoss
-        - event: LogStrategyProfit(indexed address,uint256)
-          handler: handleLogStrategyProfit
-        - event: LogStrategyQueued(indexed address,indexed address)
-          handler: handleLogStrategyQueued
-        - event: LogStrategySet(indexed address,indexed address)
-          handler: handleLogStrategySet
-        - event: LogStrategyTargetPercentage(indexed address,uint256)
-          handler: handleLogStrategyTargetPercentage
-        - event: LogTransfer(indexed address,indexed address,indexed address,uint256)
-          handler: handleLogTransfer
-        - event: LogWhiteListMasterContract(indexed address,bool)
-          handler: handleLogWhiteListMasterContract
-        - event: LogWithdraw(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleLogWithdraw
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-      file: ./src/bento-box.ts
+      file: ./src/mappings/core.ts
   - kind: ethereum
     name: DegenBox
     network: mainnet
@@ -79,58 +42,52 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - DegenBoxLogDeploy
-        - DegenBoxLogDeposit
-        - DegenBoxLogFlashLoan
-        - DegenBoxLogRegisterProtocol
-        - DegenBoxLogSetMasterContractApproval
-        - DegenBoxLogStrategyDivest
-        - DegenBoxLogStrategyInvest
-        - DegenBoxLogStrategyLoss
-        - DegenBoxLogStrategyProfit
-        - DegenBoxLogStrategyQueued
-        - DegenBoxLogStrategySet
-        - DegenBoxLogStrategyTargetPercentage
-        - DegenBoxLogTransfer
-        - DegenBoxLogWhiteListMasterContract
-        - DegenBoxLogWithdraw
-        - DegenBoxOwnershipTransferred
+        - LogDeploy
       abis:
         - name: DegenBox
           file: ./abis/DegenBox.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: Cauldron
+          file: ./abis/Cauldron.json
       eventHandlers:
-        - event: DegenBoxLogDeploy(indexed address,bytes,indexed address)
-          handler: handleDegenBoxLogDeploy
-        - event: DegenBoxLogDeposit(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleDegenBoxLogDeposit
-        - event: DegenBoxLogFlashLoan(indexed address,indexed address,uint256,uint256,indexed
-            address)
-          handler: handleDegenBoxLogFlashLoan
-        - event: DegenBoxLogRegisterProtocol(indexed address)
-          handler: handleDegenBoxLogRegisterProtocol
-        - event: DegenBoxLogSetMasterContractApproval(indexed address,indexed address,bool)
-          handler: handleDegenBoxLogSetMasterContractApproval
-        - event: DegenBoxLogStrategyDivest(indexed address,uint256)
-          handler: handleDegenBoxLogStrategyDivest
-        - event: DegenBoxLogStrategyInvest(indexed address,uint256)
-          handler: handleDegenBoxLogStrategyInvest
-        - event: DegenBoxLogStrategyLoss(indexed address,uint256)
-          handler: handleDegenBoxLogStrategyLoss
-        - event: DegenBoxLogStrategyProfit(indexed address,uint256)
-          handler: handleDegenBoxLogStrategyProfit
-        - event: DegenBoxLogStrategyQueued(indexed address,indexed address)
-          handler: handleDegenBoxLogStrategyQueued
-        - event: DegenBoxLogStrategySet(indexed address,indexed address)
-          handler: handleDegenBoxLogStrategySet
-        - event: DegenBoxLogStrategyTargetPercentage(indexed address,uint256)
-          handler: handleDegenBoxLogStrategyTargetPercentage
-        - event: DegenBoxLogTransfer(indexed address,indexed address,indexed address,uint256)
-          handler: handleDegenBoxLogTransfer
-        - event: DegenBoxLogWhiteListMasterContract(indexed address,bool)
-          handler: handleDegenBoxLogWhiteListMasterContract
-        - event: DegenBoxLogWithdraw(indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleDegenBoxLogWithdraw
-        - event: DegenBoxOwnershipTransferred(indexed address,indexed address)
-          handler: handleDegenBoxOwnershipTransferred
-      file: ./src/degen-box.ts
+        - event: LogDeploy(indexed address,bytes,indexed address)
+          handler: handleLogDeploy
+      file: ./src/mappings/core.ts
+templates:
+  - name: Cauldron
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: Cauldron
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mappings/cauldron.ts
+      entities:
+        - Cauldron
+      abis:
+        - name: Cauldron
+          file: ./abis/Cauldron.json
+        - name: DegenBox
+          file: ./abis/DegenBox.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: LogAddCollateral(indexed address,indexed address,uint256)
+          handler: handleLogAddCollateral
+        - event: LogRemoveCollateral(indexed address,indexed address,uint256)
+          handler: handleLogRemoveCollateral
+        - event: LogBorrow(indexed address,indexed address,uint256,uint256)
+          handler: handleLogBorrow
+        - event: LogRepay(indexed address,indexed address,uint256,uint256)
+          handler: handleLogRepay
+        - event: LogExchangeRate(uint256)
+          handler: handleLogExchangeRate
+        - event: LogAccrue(uint128)
+          handler: handleLogAccrue

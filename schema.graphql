@@ -1,310 +1,39 @@
-type LogDeploy @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  data: Bytes! # bytes
-  cloneAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Collateral @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  " Name of the token, mirrored from the smart contract "
+  name: String!
+
+  " Symbol of the token, mirrored from the smart contract "
+  symbol: String!
+
+  " The number of decimal places this token uses, default to 18 "
+  decimals: Int!
+
+  " Optional field to track the price of a token, mostly for caching purposes "
+  lastPriceUSD: BigDecimal
+
+  " Optional field to track the block number of the last token price "
+  lastPriceBlockNumber: BigInt
+
+  " Optional field to track the timestamp of the last token price "
+  lastPriceTimestamp: BigInt
 }
 
-type LogDeposit @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+type Cauldron @entity {
+  " Smart contract address of the cauldron "
+  id: ID!
 
-type LogFlashLoan @entity(immutable: true) {
-  id: Bytes!
-  borrower: Bytes! # address
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  feeAmount: BigInt! # uint256
-  receiver: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+  " Name of cauldron "
+  name: String
 
-type LogRegisterProtocol @entity(immutable: true) {
-  id: Bytes!
-  protocol: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+  " Token that need to be deposited to take a position in cauldron "
+  collateral: Collateral!
 
-type LogSetMasterContractApproval @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  user: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+  " Creation timestamp "
+  createdTimestamp: BigInt!
 
-type LogStrategyDivest @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategyInvest @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategyLoss @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategyProfit @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategyQueued @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  strategy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategySet @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  strategy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogStrategyTargetPercentage @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  targetPercentage: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogTransfer @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogWhiteListMasterContract @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogWithdraw @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-type DegenBoxLogDeploy @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  data: Bytes! # bytes
-  cloneAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogDeposit @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogFlashLoan @entity(immutable: true) {
-  id: Bytes!
-  borrower: Bytes! # address
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  feeAmount: BigInt! # uint256
-  receiver: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogRegisterProtocol @entity(immutable: true) {
-  id: Bytes!
-  protocol: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogSetMasterContractApproval @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  user: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyDivest @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyInvest @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyLoss @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyProfit @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyQueued @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  strategy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategySet @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  strategy: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogStrategyTargetPercentage @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  targetPercentage: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogTransfer @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogWhiteListMasterContract @entity(immutable: true) {
-  id: Bytes!
-  masterContract: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxLogWithdraw @entity(immutable: true) {
-  id: Bytes!
-  token: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  amount: BigInt! # uint256
-  share: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type DegenBoxOwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  " Creation block number "
+  createdBlockNumber: BigInt!
 }
