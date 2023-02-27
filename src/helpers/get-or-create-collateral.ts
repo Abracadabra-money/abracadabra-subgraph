@@ -1,8 +1,6 @@
 import { Address, dataSource } from "@graphprotocol/graph-ts";
 import { Collateral } from "../../generated/schema";
-import { getTokenSymbol } from "./get-token-symbol";
-import { getTokenName } from "./get-token-name";
-import { getTokenDecimals } from "./get-token-decimals";
+import { getTokenSymbol, getTokenName, getTokenDecimals } from "./token";
 import { DEFAULT_DECIMALS, USD_BTC_ETH_ABRA_ADDRESS, BIGINT_ZERO, BIGDECIMAL_ONE, BIGDECIMAL_ZERO } from "../constants";
 import { getMIMAddress } from "./get-mim-address";
 

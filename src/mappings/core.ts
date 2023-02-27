@@ -1,7 +1,7 @@
 import { LogDeploy } from "../../generated/DegenBox/DegenBox";
 import { ABRA_DEPLOYERS } from "../constants";
 import { Cauldron } from "../../generated/templates";
-import { createCauldron } from "../helpers/create-cauldron";
+import { createCauldron } from "../helpers/cauldron";
 
 export function handleLogDeploy(event: LogDeploy): void {
     const account = event.transaction.from.toHex().toLowerCase();

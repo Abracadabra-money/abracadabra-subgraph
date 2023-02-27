@@ -1,3 +1,43 @@
+type Protocol @entity {
+  id: ID!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  " Total number of cauldrons "
+  totalCauldronCount: Int!
+
+  " All cauldrons that belong to this protocol "
+  cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
+}
+
+
+type Cauldron @entity {
+  " Smart contract address of the cauldron "
+  id: ID!
+
+  " The protocol this cauldron belongs to "
+  protocol: Protocol!
+
+  " Name of cauldron "
+  name: String
+
+  " Token that need to be deposited to take a position in cauldron "
+  collateral: Collateral!
+
+  " Creation timestamp "
+  createdTimestamp: BigInt!
+
+  " Creation block number "
+  createdBlockNumber: BigInt!
+
+  " Amount of input token per full share of output token. Only applies when the output token exists (note this is a ratio and not a percentage value, i.e. 1.05 instead of 105%) "
+  exchangeRate: BigInt!
+
+  " Price per share of input token in USD "
+  collateralPriceUsd: BigDecimal!
+}
+
 type Collateral @entity {
   " Smart contract address of the token "
   id: ID!
@@ -19,21 +59,4 @@ type Collateral @entity {
 
   " Optional field to track the timestamp of the last token price "
   lastPriceTimestamp: BigInt
-}
-
-type Cauldron @entity {
-  " Smart contract address of the cauldron "
-  id: ID!
-
-  " Name of cauldron "
-  name: String
-
-  " Token that need to be deposited to take a position in cauldron "
-  collateral: Collateral!
-
-  " Creation timestamp "
-  createdTimestamp: BigInt!
-
-  " Creation block number "
-  createdBlockNumber: BigInt!
 }

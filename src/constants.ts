@@ -1,6 +1,47 @@
 import { BigInt, BigDecimal } from "@graphprotocol/graph-ts";
 
+export namespace Network {
+  export const ARBITRUM_ONE = "ARBITRUM_ONE";
+  export const AVALANCHE = "AVALANCHE";
+  export const AURORA = "AURORA";
+  export const BSC = "BSC"; // aka BNB Chain
+  export const CELO = "CELO";
+  export const MAINNET = "MAINNET"; // Ethereum mainnet
+  export const FANTOM = "FANTOM";
+  export const FUSE = "FUSE";
+  export const MOONBEAM = "MOONBEAM";
+  export const MOONRIVER = "MOONRIVER";
+  export const NEAR_MAINNET = "NEAR_MAINNET";
+  export const OPTIMISM = "OPTIMISM";
+  export const MATIC = "MATIC"; // aka Polygon
+  export const XDAI = "XDAI"; // aka Gnosis Chain
+}
+
+// Ethereum Addresses
+export const USD_BTC_ETH_ABRA_ADDRESS = "0x5958a8db7dfe0cc49382209069b00f54e17929c2";
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+
 // Specific
+export const BENTOBOX_ADDRESS_MAINNET =
+  "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966".toLowerCase();
+export const BENTOBOX_ADDRESS_AVALANCHE =
+  "0xf4F46382C2bE1603Dc817551Ff9A7b333Ed1D18f".toLowerCase();
+export const BENTOBOX_ADDRESS_ARBITRUM =
+  "0x74c764D41B77DBbb4fe771daB1939B00b146894A".toLowerCase();
+export const BENTOBOX_ADDRESS_FANTOM =
+  "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966".toLowerCase();
+export const BENTOBOX_ADDRESS_BSC =
+  "0x090185f2135308BaD17527004364eBcC2D37e5F6".toLowerCase();
+
+export const DEGENBOX_ADDRESS_MAINNET =
+  "0xd96f48665a1410C0cd669A88898ecA36B9Fc2cce".toLowerCase();
+export const DEGENBOX_ADDRESS_AVALANCHE =
+  "0x1fC83f75499b7620d53757f0b01E2ae626aAE530".toLowerCase();
+export const DEGENBOX_ADDRESS_ARBITRUM = ZERO_ADDRESS;
+export const DEGENBOX_ADDRESS_FANTOM =
+  "0x74A0BcA2eeEdf8883cb91E37e9ff49430f20a616".toLowerCase();
+export const DEGENBOX_ADDRESS_BSC = ZERO_ADDRESS;
+
 export const MIM_MAINNET =
   "0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3".toLowerCase();
 export const MIM_AVALANCHE =
@@ -31,9 +72,6 @@ export const BIGINT_ONE = BigInt.fromI32(1);
 
 export const BIGDECIMAL_ZERO = new BigDecimal(BIGINT_ZERO);
 export const BIGDECIMAL_ONE = new BigDecimal(BIGINT_ONE);
-
-// Ethereum Addresses
-export const USD_BTC_ETH_ABRA_ADDRESS = "0x5958a8db7dfe0cc49382209069b00f54e17929c2";
 
 // Networks
 export const ETH_NETWORK = "mainnet";
