@@ -79,3 +79,15 @@ export const FTM_NETWORK = "fantom";
 export const ARB_NETWORK = "arbitrum-one";
 export const BSC_NETWORK = "bsc";
 export const AVALANCHE_NETWORK = "avalanche";
+
+// Date/Time
+export const SECONDS_PER_HOUR = 60 * 60; // 360
+export const SECONDS_PER_DAY = 60 * 60 * 24; // 86400
+export const SECONDS_PER_YEAR = new BigDecimal(
+  BigInt.fromI32(60 * 60 * 24 * 365)
+);
+export const MS_PER_DAY = new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000));
+export const DAYS_PER_YEAR = new BigDecimal(BigInt.fromI32(365));
+export const MS_PER_YEAR = DAYS_PER_YEAR.times(
+  new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000))
+);

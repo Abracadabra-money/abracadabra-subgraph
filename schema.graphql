@@ -4,13 +4,23 @@ type Protocol @entity {
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
 
+  " Amount of fees earned for the entire protocol "
+  totalFeesGenerated: BigDecimal!
+
   " Total number of cauldrons "
   totalCauldronCount: Int!
 
+  " Number of liquidations "
+  totalLiquidationsCount: Int!
+
   " All cauldrons that belong to this protocol "
   cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
-}
 
+  cauldronIds: [String!]!
+
+  " Daily metrics for this protocol "
+  metrics: [DailySnapshot!]! @derivedFrom(field: "protocol")
+}
 
 type Cauldron @entity {
   " Smart contract address of the cauldron "
@@ -59,4 +69,36 @@ type Collateral @entity {
 
   " Optional field to track the timestamp of the last token price "
   lastPriceTimestamp: BigInt
+}
+
+type DailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " Protocol this snapshot is associated with "
+  protocol: Protocol!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  " Amount of fees earned for the entire protocol "
+  totalFeesGenerated: BigDecimal!
+
+  " Number of liquidations "
+  totalLiquidationsCount: Int!
+
+  " Amount of fees earned for the entire protocol "
+  feesGenerated: BigDecimal!
+
+  " Number of new loans per day "
+  newLoansOpened: Int!
+
+  " Number of liquidations "
+  liquidationsCount: Int!
 }

@@ -25,6 +25,11 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
         CauldronEntity.save();
 
         protocol.totalCauldronCount += 1;
+
+        const cauldronIds = protocol.cauldronIds;
+        cauldronIds.push(cauldronAddress.toHexString());
+        protocol.cauldronIds = cauldronIds;
+        
         protocol.save();
     }
 };
