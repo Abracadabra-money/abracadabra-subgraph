@@ -46,6 +46,27 @@ type Cauldron @entity {
 
   " Price per share of input token in USD "
   collateralPriceUsd: BigDecimal!
+
+  " Is this cauldron active "
+  isActive: Boolean!
+
+  deprecated: Boolean!
+
+  " Last activity in this cauldron "
+  lastActive: BigInt!
+
+  oracle: Bytes
+  
+  oracleData: String
+
+  " Amount of fees earned for the entire protocol "
+  totalFeesGenerated: BigDecimal!
+
+  " Number of liquidations "
+  totalLiquidationsCount: Int!
+
+  "current accrueInfo.feesEarned "
+  feesEarned: BigInt!
 }
 
 type Collateral @entity {
@@ -86,12 +107,6 @@ type DailySnapshot @entity {
 
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
-
-  " Amount of fees earned for the entire protocol "
-  totalFeesGenerated: BigDecimal!
-
-  " Number of liquidations "
-  totalLiquidationsCount: Int!
 
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!

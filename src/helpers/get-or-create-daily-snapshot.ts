@@ -17,8 +17,6 @@ export function getOrCreateDailySnapshot(block: ethereum.Block): DailySnapshot {
     dailySnapshot.blockNumber = block.number;
     dailySnapshot.timestamp = block.timestamp;
     dailySnapshot.totalValueLockedUsd = protocol.totalValueLockedUsd;
-    dailySnapshot.totalFeesGenerated = protocol.totalFeesGenerated;
-    dailySnapshot.totalLiquidationsCount = protocol.totalLiquidationsCount;
     dailySnapshot.feesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.newLoansOpened = 0;
     dailySnapshot.liquidationsCount = 0;

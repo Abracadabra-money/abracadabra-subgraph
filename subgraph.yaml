@@ -71,13 +71,18 @@ templates:
       file: ./src/mappings/cauldron.ts
       entities:
         - Cauldron
+        - CauldronV1
       abis:
         - name: Cauldron
           file: ./abis/Cauldron.json
+        - name: CauldronV1
+          file: ./abis/CauldronV1.json
         - name: DegenBox
           file: ./abis/DegenBox.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: Oracle
+          file: ./abis/Oracle.json
       eventHandlers:
         - event: LogAddCollateral(indexed address,indexed address,uint256)
           handler: handleLogAddCollateral
