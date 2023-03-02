@@ -7,6 +7,9 @@
     "DegenBox": {
       "address": "0xd96f48665a1410C0cd669A88898ecA36B9Fc2cce",
       "startBlock": 13418156
+    },
+    "Contract": {
+      "address": "0xf35b31B941D94B249EaDED041DB1b05b7097fEb6"
     }
   }
 }

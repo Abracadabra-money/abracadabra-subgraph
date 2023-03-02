@@ -117,3 +117,92 @@ type DailySnapshot @entity {
   " Number of liquidations "
   liquidationsCount: Int!
 }
+
+type MagicApe @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  " Total MagicApe rewards "
+  totalRewards: BigDecimal!
+
+  "Daily yield"
+  yieldDailySnapshot: [MagicApeYieldDailySnapshot!]! @derivedFrom(field: "magicApe")
+
+  " Daily Tvl "
+  tvlDailySnapshot: [MagicApeTvlDailySnapshot!]! @derivedFrom(field: "magicApe")
+
+  " Daily rewards "
+  rewardsDailySnapshot: [MagicApeRewardsDailySnapshot!]! @derivedFrom(field: "magicApe")
+
+  " Daily price changes "
+  priceDailySnapshot: [MagicApePriceDailySnapshot!]! @derivedFrom(field: "magicApe")
+}
+
+type MagicApeYieldDailySnapshot @entity{
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " MagicApe ref "
+  magicApe: MagicApe!
+
+  " Ape staking apr "
+  apr: BigDecimal!
+
+  " MagicApe staking apy"
+  apy: BigDecimal!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+}
+
+type MagicApeTvlDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " MagicApe ref "
+  magicApe: MagicApe!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+}
+
+type MagicApeRewardsDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " MagicApe ref "
+  magicApe: MagicApe!
+
+  rewards: BigDecimal!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+}
+
+type MagicApePriceDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " MagicApe ref "
+  magicApe: MagicApe!
+
+  price: BigDecimal!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+}
