@@ -60,6 +60,11 @@ export const ABRA_DEPLOYERS = [
     "0xfB3485c2e209A5cfBDC1447674256578f1A80eE3".toLowerCase(),
 ];
 
+// MagicApe
+export const MAGIC_APE_STAKING = "0x5954aB967Bc958940b7EB73ee84797Dc8a2AFbb9".toLowerCase();
+export const MAGIC_APE = "0xf35b31B941D94B249EaDED041DB1b05b7097fEb6".toLowerCase();
+export const MAGIC_APE_ORACLE = "0x64422a1337082Bf99E6052fF52684374Eb1A7fB7".toLowerCase();
+
 // Token
 export const INVALID_TOKEN_DECIMALS = 0;
 export const UNKNOWN_TOKEN_VALUE = "unknown";
