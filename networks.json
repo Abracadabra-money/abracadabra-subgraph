@@ -8,8 +8,13 @@
       "address": "0xd96f48665a1410C0cd669A88898ecA36B9Fc2cce",
       "startBlock": 13418156
     },
-    "Contract": {
-      "address": "0xf35b31B941D94B249EaDED041DB1b05b7097fEb6"
+    "MagicApeStaking": {
+      "address": "0x5954aB967Bc958940b7EB73ee84797Dc8a2AFbb9",
+      "startBlock": 16525000
+    },
+    "MagicApe": {
+      "address": "0xf35b31B941D94B249EaDED041DB1b05b7097fEb6",
+      "startBlock": 16656455
     }
   }
 }

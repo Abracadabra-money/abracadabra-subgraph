@@ -1,6 +1,6 @@
 import { ethereum } from "@graphprotocol/graph-ts";
 import { MagicApeTvlDailySnapshot } from "../../../generated/schema";
-import { SECONDS_PER_DAY, BIGDECIMAL_ONE } from "../../constants";
+import { SECONDS_PER_DAY, BIGDECIMAL_ZERO } from "../../constants";
 import { getOrCreateMagicApe } from "./get-or-create-magic-ape";
 
 export function getOrCreateMagicApeTvlDailySnapshot(block: ethereum.Block): MagicApeTvlDailySnapshot{
@@ -14,7 +14,7 @@ export function getOrCreateMagicApeTvlDailySnapshot(block: ethereum.Block): Magi
 
     dailySnapshot = new MagicApeTvlDailySnapshot(id.toString());
     dailySnapshot.magicApe = magicApe.id;
-    dailySnapshot.totalValueLockedUsd = BIGDECIMAL_ONE;
+    dailySnapshot.totalValueLockedUsd = BIGDECIMAL_ZERO;
     dailySnapshot.blockNumber = block.number;
     dailySnapshot.timestamp = block.timestamp;
 
