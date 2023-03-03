@@ -1,15 +1,15 @@
-import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate } from "../../generated/templates/Cauldron/Cauldron";
-import { getCauldron, getFeesEarned } from "../helpers/cauldron";
-import { getOrCreateCollateral } from "../helpers/get-or-create-collateral";
-import { Address } from "@graphprotocol/graph-ts";
-import { updateTokenPrice } from "../helpers/updates";
-import { updateTvl, updateLastActive, updateFeesGenerated } from "../helpers/updates";
-import { updateTokensPrice } from "../helpers/updates/update-tokens-price";
-import { bigIntToBigDecimal } from "../utils";
+import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate } from '../../generated/templates/Cauldron/Cauldron';
+import { getCauldron, getFeesEarned } from '../helpers/cauldron';
+import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
+import { Address } from '@graphprotocol/graph-ts';
+import { updateTokenPrice } from '../helpers/updates';
+import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
+import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
+import { bigIntToBigDecimal } from '../utils';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
+    if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
 
@@ -18,7 +18,7 @@ export function handleLogAddCollateral(event: LogAddCollateral): void {
 
 export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
+    if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
 
@@ -27,14 +27,14 @@ export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
 
 export function handleLogBorrow(event: LogBorrow): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
+    if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
 }
 
 export function handleLogRepay(event: LogRepay): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
+    if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
 
@@ -43,7 +43,7 @@ export function handleLogRepay(event: LogRepay): void {
 
 export function handleLogExchangeRate(event: LogExchangeRate): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
+    if (!cauldron) return;
     updateLastActive(cauldron, event.block);
 
     const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
@@ -57,13 +57,13 @@ export function handleLogExchangeRate(event: LogExchangeRate): void {
 
 export function handleLogAccrue(event: LogAccrue): void {
     const cauldron = getCauldron(event.address.toHexString());
-    if(!cauldron) return;
-    
+    if (!cauldron) return;
+
     updateLastActive(cauldron, event.block);
 
     const feesEarned = getFeesEarned(event.address);
     const fees = feesEarned.ge(cauldron.feesEarned) ? feesEarned.minus(cauldron.feesEarned) : feesEarned;
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(fees) , event.block);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(fees), event.block);
 
     cauldron.feesEarned = feesEarned;
     cauldron.save();

@@ -15,3 +15,4 @@ $ make deploy-local
 
 Testing:  http://localhost:8000/subgraphs/name/abracadabra-subgraph/graphql
 
+```

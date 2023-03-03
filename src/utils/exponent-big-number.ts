@@ -1,4 +1,4 @@
-import { BigDecimal } from "@graphprotocol/graph-ts";
+import { BigDecimal } from '@graphprotocol/graph-ts';
 
 export function exponentBigNumber(x: BigDecimal, y: i32): BigDecimal {
     let result = x;
@@ -6,4 +6,4 @@ export function exponentBigNumber(x: BigDecimal, y: i32): BigDecimal {
         result = result.times(x);
     }
     return result;
-  }
+}
