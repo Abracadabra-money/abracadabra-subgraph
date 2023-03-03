@@ -10,5 +10,8 @@
     },
     "magicApe": {
         "enable": false
+    },
+    "magicGlp": {
+        "enable": false
     }
 }

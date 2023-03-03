@@ -119,6 +119,31 @@ dataSources:
           handler: handleLogWithdraw
       file: ./src/mappings/magic-ape.ts
   {{/magicApe.enable}}
+  # 4. MagicGlp (if applicable)
+  {{#magicGlp.enable}}
+  - kind: ethereum
+    name: MagicGlp
+    network: {{network}}
+    source:
+      address: "{{ magicGlp.address }}"
+      abi: WETH
+      startBlock: {{ magicGlp.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MagicGlp
+      abis:
+        - name: WETH
+          file: ./abis/WETH.json
+        - name: MagicGlpHarvestor
+          file: ./abis/MagicGlpHarvestor.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleLogTransfer
+      file: ./src/mappings/magic-glp.ts
+  {{/magicGlp.enable}}
 templates:
   - name: Cauldron
     kind: ethereum/contract

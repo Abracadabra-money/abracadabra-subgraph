@@ -2,7 +2,6 @@ import { ClaimRewards, Deposit, MagicApeStaking } from '../../generated/MagicApe
 import { MAGIC_APE, DEFAULT_DECIMALS, BIGDECIMAL_ONE, DAYS_PER_YEAR, MAGIC_APE_STAKING } from '../constants';
 import { bigIntToBigDecimal, exponentBigNumber, numberToBigDecimals } from '../utils';
 import { getOrCreateMagicApe } from '../helpers/magic-ape/get-or-create-magic-ape';
-import { getOrCreateMagicApeRewardsDailySnapshot } from '../helpers/magic-ape/get-or-create-magic-ape-rewards-daily-snapshot';
 import { Address, log } from '@graphprotocol/graph-ts';
 import { getOrCreateMagicApeYieldDailySnapshot } from '../helpers/magic-ape/get-or-create-magic-ape-yield-daily-snapshot';
 
@@ -12,16 +11,10 @@ export function handleLogClaimRewards(event: ClaimRewards): void {
     if (!Address.fromString(MAGIC_APE).equals(address)) return;
 
     const magicApe = getOrCreateMagicApe();
-    const dailySnapshot = getOrCreateMagicApeRewardsDailySnapshot(event.block);
     const amount = bigIntToBigDecimal(event.params.amount, DEFAULT_DECIMALS);
 
     magicApe.totalRewards = magicApe.totalRewards.plus(amount);
     magicApe.save();
-
-    dailySnapshot.rewards = dailySnapshot.rewards.plus(amount);
-    dailySnapshot.blockNumber = event.block.number;
-    dailySnapshot.timestamp = event.block.timestamp;
-    dailySnapshot.save();
 }
 
 export function handleLogDeposit(event: Deposit): void {

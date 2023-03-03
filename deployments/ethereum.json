@@ -16,5 +16,8 @@
         "startBlock": 16656455,
         "stakingAddress": "0x5954aB967Bc958940b7EB73ee84797Dc8a2AFbb9",
         "stakingStartBlock": 16525000
+    },
+    "magicGlp": {
+        "enable": false
     }
 }
