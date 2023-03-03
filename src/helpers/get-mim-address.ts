@@ -1,4 +1,4 @@
-import { ETH_NETWORK, MIM_MAINNET, AVALANCHE_NETWORK, MIM_AVALANCHE, ARB_NETWORK, MIM_ARBITRUM, FTM_NETWORK, MIM_FANTOM, BSC_NETWORK, MIM_BSC } from "../constants";
+import { ETH_NETWORK, MIM_MAINNET, AVALANCHE_NETWORK, MIM_AVALANCHE, ARB_NETWORK, MIM_ARBITRUM, FTM_NETWORK, MIM_FANTOM, BSC_NETWORK, MIM_BSC, MIM_OPTIMISM, OPTIMISM_NETWORK } from "../constants";
 
 export function getMIMAddress(network: string): string {
     if (network == ETH_NETWORK) {
@@ -11,6 +11,8 @@ export function getMIMAddress(network: string): string {
       return MIM_FANTOM;
     } else if (network == BSC_NETWORK) {
       return MIM_BSC;
+    } else if (network == OPTIMISM_NETWORK){
+      return MIM_OPTIMISM;
     }
     return "";
 }

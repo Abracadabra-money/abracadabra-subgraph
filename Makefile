@@ -16,8 +16,6 @@ down:
 init: deps-install codegen
 deps-install:
 	npm install
-codegen:
-	graph codegen
 create-local:
 	graph create --node http://localhost:8020/ abracadabra-subgraph
 remove-local:

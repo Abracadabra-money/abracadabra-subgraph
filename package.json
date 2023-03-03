@@ -1,13 +1,23 @@
 {
   "name": "abracadabra-subgraph",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
+    "prepare:arbitrum": "mustache deployments/arbitrum.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:avalanche": "mustache deployments/avalanche.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:bsc": "mustache deployments/bsc.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:ethereum": "mustache deployments/ethereum.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:fantom": "mustache deployments/fantom.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:optimism": "mustache deployments/optimism.json subgraph.template.yaml > subgraph.yaml",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ abracadabra-subgraph"
+    "codegen": "graph codegen"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.41.1",
     "@graphprotocol/graph-ts": "0.29.1"
   },
-  "devDependencies": { "matchstick-as": "0.5.0" }
+  "devDependencies": {
+    "matchstick-as": "0.5.0",
+    "mustache": "^4.2.0"
+  }
 }
