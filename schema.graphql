@@ -20,6 +20,10 @@ type Protocol @entity {
 
   " Daily metrics for this protocol "
   metrics: [DailySnapshot!]! @derivedFrom(field: "protocol")
+
+  magicApe: MagicApe @derivedFrom(field: "protocol")
+
+  magicGlp: MagicGlp @derivedFrom(field: "protocol")
 }
 
 type Cauldron @entity {
@@ -122,6 +126,9 @@ type MagicApe @entity {
   " Smart contract address of the token "
   id: ID!
 
+  " The protocol this cauldron belongs to "
+  protocol: Protocol!
+
   " Total MagicApe rewards "
   totalRewards: BigDecimal!
 
@@ -130,9 +137,6 @@ type MagicApe @entity {
 
   " Daily Tvl "
   tvlDailySnapshot: [MagicApeTvlDailySnapshot!]! @derivedFrom(field: "magicApe")
-
-  " Daily rewards "
-  rewardsDailySnapshot: [MagicApeRewardsDailySnapshot!]! @derivedFrom(field: "magicApe")
 
   " Daily price changes "
   priceDailySnapshot: [MagicApePriceDailySnapshot!]! @derivedFrom(field: "magicApe")
@@ -175,22 +179,6 @@ type MagicApeTvlDailySnapshot @entity {
   timestamp: BigInt!
 }
 
-type MagicApeRewardsDailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
-
-  " MagicApe ref "
-  magicApe: MagicApe!
-
-  rewards: BigDecimal!
-
-  " Block number of this snapshot "
-  blockNumber: BigInt!
-
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
-}
-
 type MagicApePriceDailySnapshot @entity {
   " ID is # of days since Unix epoch time "
   id: ID!
@@ -205,4 +193,15 @@ type MagicApePriceDailySnapshot @entity {
 
   " Timestamp of this snapshot "
   timestamp: BigInt!
+}
+
+type MagicGlp @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  " The protocol this cauldron belongs to "
+  protocol: Protocol!
+
+  " Total MagicApe rewards "
+  totalRewards: BigDecimal!
 }
