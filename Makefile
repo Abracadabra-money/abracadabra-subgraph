@@ -13,20 +13,9 @@ up:
 down:
 	docker-compose down
 ## Application initialization
-init: deps-install codegen
-deps-install:
-	npm install
-codegen:
-	graph codegen
 create-local:
 	graph create --node http://localhost:8020/ abracadabra-subgraph
 remove-local:
 	graph remove --node http://localhost:8020/ abracadabra-subgraph
 deploy-local:
 	graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 abracadabra-subgraph
-## Run linter
-lint:
-	npx eslint src/ --ext .ts,.js
-## Fix linter errors
-lint-fix:
-	npx eslint src/ --ext .ts,.js --fix

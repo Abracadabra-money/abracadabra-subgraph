@@ -1,0 +1,6 @@
+/generated
+/build
+/node_modules
+schema.graphql
+subgraph.template.yaml
+subgraph.yaml

@@ -1,0 +1,14 @@
+{
+    "network": "optimism",
+    "bentoBox": {
+        "enable": false
+    },
+    "degenBox": {
+        "enable": true,
+        "address": "0xa93C81f564579381116ee3E007C9fCFd2EBa1723",
+        "startBlock": 18084162
+    },
+    "magicApe": {
+        "enable": false
+    }
+}

@@ -1,6 +1,6 @@
-import { Address } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../../generated/DegenBox/ERC20";;
-import { INVALID_TOKEN_DECIMALS } from "../../constants";
+import { Address } from '@graphprotocol/graph-ts';
+import { ERC20 } from '../../../generated/DegenBox/ERC20';
+import { INVALID_TOKEN_DECIMALS } from '../../constants';
 
 export function getTokenDecimals(address: Address): i32 {
     const contract = ERC20.bind(address);

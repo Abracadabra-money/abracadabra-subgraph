@@ -3,7 +3,9 @@
 ## Installation
 
 ```bash
-$ make init
+$ npm i
+$ npm run prepare:selected network
+$ npm run codegen
 ```
 
 ## Running the app
@@ -15,3 +17,4 @@ $ make deploy-local
 
 Testing:  http://localhost:8000/subgraphs/name/abracadabra-subgraph/graphql
 
+```

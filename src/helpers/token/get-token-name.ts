@@ -1,12 +1,12 @@
-import { Address } from "@graphprotocol/graph-ts";
-import { ERC20 } from "../../../generated/DegenBox/ERC20";;
-import { ERC20NameBytes } from "../../../generated/DegenBox/ERC20NameBytes";
-import { UNKNOWN_TOKEN_VALUE } from "../../constants";
-import { isNullEthValue } from "../../utils";
+import { Address } from '@graphprotocol/graph-ts';
+import { ERC20 } from '../../../generated/DegenBox/ERC20';
+import { ERC20NameBytes } from '../../../generated/DegenBox/ERC20NameBytes';
+import { UNKNOWN_TOKEN_VALUE } from '../../constants';
+import { isNullEthValue } from '../../utils';
 
 export function getTokenName(address: Address): string {
     const contract = ERC20.bind(address);
-    const contractNameBytes = ERC20NameBytes.bind(address); 
+    const contractNameBytes = ERC20NameBytes.bind(address);
 
     // try types string and bytes32 for name
     let nameValue = UNKNOWN_TOKEN_VALUE;

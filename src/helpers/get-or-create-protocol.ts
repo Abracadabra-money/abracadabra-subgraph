@@ -1,12 +1,12 @@
-import { dataSource } from "@graphprotocol/graph-ts";
-import { Protocol } from "../../generated/schema";
-import { BIGDECIMAL_ZERO } from "../constants";
-import { getBentoBoxAddress } from "./get-bento-box-address";
+import { dataSource } from '@graphprotocol/graph-ts';
+import { Protocol } from '../../generated/schema';
+import { BIGDECIMAL_ZERO } from '../constants';
+import { getBentoBoxAddress } from './get-bento-box-address';
 
 export function getOrCreateProtocol(): Protocol {
     const protocolId = getBentoBoxAddress(dataSource.network());
     let protocol = Protocol.load(protocolId);
-    if(protocol) return protocol;
+    if (protocol) return protocol;
     protocol = new Protocol(protocolId);
 
     protocol.totalValueLockedUsd = BIGDECIMAL_ZERO;
