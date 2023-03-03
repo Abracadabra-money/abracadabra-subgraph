@@ -3,7 +3,9 @@
 ## Installation
 
 ```bash
-$ make init
+$ npm i
+$ npm run prepare:selected network
+$ npm run codegen
 ```
 
 ## Running the app
