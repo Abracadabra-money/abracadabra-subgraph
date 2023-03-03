@@ -1,7 +1,7 @@
 import { Address } from '@graphprotocol/graph-ts';
 import { Transfer } from '../../generated/MagicGlp/WETH';
-import { MAGIC_GLP, DEFAULT_DECIMALS } from "../constants";
-import { getOrCreateMagicGlp } from "../helpers/magic-glp/get-or-create-magic-glp";
+import { MAGIC_GLP, DEFAULT_DECIMALS } from '../constants';
+import { getOrCreateMagicGlp } from '../helpers/magic-glp/get-or-create-magic-glp';
 import { bigIntToBigDecimal } from '../utils';
 
 export function handleLogTransfer(event: Transfer): void {

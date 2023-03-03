@@ -7,7 +7,7 @@ export function getOrCreateMagicApe(): MagicApe {
     let magicApe = MagicApe.load(MAGIC_APE);
     if (magicApe) return magicApe;
     const protocol = getOrCreateProtocol();
-    
+
     magicApe = new MagicApe(MAGIC_APE);
     magicApe.protocol = protocol.id;
     magicApe.totalRewards = BIGDECIMAL_ZERO;

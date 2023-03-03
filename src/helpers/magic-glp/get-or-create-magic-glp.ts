@@ -7,7 +7,7 @@ export function getOrCreateMagicGlp(): MagicGlp {
     let magicGlp = MagicGlp.load(MAGIC_GLP);
     if (magicGlp) return magicGlp;
     const protocol = getOrCreateProtocol();
-    
+
     magicGlp = new MagicGlp(MAGIC_GLP);
     magicGlp.protocol = protocol.id;
     magicGlp.totalRewards = BIGDECIMAL_ZERO;
