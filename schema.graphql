@@ -10,9 +10,6 @@ type Protocol @entity {
   " Total number of cauldrons "
   totalCauldronCount: Int!
 
-  " Number of liquidations "
-  totalLiquidationsCount: Int!
-
   " All cauldrons that belong to this protocol "
   cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
 
@@ -65,9 +62,6 @@ type Cauldron @entity {
 
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
-
-  " Number of liquidations "
-  totalLiquidationsCount: Int!
 
   "current accrueInfo.feesEarned "
   feesEarned: BigInt!

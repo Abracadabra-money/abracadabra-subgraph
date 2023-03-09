@@ -26,7 +26,6 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
         CauldronEntity.deprecated = false;
         CauldronEntity.lastActive = blockTimestamp;
         CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
-        CauldronEntity.totalLiquidationsCount = 0;
         CauldronEntity.feesEarned = BIGINT_ZERO;
 
         const oracleCall = CauldronContract.try_oracle();

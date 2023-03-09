@@ -13,7 +13,6 @@ export function getOrCreateProtocol(): Protocol {
     protocol.totalFeesGenerated = BIGDECIMAL_ZERO;
     protocol.cauldronIds = [];
     protocol.totalCauldronCount = 0;
-    protocol.totalLiquidationsCount = 0;
     protocol.save();
     return protocol;
 }
