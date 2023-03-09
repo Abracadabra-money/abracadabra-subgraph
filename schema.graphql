@@ -1,3 +1,11 @@
+enum PositionSide {
+  " Position opened as a lender "
+  LENDER
+
+  " Position opened as a borrower "
+  BORROWER
+}
+
 type Protocol @entity {
   id: ID!
 
@@ -266,4 +274,138 @@ type MagicGlp @entity {
 type Account @entity {
   " { Account address } "
   id: ID!
+
+  " All positions that belong to this account "
+  positions: [Position!]! @derivedFrom(field: "account")
+
+  " All deposit events of this account "
+  deposits: [Deposit!]! @derivedFrom(field: "account")
+}
+
+type Deposit @entity(immutable: true) {
+  " { Transaction hash }-{ Log index } "
+  id: ID!
+
+  " Transaction hash of the transaction that emitted this event "
+  hash: String!
+
+  " Nonce of the transaction that emitted this event "
+  nonce: BigInt!
+
+  " Event log index. For transactions that don't emit event, create arbitrary index starting from 0 "
+  logIndex: Int!
+
+  " Block number of this event "
+  blockNumber: BigInt!
+
+  " Timestamp of this event "
+  timestamp: BigInt!
+
+  " Account that deposited tokens "
+  account: Account!
+
+  " The market tokens are deposited to "
+  cauldron: Cauldron!
+
+  " The user position changed by this event "
+  position: Position!
+
+  " Token deposited "
+  collateral: Collateral!
+
+  " Amount of token deposited in native units "
+  amount: BigInt!
+
+  " Amount of token deposited in USD "
+  amountUsd: BigDecimal!
+}
+
+type Position @entity {
+  " { Account address }-{ Market address }-{ Position Side }-{ Counter } "
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " Side of the position (either lender or borrower) "
+  side: PositionSide!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  " The hash of the transaction that opened this position "
+  hashOpened: String!
+
+  " The hash of the transaction that closed this position "
+  hashClosed: String
+
+  " Block number of when the position was opened "
+  blockNumberOpened: BigInt!
+
+  " Timestamp when the position was opened "
+  timestampOpened: BigInt!
+
+  " Block number of when the position was closed (0 if still open) "
+  blockNumberClosed: BigInt
+
+  " Timestamp when the position was closed (0 if still open) "
+  timestampClosed: BigInt
+
+  " Token balance in this position, in native amounts "
+  balance: BigInt!
+
+  " Number of deposits related to this position "
+  depositCount: Int!
+
+  " All deposit events of this position "
+  deposits: [Deposit!]! @derivedFrom(field: "position")
+
+  " Number of borrows related to this position "
+  borrowCount: Int!
+
+  " Number of withdrawals related to this position "
+  withdrawCount: Int!
+
+  " Number of repays related to this position "
+  repayCount: Int!
+
+  " Number of liquidations related to this position "
+  liquidationCount: Int!
+
+  " Position daily snapshots for open positions "
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+}
+
+type PositionSnapshot @entity {
+  " { Position ID }-{ Transaction hash }-{ Log index } "
+  id: ID!
+
+  " Transaction hash of the transaction that triggered this snapshot "
+  hash: String!
+
+  " Event log index. For transactions that don't emit event, create arbitrary index starting from 0 "
+  logIndex: Int!
+
+  " Nonce of the transaction that triggered this snapshot "
+  nonce: BigInt!
+
+  " Position of this snapshot "
+  position: Position!
+
+  " Token balance in this position, in native amounts "
+  balance: BigInt!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+}
+
+type PositionCounter @entity {
+  " { Account address }-{ Market address }-{ Position Side } "
+  id: ID!
+
+  " Next count "
+  nextCount: Int!
 }

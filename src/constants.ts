@@ -17,6 +17,18 @@ export namespace Network {
     export const XDAI = 'XDAI'; // aka Gnosis Chain
 }
 
+export namespace EventType {
+    export const BORROW = 'BORROW';
+    export const DEPOSIT = 'DEPOSIT';
+    export const WITHDRAW = 'WITHDRAW';
+    export const REPAY = 'REPAY';
+}
+
+export namespace PositionSide {
+    export const LENDER = 'LENDER';
+    export const BORROWER = 'BORROWER';
+}
+
 // Ethereum Addresses
 export const USD_BTC_ETH_ABRA_ADDRESS = '0x5958a8db7dfe0cc49382209069b00f54e17929c2';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
