@@ -11,7 +11,7 @@ export function updateTokenPrice(rate: BigInt, collateral: Collateral, cauldron:
     cauldron.collateralPriceUsd = price;
     cauldron.save();
 
-    collateral.lastPriceUSD = price;
+    collateral.lastPriceUsd = price;
     collateral.lastPriceBlockNumber = block.number;
     collateral.lastPriceTimestamp = block.timestamp;
     collateral.save();

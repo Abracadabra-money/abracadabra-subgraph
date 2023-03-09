@@ -16,7 +16,7 @@ export function getOrCreateCollateral(address: Address): Collateral {
             collateral.decimals = getTokenDecimals(address);
         }
 
-        collateral.lastPriceUSD = address == Address.fromString(getMIMAddress(dataSource.network())) ? BIGDECIMAL_ONE : BIGDECIMAL_ZERO;
+        collateral.lastPriceUsd = address == Address.fromString(getMIMAddress(dataSource.network())) ? BIGDECIMAL_ONE : BIGDECIMAL_ZERO;
         collateral.lastPriceBlockNumber = BIGINT_ZERO;
         collateral.save();
     }

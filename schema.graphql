@@ -87,7 +87,7 @@ type Collateral @entity {
   decimals: Int!
 
   " Optional field to track the price of a token, mostly for caching purposes "
-  lastPriceUSD: BigDecimal
+  lastPriceUsd: BigDecimal
 
   " Optional field to track the block number of the last token price "
   lastPriceBlockNumber: BigInt

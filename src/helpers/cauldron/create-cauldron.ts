@@ -19,7 +19,7 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
         CauldronEntity.name = collateral.symbol;
         CauldronEntity.createdTimestamp = blockTimestamp;
         CauldronEntity.createdBlockNumber = blockNumber;
-        CauldronEntity.collateralPriceUsd = collateral.lastPriceUSD!;
+        CauldronEntity.collateralPriceUsd = collateral.lastPriceUsd!;
         CauldronEntity.exchangeRate = BIGINT_ZERO;
         CauldronEntity.protocol = protocol.id;
         CauldronEntity.isActive = false;
