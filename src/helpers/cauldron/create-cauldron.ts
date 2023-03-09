@@ -3,7 +3,7 @@ import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
 import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol';
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
