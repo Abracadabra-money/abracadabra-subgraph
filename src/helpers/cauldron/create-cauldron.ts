@@ -7,6 +7,7 @@ import { getOrCreateProtocol } from '../get-or-create-protocol';
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
+
     const collateralCall = CauldronContract.try_collateral();
     if (collateralCall.reverted || !collateralCall.value) return;
 
@@ -26,6 +27,10 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
         CauldronEntity.deprecated = false;
         CauldronEntity.lastActive = blockTimestamp;
         CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
+        CauldronEntity.borrowOpeningFee = CauldronContract.BORROW_OPENING_FEE();
+        CauldronEntity.collaterizationRate = CauldronContract.COLLATERIZATION_RATE();
+        CauldronEntity.interestPerSecond = CauldronContract.accrueInfo().getINTEREST_PER_SECOND();
+        CauldronEntity.liquidationMultiplier = CauldronContract.LIQUIDATION_MULTIPLIER();
 
         const oracleCall = CauldronContract.try_oracle();
         if (!oracleCall.reverted) {

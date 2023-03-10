@@ -45,6 +45,14 @@ type Cauldron @entity {
   " Amount of input token per full share of output token. Only applies when the output token exists (note this is a ratio and not a percentage value, i.e. 1.05 instead of 105%) "
   exchangeRate: BigInt!
 
+  borrowOpeningFee: BigInt!
+
+  collaterizationRate: BigInt!
+
+  liquidationMultiplier: BigInt!
+
+  interestPerSecond: BigInt!
+
   " Price per share of input token in USD "
   collateralPriceUsd: BigDecimal!
 
