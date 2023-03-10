@@ -62,9 +62,6 @@ type Cauldron @entity {
 
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
-
-  "current accrueInfo.feesEarned "
-  feesEarned: BigInt!
 }
 
 type Collateral @entity {

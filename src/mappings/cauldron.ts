@@ -1,5 +1,5 @@
 import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate } from '../../generated/templates/Cauldron/Cauldron';
-import { getCauldron, getFeesEarned } from '../helpers/cauldron';
+import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address } from '@graphprotocol/graph-ts';
 import { updateTokenPrice } from '../helpers/updates';
@@ -60,11 +60,5 @@ export function handleLogAccrue(event: LogAccrue): void {
     if (!cauldron) return;
 
     updateLastActive(cauldron, event.block);
-
-    const feesEarned = getFeesEarned(event.address);
-    const fees = feesEarned.ge(cauldron.feesEarned) ? feesEarned.minus(cauldron.feesEarned) : feesEarned;
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(fees), event.block);
-
-    cauldron.feesEarned = feesEarned;
-    cauldron.save();
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(event.params.accruedAmount), event.block);
 }
