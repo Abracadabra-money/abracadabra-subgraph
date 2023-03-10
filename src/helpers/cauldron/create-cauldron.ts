@@ -9,47 +9,49 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
 
     const collateralCall = CauldronContract.try_collateral();
-    if (collateralCall.reverted || !collateralCall.value) return;
+    const borrowOpeningFeeCall = CauldronContract.try_BORROW_OPENING_FEE();
+    const collaterizationRateCall = CauldronContract.try_COLLATERIZATION_RATE();
+    const liquidationMultiplierCall = CauldronContract.try_LIQUIDATION_MULTIPLIER();
+
+    if (collateralCall.reverted || !collateralCall.value || borrowOpeningFeeCall.reverted || collaterizationRateCall.reverted || liquidationMultiplierCall.reverted) return;
 
     const CauldronEntity = new CauldronSchema(cauldronAddress.toHexString());
     const protocol = getOrCreateProtocol();
 
-    if (!collateralCall.reverted) {
-        const collateral = getOrCreateCollateral(collateralCall.value);
-        CauldronEntity.collateral = collateral.id;
-        CauldronEntity.name = collateral.symbol;
-        CauldronEntity.createdTimestamp = blockTimestamp;
-        CauldronEntity.createdBlockNumber = blockNumber;
-        CauldronEntity.collateralPriceUsd = collateral.lastPriceUsd!;
-        CauldronEntity.exchangeRate = BIGINT_ZERO;
-        CauldronEntity.protocol = protocol.id;
-        CauldronEntity.isActive = false;
-        CauldronEntity.deprecated = false;
-        CauldronEntity.lastActive = blockTimestamp;
-        CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
-        CauldronEntity.borrowOpeningFee = CauldronContract.BORROW_OPENING_FEE();
-        CauldronEntity.collaterizationRate = CauldronContract.COLLATERIZATION_RATE();
-        CauldronEntity.interestPerSecond = CauldronContract.accrueInfo().getINTEREST_PER_SECOND();
-        CauldronEntity.liquidationMultiplier = CauldronContract.LIQUIDATION_MULTIPLIER();
+    const collateral = getOrCreateCollateral(collateralCall.value);
+    CauldronEntity.collateral = collateral.id;
+    CauldronEntity.name = collateral.symbol;
+    CauldronEntity.createdTimestamp = blockTimestamp;
+    CauldronEntity.createdBlockNumber = blockNumber;
+    CauldronEntity.collateralPriceUsd = collateral.lastPriceUsd!;
+    CauldronEntity.exchangeRate = BIGINT_ZERO;
+    CauldronEntity.protocol = protocol.id;
+    CauldronEntity.isActive = false;
+    CauldronEntity.deprecated = false;
+    CauldronEntity.lastActive = blockTimestamp;
+    CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
+    CauldronEntity.borrowOpeningFee = borrowOpeningFeeCall.value;
+    CauldronEntity.collaterizationRate = collaterizationRateCall.value;
+    CauldronEntity.interestPerSecond = CauldronContract.accrueInfo().getINTEREST_PER_SECOND();
+    CauldronEntity.liquidationMultiplier = liquidationMultiplierCall.value;
 
-        const oracleCall = CauldronContract.try_oracle();
-        if (!oracleCall.reverted) {
-            CauldronEntity.oracle = oracleCall.value;
-        }
-
-        const oracleDataCall = CauldronContract.try_oracleData();
-        if (!oracleDataCall.reverted) {
-            CauldronEntity.oracleData = oracleDataCall.value.toHexString();
-        }
-
-        CauldronEntity.save();
-
-        protocol.totalCauldronCount += 1;
-
-        const cauldronIds = protocol.cauldronIds;
-        cauldronIds.push(cauldronAddress.toHexString());
-        protocol.cauldronIds = cauldronIds;
-
-        protocol.save();
+    const oracleCall = CauldronContract.try_oracle();
+    if (!oracleCall.reverted) {
+        CauldronEntity.oracle = oracleCall.value;
     }
+
+    const oracleDataCall = CauldronContract.try_oracleData();
+    if (!oracleDataCall.reverted) {
+        CauldronEntity.oracleData = oracleDataCall.value.toHexString();
+    }
+
+    CauldronEntity.save();
+
+    protocol.totalCauldronCount += 1;
+
+    const cauldronIds = protocol.cauldronIds;
+    cauldronIds.push(cauldronAddress.toHexString());
+    protocol.cauldronIds = cauldronIds;
+
+    protocol.save();
 }
