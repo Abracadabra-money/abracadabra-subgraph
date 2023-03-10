@@ -1,4 +1,4 @@
-import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate } from '../../generated/templates/Cauldron/Cauldron';
+import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate, BorrowCall } from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address } from '@graphprotocol/graph-ts';
@@ -6,6 +6,7 @@ import { updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
+import { BORROW_OPENING_FEE_PRECISION } from "../constants";
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -30,6 +31,14 @@ export function handleLogBorrow(event: LogBorrow): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
+}
+
+export function handleBorrowCall(call: BorrowCall): void {
+    const cauldron = getCauldron(call.to.toHexString());
+    if (!cauldron) return;
+
+    const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block);
 }
 
 export function handleLogRepay(event: LogRepay): void {

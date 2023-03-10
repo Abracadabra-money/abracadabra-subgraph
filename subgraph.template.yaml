@@ -179,3 +179,6 @@ templates:
           handler: handleLogExchangeRate
         - event: LogAccrue(uint128)
           handler: handleLogAccrue
+      callHandlers:
+        - event: _borrow(address,uint256)
+        - handler: handleBorrowCall
