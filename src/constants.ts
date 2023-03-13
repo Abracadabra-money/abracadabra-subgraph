@@ -88,6 +88,6 @@ export const DAYS_PER_YEAR = new BigDecimal(BigInt.fromI32(365));
 export const MS_PER_YEAR = DAYS_PER_YEAR.times(new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000)));
 
 // Cauldron
-export const LIQUIDATION_MULTIPLIER_PRECISION = BigInt.fromI32(1e5);
-export const BORROW_OPENING_FEE_PRECISION = BigInt.fromI32(1e5);
-export const COLLATERIZATION_RATE_PRECISION = BigInt.fromI32(1e5);
+export const LIQUIDATION_MULTIPLIER_PRECISION = BigInt.fromI32(100000);
+export const BORROW_OPENING_FEE_PRECISION = BigInt.fromI32(100000);
+export const COLLATERIZATION_RATE_PRECISION = BigInt.fromI32(100000);

@@ -6,7 +6,7 @@ import { updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
-import { BORROW_OPENING_FEE_PRECISION } from "../constants";
+import { BORROW_OPENING_FEE_PRECISION } from '../constants';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());

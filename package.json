@@ -2,6 +2,7 @@
     "name": "abracadabra-subgraph",
     "version": "1.0.0",
     "license": "UNLICENSED",
+    "repository": "https://github.com/Abracadabra-money/abracadabra-subgraph",
     "scripts": {
         "prepare:arbitrum": "mustache deployments/arbitrum.json subgraph.template.yaml > subgraph.yaml",
         "prepare:avalanche": "mustache deployments/avalanche.json subgraph.template.yaml > subgraph.yaml",
@@ -11,14 +12,16 @@
         "prepare:optimism": "mustache deployments/optimism.json subgraph.template.yaml > subgraph.yaml",
         "build": "graph build",
         "codegen": "graph codegen",
-        "prettier": "prettier --loglevel silent --write \"**/*.{md,jsx,tsx,ts,json,html,css,js}\""
+        "prettier": "prettier --loglevel silent --write \"**/*.{md,jsx,tsx,ts,json,html,css,js}\"",
+        "test": "graph test",
+        "coverage": "graph test -- -c"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.41.1",
-        "@graphprotocol/graph-ts": "0.29.1"
+        "@graphprotocol/graph-cli": "^0.30.1",
+        "@graphprotocol/graph-ts": "^0.27.0"
     },
     "devDependencies": {
-        "matchstick-as": "0.5.0",
+        "matchstick-as": "^0.5.2",
         "mustache": "^4.2.0",
         "prettier": "2.3.1"
     }
