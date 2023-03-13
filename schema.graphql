@@ -63,11 +63,8 @@ type Cauldron @entity {
 
   " Last activity in this cauldron "
   lastActive: BigInt!
-
+  " Oracle address "
   oracle: Bytes
-  
-  oracleData: String
-
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
 }
