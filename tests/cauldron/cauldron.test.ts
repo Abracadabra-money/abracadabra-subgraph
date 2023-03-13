@@ -1,4 +1,4 @@
-import { Address, ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from "@graphprotocol/graph-ts";
 import { afterAll, beforeAll, clearStore, createMockedFunction, describe, newMockCall, test } from "matchstick-as";
 import { createCauldron } from  "../../src/helpers/cauldron/create-cauldron";
 import { CLONE_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, DATA, COLLATERAL_ADDRESS, COLLATERAL_DECIMALS, COLLATERAL_NAME, COLLATERAL_SYMBOL, MOCK_ACCOUNT} from "../constants";
@@ -7,6 +7,10 @@ import { BorrowCall } from "../../generated/templates/Cauldron/Cauldron";
 
 describe("Mock contract functions", () => {
     beforeAll(() => {
+        // Create cauldron mock functions
+        createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
+            .withArgs([])
+            .returns([ethereum.Value.fromI32(0)]);
         // Create collateral mock functions
         createMockedFunction(COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])

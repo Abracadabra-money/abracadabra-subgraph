@@ -1,10 +1,15 @@
-import { BigInt, Address, Bytes, ethereum } from '@graphprotocol/graph-ts';
+import { BigInt, Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
 import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
 import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
+    const CauldronContract = CauldronTemplate.bind(cauldronAddress);
+    const borrowOpeningFeeCall = CauldronContract.try_BORROW_OPENING_FEE(); 
+    if(borrowOpeningFeeCall.reverted) return;
+
     const decoded = ethereum.decode('(address,address, bytes, uint64, uint256, uint256, uint256)', data)!.toTuple();
 
     const CauldronEntity = new CauldronSchema(cauldronAddress.toHexString());
