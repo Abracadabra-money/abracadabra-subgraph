@@ -24,13 +24,13 @@ export function updateTokensPrice(block: ethereum.Block): void {
             continue;
         }
 
-        if (cauldron.oracle === null || cauldron.oracleData === null) {
-            log.warning('[updateTokensPrice] Cauldron {} has no oracle or oracleData', [cauldron.id]);
+        if (cauldron.oracle === null) {
+            log.warning('[updateTokensPrice] Cauldron {} has no oracle', [cauldron.id]);
             continue;
         }
 
         const oracle = Oracle.bind(Address.fromBytes(cauldron.oracle!));
-        const peekSpotCall = oracle.try_peekSpot(Bytes.fromHexString(cauldron.oracleData!));
+        const peekSpotCall = oracle.try_peekSpot(Bytes.fromHexString('0x00'));
         if (peekSpotCall.reverted || peekSpotCall.value == BIGINT_ZERO) {
             log.warning('[updateAllTokenPrices] Cauldron {} oracle peekSpot() failed', [cauldron.id]);
             continue;
