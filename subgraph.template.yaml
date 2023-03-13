@@ -181,4 +181,6 @@ templates:
           handler: handleLogAccrue
       callHandlers:
         - event: borrow(address,uint256)
-        - handler: handleBorrowCall
+          handler: handleBorrowCall
+        - event: cook(uint8[],uint256[],bytes[])
+          handler: handleCookCall

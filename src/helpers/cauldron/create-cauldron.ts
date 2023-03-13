@@ -7,8 +7,8 @@ import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauld
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
-    const borrowOpeningFeeCall = CauldronContract.try_BORROW_OPENING_FEE(); 
-    if(borrowOpeningFeeCall.reverted) return;
+    const borrowOpeningFeeCall = CauldronContract.try_BORROW_OPENING_FEE();
+    if (borrowOpeningFeeCall.reverted) return;
 
     const decoded = ethereum.decode('(address,address, bytes, uint64, uint256, uint256, uint256)', data)!.toTuple();
 
