@@ -94,3 +94,5 @@ export const MS_PER_YEAR = DAYS_PER_YEAR.times(new BigDecimal(BigInt.fromI32(24 
 export const LIQUIDATION_MULTIPLIER_PRECISION = BigInt.fromI32(100000);
 export const BORROW_OPENING_FEE_PRECISION = BigInt.fromI32(100000);
 export const COLLATERIZATION_RATE_PRECISION = BigInt.fromI32(100000);
+export const DISTRIBUTION_PART = BigInt.fromI32(10);
+export const DISTRIBUTION_PRECISION = BigInt.fromI32(100);

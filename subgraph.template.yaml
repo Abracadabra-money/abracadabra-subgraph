@@ -184,3 +184,7 @@ templates:
           handler: handleBorrowCall
         - function: cook(uint8[],uint256[],bytes[])
           handler: handleCookCall
+        - function: liquidate(address[],uint256[],address,address,bytes)
+          handler: handleLiquidateCall
+        - function: liquidate(address[],uint256[],address,address)
+          handler: handleLiquidateCall

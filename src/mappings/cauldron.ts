@@ -1,12 +1,23 @@
-import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate, BorrowCall, CookCall } from '../../generated/templates/Cauldron/Cauldron';
+import {
+    LogAccrue,
+    LogBorrow,
+    LogAddCollateral,
+    LogRemoveCollateral,
+    LogRepay,
+    LogExchangeRate,
+    BorrowCall,
+    CookCall,
+    LiquidateCall,
+    Cauldron as CauldronTemplate,
+} from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
-import { Address, ethereum, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, ethereum, log } from '@graphprotocol/graph-ts';
 import { updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
-import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW } from '../constants';
+import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION } from '../constants';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -36,14 +47,44 @@ export function handleLogBorrow(event: LogBorrow): void {
 export function handleBorrowCall(call: BorrowCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
+    if (cauldron.borrowOpeningFee.isZero()) return;
 
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
     updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block);
 }
 
+export function handleLiquidateCall(call: LiquidateCall): void {
+    const cauldron = getCauldron(call.to.toHexString());
+    if (!cauldron) return;
+    if (cauldron.liquidationMultiplier.isZero()) return;
+
+    const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
+    const totalBorrowCall = contract.try_totalBorrow();
+    if (totalBorrowCall.reverted) return;
+
+    const totalBorrowBase = totalBorrowCall.value.getBase();
+    const totalBorrowElastic = totalBorrowCall.value.getElastic();
+
+    // TODO: Added Account, check (borrowPart = maxBorrowParts[i] > availableBorrowPart ? availableBorrowPart : maxBorrowParts[i]) for each account
+    let allBorrowAmount = BigInt.fromI32(0);
+    for (let i = 0; i < call.inputs.maxBorrowParts.length; i++) {
+        const borrowPart = call.inputs.maxBorrowParts[i];
+        const borrowAmount = borrowPart.times(totalBorrowElastic).div(totalBorrowBase);
+        allBorrowAmount = allBorrowAmount.plus(borrowAmount);
+    }
+    const distributionAmount = allBorrowAmount
+        .times(cauldron.liquidationMultiplier)
+        .div(LIQUIDATION_MULTIPLIER_PRECISION)
+        .minus(allBorrowAmount)
+        .times(DISTRIBUTION_PART)
+        .div(DISTRIBUTION_PRECISION);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), call.block);
+}
+
 export function handleCookCall(call: CookCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
+    if (cauldron.borrowOpeningFee.isZero()) return;
 
     for (let i = 0; i < call.inputs.actions.length; i++) {
         const action = call.inputs.actions[i];

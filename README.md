@@ -1,4 +1,5 @@
 # Abracadabra Subgraph
+
 [![Tests](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/tests.yml)
 
 ## Installation
