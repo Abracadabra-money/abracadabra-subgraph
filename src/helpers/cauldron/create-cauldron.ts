@@ -4,6 +4,7 @@ import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
 import { getOrCreateProtocol } from '../protocol';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
+import { Cauldron } from '../../../generated/templates';
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
@@ -36,6 +37,8 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
 
     CauldronEntity.save();
+
+    Cauldron.create(cauldronAddress);
 
     protocol.totalCauldronCount += 1;
 
