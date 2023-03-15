@@ -3,7 +3,7 @@ import { handleLogDeploy } from '../../src/mappings/core';
 import { createLogDeployEvent } from './core-utils';
 import { MASTER_CONTRACT_ADDRESS, DATA, CLONE_ADDRESS, COLLATERAL_ADDRESS, COLLATERAL_DECIMALS, COLLATERAL_NAME, COLLATERAL_SYMBOL } from '../constants';
 import { CAULDRON_ENTITY_TYPE, PROTOCOL_ENTITY_TYPE, COLLATERAL_ENTITY_TYPE } from '../constants';
-import { ethereum } from '@graphprotocol/graph-ts';
+import { Bytes, ethereum } from '@graphprotocol/graph-ts';
 
 describe('Mocked Events', () => {
     afterAll(() => {
@@ -16,6 +16,9 @@ describe('Mocked Events', () => {
         createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
             .withArgs([])
             .returns([ethereum.Value.fromI32(0)]);
+        createMockedFunction(CLONE_ADDRESS, 'oracleData', 'oracleData():(bytes)')
+            .withArgs([])
+            .returns([ethereum.Value.fromBytes(Bytes.fromHexString('0x00'))]);
         // Create collateral mock functions
         createMockedFunction(COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])

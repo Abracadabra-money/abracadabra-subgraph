@@ -2,7 +2,7 @@ import { BigInt, Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
 import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
 
 export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
@@ -32,6 +32,8 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.interestPerSecond = decoded[3].toBigInt();
     CauldronEntity.liquidationMultiplier = decoded[4].toBigInt();
     CauldronEntity.oracle = decoded[1].toAddress();
+    CauldronEntity.cumulativeUniqueUsers = 0;
+    CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
 
     CauldronEntity.save();
 

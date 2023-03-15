@@ -22,6 +22,7 @@ Testing:  http://localhost:8000/subgraphs/name/abracadabra-subgraph/graphql
 ```
 
 ## Whitelisted deployers
+
 ```typescript
 export const ABRA_DEPLOYERS = [
     '0xfddfe525054efaad204600d00ca86adb1cc2ea8a'.toLowerCase(),
@@ -31,10 +32,12 @@ export const ABRA_DEPLOYERS = [
 ```
 
 ## Supported networks
+
 Abracadabra works on networks such as `Ethereum`, `Avalanche`, `Arbitrum`, `Binance Smart Chain` , `Fantom` , `Optimism`.
- You can see the configurations for each network here `./deployments/*.json`;
+You can see the configurations for each network here `./deployments/*.json`;
 
 ## Methods that are tracked
+
 ```
 BentoBox/Degenbox
 └── events

@@ -1,6 +1,7 @@
 import { Address, ethereum, log } from '@graphprotocol/graph-ts';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
-import { getOrCreateDailySnapshot } from '../get-or-create-daily-snapshot';
+import { getOrCreateProtocol } from '../protocol';
+import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financeial-protocol-metrics-daily-snapshot';
+import { getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financeial-cauldron-metrics-daily-snapshot';
 import { BIGDECIMAL_ZERO } from '../../constants';
 import { getCauldron } from '../cauldron';
 import { bigIntToBigDecimal, isDeprecated } from '../../utils';
@@ -9,7 +10,7 @@ import { Cauldron } from '../../../generated/templates/Cauldron/Cauldron';
 export function updateTvl(block: ethereum.Block): void {
     const protocol = getOrCreateProtocol();
 
-    const dailySnapshot = getOrCreateDailySnapshot(block);
+    const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(block);
     let totalValueLockedUsd = BIGDECIMAL_ZERO;
 
     for (let i = 0; i < protocol.cauldronIds.length; i++) {
@@ -35,12 +36,16 @@ export function updateTvl(block: ethereum.Block): void {
 
         const marketTVL = bigIntToBigDecimal(totalCollateralShareCall.value).times(cauldron.collateralPriceUsd);
         totalValueLockedUsd = totalValueLockedUsd.plus(marketTVL);
+
+        const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, block);
+        cauldronDailySnapshot.totalValueLockedUsd = marketTVL;
+        cauldronDailySnapshot.save();
     }
 
-    dailySnapshot.totalValueLockedUsd = totalValueLockedUsd;
-    dailySnapshot.blockNumber = block.number;
-    dailySnapshot.timestamp = block.timestamp;
-    dailySnapshot.save();
+    protocolDailySnapshot.totalValueLockedUsd = totalValueLockedUsd;
+    protocolDailySnapshot.blockNumber = block.number;
+    protocolDailySnapshot.timestamp = block.timestamp;
+    protocolDailySnapshot.save();
 
     protocol.totalValueLockedUsd = totalValueLockedUsd;
     protocol.save();

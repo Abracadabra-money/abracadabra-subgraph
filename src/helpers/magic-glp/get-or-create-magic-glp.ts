@@ -1,7 +1,7 @@
 import { MagicGlp } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO } from '../../constants';
 import { MAGIC_GLP } from '../../constants';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol';
 
 export function getOrCreateMagicGlp(): MagicGlp {
     let magicGlp = MagicGlp.load(MAGIC_GLP);

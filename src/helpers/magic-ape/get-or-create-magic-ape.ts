@@ -1,7 +1,7 @@
 import { MagicApe } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO } from '../../constants';
 import { MAGIC_APE } from '../../constants';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol';
 
 export function getOrCreateMagicApe(): MagicApe {
     let magicApe = MagicApe.load(MAGIC_APE);

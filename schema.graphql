@@ -15,12 +15,55 @@ type Protocol @entity {
 
   cauldronIds: [String!]!
 
-  " Daily metrics for this protocol "
-  metrics: [DailySnapshot!]! @derivedFrom(field: "protocol")
-
   magicApe: MagicApe @derivedFrom(field: "protocol")
 
   magicGlp: MagicGlp @derivedFrom(field: "protocol")
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+
+  " Daily usage metrics for this protocol "
+  usageMetrics: [UsageProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+
+  " Daily financial metrics for this protocol "
+  financialMetrics: [FinanceialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+type UsageProtocolMetricsDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " Protocol this snapshot is associated with "
+  protocol: Protocol!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+}
+
+type FinanceialProtocolMetricsDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " Protocol this snapshot is associated with "
+  protocol: Protocol!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  " Amount of fees earned for the entire protocol "
+  feesGenerated: BigDecimal!
 }
 
 type Cauldron @entity {
@@ -65,8 +108,55 @@ type Cauldron @entity {
   lastActive: BigInt!
   " Oracle address "
   oracle: Bytes
+  oracleData: String
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+
+  " Daily usage metrics for this protocol "
+  usageMetrics: [UsageCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+
+  " Daily financial metrics for this protocol "
+  financialMetrics: [FinanceialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+}
+
+type UsageCauldronMetricsDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " Protocol this snapshot is associated with "
+  cauldron: Cauldron!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+}
+
+type FinanceialCauldronMetricsDailySnapshot @entity {
+  " ID is # of days since Unix epoch time "
+  id: ID!
+
+  " Protocol this snapshot is associated with "
+  cauldron: Cauldron!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  " Amount of fees earned for the entire protocol "
+  feesGenerated: BigDecimal!
 }
 
 type Collateral @entity {
@@ -90,32 +180,6 @@ type Collateral @entity {
 
   " Optional field to track the timestamp of the last token price "
   lastPriceTimestamp: BigInt
-}
-
-type DailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
-
-  " Protocol this snapshot is associated with "
-  protocol: Protocol!
-
-  " Block number of this snapshot "
-  blockNumber: BigInt!
-
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
-
-  " Current TVL (Total Value Locked) of the entire protocol "
-  totalValueLockedUsd: BigDecimal!
-
-  " Amount of fees earned for the entire protocol "
-  feesGenerated: BigDecimal!
-
-  " Number of new loans per day "
-  newLoansOpened: Int!
-
-  " Number of liquidations "
-  liquidationsCount: Int!
 }
 
 type MagicApe @entity {

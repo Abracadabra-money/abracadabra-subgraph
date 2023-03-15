@@ -1,4 +1,4 @@
-import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
 import { afterAll, beforeAll, clearStore, createMockedFunction, describe, newMockCall, test } from 'matchstick-as';
 import { createCauldron } from '../../src/helpers/cauldron/create-cauldron';
 import {
@@ -23,6 +23,9 @@ describe('Mock contract functions', () => {
         createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
             .withArgs([])
             .returns([ethereum.Value.fromI32(0)]);
+        createMockedFunction(CLONE_ADDRESS, 'oracleData', 'oracleData():(bytes)')
+            .withArgs([])
+            .returns([ethereum.Value.fromBytes(Bytes.fromHexString('0x00'))]);
         // Create collateral mock functions
         createMockedFunction(COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])
