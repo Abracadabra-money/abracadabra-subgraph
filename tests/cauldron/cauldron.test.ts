@@ -1,6 +1,6 @@
-import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
+import { BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
 import { afterAll, beforeAll, clearStore, createMockedFunction, describe, newMockCall, test } from 'matchstick-as';
-import { createCauldron } from '../../src/helpers/cauldron/create-cauldron';
+import { createCauldron, getCauldron } from '../../src/helpers/cauldron';
 import {
     CLONE_ADDRESS,
     BLOCK_NUMBER,
@@ -16,6 +16,7 @@ import {
 import { handleBorrowCall, handleCookCall, handleLiquidateCall } from '../../src/mappings/cauldron';
 import { BorrowCall, CookCall, LiquidateCall } from '../../generated/templates/Cauldron/Cauldron';
 import { ACTION_BORROW } from '../../src/constants';
+import { getOrCreateAccount, getOrCreateAccountState } from '../../src/helpers/account';
 
 describe('Mock contract functions', () => {
     beforeAll(() => {
@@ -75,10 +76,18 @@ describe('Mock contract functions', () => {
         const call: LiquidateCall = changetype<LiquidateCall>(newMockCall());
         call.to = CLONE_ADDRESS;
         call.inputValues = [
-            new ethereum.EventParam('users', ethereum.Value.fromArray([])),
+            new ethereum.EventParam('users', ethereum.Value.fromArray([ethereum.Value.fromAddress(MOCK_ACCOUNT)])),
             new ethereum.EventParam('maxBorrowParts', ethereum.Value.fromArray([ethereum.Value.fromSignedBigInt(BigInt.fromString('1200700756276012022288'))])),
             new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)),
         ];
+
+        const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+
+        const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), call.block);
+        const accountState = getOrCreateAccountState(cauldron, account);
+
+        accountState.borrowPart = BigInt.fromString('1200700756276012022289');
+        accountState.save();
 
         handleLiquidateCall(call);
     });

@@ -108,6 +108,7 @@ type Cauldron @entity {
   lastActive: BigInt!
   " Oracle address "
   oracle: Bytes
+
   oracleData: String
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
@@ -120,6 +121,9 @@ type Cauldron @entity {
 
   " Daily financial metrics for this protocol "
   financialMetrics: [FinanceialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+
+  " All positions in this market "
+  accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
@@ -264,4 +268,27 @@ type MagicGlp @entity {
 
   " Total MagicApe rewards "
   totalRewards: BigDecimal!
+}
+
+type Account @entity {
+  " { Account address } "
+  id: ID!
+
+  " All positions that belong to this account "
+  states: [AccountState!]! @derivedFrom(field: "account")
+}
+
+type AccountState @entity {
+  " { Account address }-{ Cauldron address }"
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  borrowPart: BigInt!
+
+  collateralShare: BigInt!
 }
