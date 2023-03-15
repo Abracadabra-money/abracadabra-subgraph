@@ -16,11 +16,11 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
     }
 
     if (eventType == EventType.BORROW) {
-        accountState.borrowPart = accountState.collateralShare.plus(amount);
+        accountState.borrowPart = accountState.borrowPart.plus(amount);
     }
 
     if (eventType == EventType.BORROW) {
-        accountState.borrowPart = accountState.collateralShare.minus(amount);
+        accountState.borrowPart = accountState.borrowPart.minus(amount);
     }
 
     accountState.save();
