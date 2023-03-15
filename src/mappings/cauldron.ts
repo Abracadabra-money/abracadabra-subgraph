@@ -34,7 +34,7 @@ export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.to.toHexString(), EventType.WITHDRAW, event.params.share, event.block);
+    updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block);
     updateTvl(event.block);
 }
 
