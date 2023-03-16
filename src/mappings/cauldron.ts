@@ -50,7 +50,7 @@ export function handleBorrowCall(call: BorrowCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.borrowOpeningFee.isZero()) return;
-
+    updateLastActive(cauldron, call.block);
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
     updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
 }
@@ -59,7 +59,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
-
+    updateLastActive(cauldron, call.block);
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
     const totalBorrowCall = contract.try_totalBorrow();
     if (totalBorrowCall.reverted) return;
@@ -87,7 +87,7 @@ export function handleCookCall(call: CookCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.borrowOpeningFee.isZero()) return;
-
+    updateLastActive(cauldron, call.block);
     for (let i = 0; i < call.inputs.actions.length; i++) {
         const action = call.inputs.actions[i];
         if (action == ACTION_BORROW) {

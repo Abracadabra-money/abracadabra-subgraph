@@ -24,7 +24,7 @@ describe('Mocked Events', () => {
         clearStore();
     });
 
-    test('LogDeploy created Cauldron', () => {
+    test('LogDeploy', () => {
         const newLogDeployEvent = createLogDeployEvent(MASTER_CONTRACT_ADDRESS, DATA, CLONE_ADDRESS);
         // Create cauldron mock functions
         createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
