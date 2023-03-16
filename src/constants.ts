@@ -24,6 +24,12 @@ export namespace EventType {
     export const REPAY = 'REPAY';
 }
 
+export namespace FeeType {
+    export const BORROW = 'BORROW';
+    export const INTEREST = 'INTEREST';
+    export const LIQUADATION = 'LIQUADATION';
+}
+
 // Ethereum Addresses
 export const USD_BTC_ETH_ABRA_ADDRESS = '0x5958a8db7dfe0cc49382209069b00f54e17929c2';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';

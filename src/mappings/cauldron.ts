@@ -17,7 +17,7 @@ import { updateAccountState, updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
-import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType } from '../constants';
+import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState } from '../helpers/account';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
@@ -52,7 +52,7 @@ export function handleBorrowCall(call: BorrowCall): void {
     if (cauldron.borrowOpeningFee.isZero()) return;
 
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
 }
 
 export function handleLiquidateCall(call: LiquidateCall): void {
@@ -80,7 +80,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         .minus(allBorrowAmount)
         .times(DISTRIBUTION_PART)
         .div(DISTRIBUTION_PRECISION);
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), call.block);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), call.block, FeeType.LIQUADATION);
 }
 
 export function handleCookCall(call: CookCall): void {
@@ -94,7 +94,7 @@ export function handleCookCall(call: CookCall): void {
             const decode = ethereum.decode('(int256,address)', call.inputs.datas[i])!.toTuple();
             const amount = decode[0].toBigInt();
             const feeAmount = amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
-            updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block);
+            updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
         }
     }
 }
@@ -127,5 +127,5 @@ export function handleLogAccrue(event: LogAccrue): void {
     if (!cauldron) return;
 
     updateLastActive(cauldron, event.block);
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(event.params.accruedAmount), event.block);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(event.params.accruedAmount), event.block, FeeType.INTEREST);
 }

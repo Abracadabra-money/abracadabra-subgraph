@@ -15,6 +15,9 @@ export function getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron: Caul
     dailySnapshot.timestamp = block.timestamp;
     dailySnapshot.totalValueLockedUsd = BIGDECIMAL_ZERO;
     dailySnapshot.feesGenerated = BIGDECIMAL_ZERO;
+    dailySnapshot.borrowFeesGenerated = BIGDECIMAL_ZERO;
+    dailySnapshot.interestFeesGenerated = BIGDECIMAL_ZERO;
+    dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
 
     return dailySnapshot;
 }

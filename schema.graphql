@@ -64,6 +64,12 @@ type FinanceialProtocolMetricsDailySnapshot @entity {
 
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!
+
+  borrowFeesGenerated: BigDecimal!
+
+  interestFeesGenerated: BigDecimal!
+
+  liquidationFeesGenerated: BigDecimal!
 }
 
 type Cauldron @entity {
@@ -161,6 +167,12 @@ type FinanceialCauldronMetricsDailySnapshot @entity {
 
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!
+
+  borrowFeesGenerated: BigDecimal!
+
+  interestFeesGenerated: BigDecimal!
+
+  liquidationFeesGenerated: BigDecimal!
 }
 
 type Collateral @entity {

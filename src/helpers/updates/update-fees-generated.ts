@@ -3,8 +3,9 @@ import { Cauldron } from '../../../generated/schema';
 import { getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financeial-cauldron-metrics-daily-snapshot';
 import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financeial-protocol-metrics-daily-snapshot';
 import { getOrCreateProtocol } from '../protocol';
+import { FeeType } from '../../constants';
 
-export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, block: ethereum.Block): void {
+export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, block: ethereum.Block, feeType: string): void {
     const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(block);
     const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, block);
 
@@ -14,11 +15,25 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
     cauldron.save();
 
     protocolDailySnapshot.feesGenerated = protocolDailySnapshot.feesGenerated.plus(amount);
-    protocolDailySnapshot.save();
-
     cauldronDailySnapshot.feesGenerated = cauldronDailySnapshot.feesGenerated.plus(amount);
-    cauldronDailySnapshot.save();
-
     protocol.totalFeesGenerated = protocol.totalFeesGenerated.plus(amount);
+
+    if (feeType == FeeType.BORROW) {
+        protocolDailySnapshot.borrowFeesGenerated = protocolDailySnapshot.borrowFeesGenerated.plus(amount);
+        cauldronDailySnapshot.borrowFeesGenerated = cauldronDailySnapshot.borrowFeesGenerated.plus(amount);
+    }
+
+    if (feeType == FeeType.INTEREST) {
+        protocolDailySnapshot.interestFeesGenerated = protocolDailySnapshot.interestFeesGenerated.plus(amount);
+        cauldronDailySnapshot.interestFeesGenerated = cauldronDailySnapshot.interestFeesGenerated.plus(amount);
+    }
+
+    if (feeType == FeeType.LIQUADATION) {
+        protocolDailySnapshot.liquidationFeesGenerated = protocolDailySnapshot.liquidationFeesGenerated.plus(amount);
+        cauldronDailySnapshot.liquidationFeesGenerated = cauldronDailySnapshot.liquidationFeesGenerated.plus(amount);
+    }
+
+    protocolDailySnapshot.save();
+    cauldronDailySnapshot.save();
     protocol.save();
 }
