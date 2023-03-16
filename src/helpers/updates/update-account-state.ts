@@ -19,7 +19,7 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
         accountState.borrowPart = accountState.borrowPart.plus(amount);
     }
 
-    if (eventType == EventType.BORROW) {
+    if (eventType == EventType.REPAY) {
         accountState.borrowPart = accountState.borrowPart.minus(amount);
     }
 
