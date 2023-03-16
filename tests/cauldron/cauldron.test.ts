@@ -1,6 +1,6 @@
 import { BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { afterAll, beforeAll, clearStore, createMockedFunction, describe, newMockCall, test } from 'matchstick-as';
-import { createCauldron, getCauldron } from '../../src/helpers/cauldron';
+import { afterAll, afterEach, assert, beforeAll, beforeEach, clearStore, createMockedFunction, describe, newMockCall, test } from 'matchstick-as';
+import { createCauldron, getCauldron, getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../../src/helpers/cauldron';
 import {
     CLONE_ADDRESS,
     BLOCK_NUMBER,
@@ -12,14 +12,17 @@ import {
     COLLATERAL_SYMBOL,
     MOCK_ACCOUNT,
     MOCK_COOK_BORROW,
+    FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT,
+    FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT,
 } from '../constants';
 import { handleBorrowCall, handleCookCall, handleLiquidateCall } from '../../src/mappings/cauldron';
 import { BorrowCall, CookCall, LiquidateCall } from '../../generated/templates/Cauldron/Cauldron';
 import { ACTION_BORROW } from '../../src/constants';
 import { getOrCreateAccount, getOrCreateAccountState } from '../../src/helpers/account';
+import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../../src/helpers/protocol';
 
 describe('Mock contract functions', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         // Create cauldron mock functions
         createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
             .withArgs([])
@@ -41,7 +44,7 @@ describe('Mock contract functions', () => {
         createCauldron(CLONE_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, DATA);
     });
 
-    afterAll(() => {
+    afterEach(() => {
         clearStore();
     });
 
@@ -51,6 +54,17 @@ describe('Mock contract functions', () => {
         call.inputValues = [new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)), new ethereum.EventParam('amount', ethereum.Value.fromI32(1000000))];
 
         handleBorrowCall(call);
+
+        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.000000000000005');
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
+
+        const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000000005');
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
     });
 
     test('Can get fee from cook call', () => {
@@ -63,6 +77,17 @@ describe('Mock contract functions', () => {
         ];
 
         handleCookCall(call);
+
+        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.92');
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.92');
+
+        const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.92');
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.92');
     });
 
     test('Can get fee from liquidate call', () => {
@@ -90,5 +115,15 @@ describe('Mock contract functions', () => {
         accountState.save();
 
         handleLiquidateCall(call);
+
+        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '12.088305789336019234');
+        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
+
+        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '12.088305789336019234');
+        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
     });
 });
