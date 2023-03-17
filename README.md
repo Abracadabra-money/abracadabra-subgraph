@@ -5,9 +5,9 @@
 ## Installation
 
 ```bash
-$ npm i
-$ npm run prepare:selected network
-$ npm run codegen
+$ yarn
+$ yarn prepare:selected network
+$ yarn codegen
 ```
 
 ## Running the app
@@ -67,4 +67,20 @@ MagicApe
 MagicGlp
 └── events
     └── Transfer(indexed address,indexed address,uint256)
+```
+
+## Deployment
+
+### TheGraph Studio
+
+Set the authorization code that links your account on thegraph.com:
+
+```bash
+yarn auth <access-token>
+```
+
+Deploy the subgraph to the [TheGraph Studio](https://thegraph.com/studio/):
+
+```bash
+yarn deploy <subgraph-name>
 ```

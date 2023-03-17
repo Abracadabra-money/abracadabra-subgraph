@@ -14,7 +14,9 @@
         "codegen": "graph codegen",
         "prettier": "prettier --loglevel silent --write \"**/*.{md,jsx,tsx,ts,json,html,css,js}\"",
         "test": "graph test",
-        "coverage": "graph test -- -c"
+        "coverage": "graph test -- -c",
+        "auth": "graph auth --studio",
+        "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ ${0}"
     },
     "dependencies": {
         "@graphprotocol/graph-cli": "^0.30.1",
