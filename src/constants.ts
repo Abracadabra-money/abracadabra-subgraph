@@ -17,9 +17,25 @@ export namespace Network {
     export const XDAI = 'XDAI'; // aka Gnosis Chain
 }
 
+export namespace EventType {
+    export const BORROW = 'BORROW';
+    export const DEPOSIT = 'DEPOSIT';
+    export const WITHDRAW = 'WITHDRAW';
+    export const REPAY = 'REPAY';
+}
+
+export namespace FeeType {
+    export const BORROW = 'BORROW';
+    export const INTEREST = 'INTEREST';
+    export const LIQUADATION = 'LIQUADATION';
+}
+
 // Ethereum Addresses
 export const USD_BTC_ETH_ABRA_ADDRESS = '0x5958a8db7dfe0cc49382209069b00f54e17929c2';
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+// Cook action
+export const ACTION_BORROW = 5;
 
 // Specific
 export const BENTOBOX_ADDRESS_MAINNET = '0xF5BCE5077908a1b7370B9ae04AdC565EBd643966'.toLowerCase();
@@ -86,3 +102,10 @@ export const SECONDS_PER_YEAR = new BigDecimal(BigInt.fromI32(60 * 60 * 24 * 365
 export const MS_PER_DAY = new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000));
 export const DAYS_PER_YEAR = new BigDecimal(BigInt.fromI32(365));
 export const MS_PER_YEAR = DAYS_PER_YEAR.times(new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000)));
+
+// Cauldron
+export const LIQUIDATION_MULTIPLIER_PRECISION = BigInt.fromI32(100000);
+export const BORROW_OPENING_FEE_PRECISION = BigInt.fromI32(100000);
+export const COLLATERIZATION_RATE_PRECISION = BigInt.fromI32(100000);
+export const DISTRIBUTION_PART = BigInt.fromI32(10);
+export const DISTRIBUTION_PRECISION = BigInt.fromI32(100);

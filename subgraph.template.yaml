@@ -157,12 +157,9 @@ templates:
       file: ./src/mappings/cauldron.ts
       entities:
         - Cauldron
-        - CauldronV1
       abis:
         - name: Cauldron
           file: ./abis/Cauldron.json
-        - name: CauldronV1
-          file: ./abis/CauldronV1.json
         - name: DegenBox
           file: ./abis/DegenBox.json
         - name: ERC20
@@ -182,3 +179,12 @@ templates:
           handler: handleLogExchangeRate
         - event: LogAccrue(uint128)
           handler: handleLogAccrue
+      callHandlers:
+        - function: borrow(address,uint256)
+          handler: handleBorrowCall
+        - function: cook(uint8[],uint256[],bytes[])
+          handler: handleCookCall
+        - function: liquidate(address[],uint256[],address,address,bytes)
+          handler: handleLiquidateCall
+        - function: liquidate(address[],uint256[],address,address)
+          handler: handleLiquidateCall
