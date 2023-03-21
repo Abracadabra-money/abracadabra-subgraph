@@ -1,6 +1,6 @@
 import { MagicGlp } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO } from '../../constants';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol/get-or-create-protocol';
 import { getMagicGlpAddress } from '../../helpers/get-magic-glp-address';
 import { dataSource } from '@graphprotocol/graph-ts';
 

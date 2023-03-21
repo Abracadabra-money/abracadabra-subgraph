@@ -1,5 +1,5 @@
 import { Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
-import { getOrCreateProtocol } from '../get-or-create-protocol';
+import { getOrCreateProtocol } from '../protocol';
 import { getCauldron } from '../cauldron/get-cauldron';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
 import { Oracle } from '../../../generated/templates/Cauldron/Oracle';
