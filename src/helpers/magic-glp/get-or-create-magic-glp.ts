@@ -1,14 +1,16 @@
 import { MagicGlp } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO } from '../../constants';
-import { MAGIC_GLP } from '../../constants';
-import { getOrCreateProtocol } from '../protocol';
+import { getOrCreateProtocol } from '../protocol/get-or-create-protocol';
+import { getMagicGlpAddress } from '../../helpers/get-magic-glp-address';
+import { dataSource } from '@graphprotocol/graph-ts';
 
 export function getOrCreateMagicGlp(): MagicGlp {
-    let magicGlp = MagicGlp.load(MAGIC_GLP);
+    const magicGlpAddress = getMagicGlpAddress(dataSource.network());
+    let magicGlp = MagicGlp.load(magicGlpAddress);
     if (magicGlp) return magicGlp;
     const protocol = getOrCreateProtocol();
 
-    magicGlp = new MagicGlp(MAGIC_GLP);
+    magicGlp = new MagicGlp(magicGlpAddress);
     magicGlp.protocol = protocol.id;
     magicGlp.totalRewards = BIGDECIMAL_ZERO;
     magicGlp.save();
