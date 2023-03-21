@@ -1,8 +1,8 @@
-import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts";
-import { newMockCall, newMockEvent } from "matchstick-as";
-import { LiquidateCall, CookCall, BorrowCall, LogAccrue } from "../../generated/templates/Cauldron/Cauldron";
-import { ABRA_DEPLOYERS, ACTION_BORROW } from "../../src/constants";
-import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT, MOCK_COOK_BORROW } from "../constants";
+import { ethereum, BigInt, Address } from '@graphprotocol/graph-ts';
+import { newMockCall, newMockEvent } from 'matchstick-as';
+import { LiquidateCall, CookCall, BorrowCall, LogAccrue } from '../../generated/templates/Cauldron/Cauldron';
+import { ABRA_DEPLOYERS, ACTION_BORROW } from '../../src/constants';
+import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT, MOCK_COOK_BORROW } from '../constants';
 
 export function createLiquidateCall(): LiquidateCall {
     const call: LiquidateCall = changetype<LiquidateCall>(newMockCall());
@@ -23,10 +23,10 @@ export function createBorrowCookCall(): CookCall {
         new ethereum.EventParam('values', ethereum.Value.fromArray([ethereum.Value.fromI32(0)])),
         new ethereum.EventParam('datas', ethereum.Value.fromArray([ethereum.Value.fromBytes(MOCK_COOK_BORROW)])),
     ];
-    return call
+    return call;
 }
 
-export function createBorrowCall(): BorrowCall{
+export function createBorrowCall(): BorrowCall {
     const call: BorrowCall = changetype<BorrowCall>(newMockCall());
     call.to = CLONE_ADDRESS;
     call.inputValues = [new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)), new ethereum.EventParam('amount', ethereum.Value.fromI32(1000000))];

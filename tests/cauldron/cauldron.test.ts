@@ -114,7 +114,7 @@ describe('Mock contract functions', () => {
     });
 });
 
-describe("Mocked Events", () => {
+describe('Mocked Events', () => {
     beforeEach(() => {
         // Create cauldron mock functions
         createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
@@ -141,7 +141,7 @@ describe("Mocked Events", () => {
         clearStore();
     });
 
-    test("LogAccrue", () => {
+    test('LogAccrue', () => {
         const newLogAccrueEvent = createLogAccrueEvent();
 
         handleLogAccrue(newLogAccrueEvent);
@@ -157,6 +157,6 @@ describe("Mocked Events", () => {
         assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000001');
         assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'interestFeesGenerated', '0.000000000001');
 
-        assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldron.id, "isActive", "true");
+        assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldron.id, 'isActive', 'true');
     });
 });

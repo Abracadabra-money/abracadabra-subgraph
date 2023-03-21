@@ -659,6 +659,34 @@
             "type": "function"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "users",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256[]",
+                    "name": "maxBorrowParts",
+                    "type": "uint256[]"
+                },
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "contract ISwapper",
+                    "name": "swapper",
+                    "type": "address"
+                }
+            ],
+            "name": "liquidate",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "inputs": [],
             "name": "magicInternetMoney",
             "outputs": [
