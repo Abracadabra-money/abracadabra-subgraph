@@ -77,6 +77,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         const accountStateSnapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, call.block, call.transaction);
         accountStateSnapshot.isLiquidated = true;
         accountStateSnapshot.liquidationPrice = cauldron.collateralPriceUsd;
+        accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         accountStateSnapshot.save();
     }
     const distributionAmount = allBorrowAmount

@@ -16,8 +16,8 @@ export function getOrCreateAccountStateSnapshot(
         snapshot.account = account.id;
         snapshot.cauldron = cauldron.id;
         snapshot.state = state.id;
-        snapshot.borrowPart = state.borrowPart;
-        snapshot.collateralShare = state.collateralShare;
+        snapshot.borrowPart = BIGINT_ZERO;
+        snapshot.collateralShare = BIGINT_ZERO;
         snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         snapshot.liquidationPrice = BIGDECIMAL_ZERO;
         snapshot.withdrawidAmount = BIGINT_ZERO;

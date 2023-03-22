@@ -30,15 +30,18 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
 
     const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, block, transaction);
     snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
+    snapshot.borrowPart = accountState.borrowPart;
+    snapshot.collateralShare = accountState.collateralShare;
+    snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
 
     if (eventType == EventType.WITHDRAW) {
-        snapshot.withdrawidAmount = amount;
-        snapshot.withdrawidAmountUsd = bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd);
+        snapshot.withdrawidAmount = snapshot.withdrawidAmount.plus(amount);
+        snapshot.withdrawidAmountUsd = snapshot.withdrawidAmountUsd.plus(bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd));
     }
 
     if (eventType == EventType.REPAY) {
-        snapshot.repaid = amount;
-        snapshot.repaidUsd = bigIntToBigDecimal(amount);
+        snapshot.repaid = snapshot.repaid.plus(amount);
+        snapshot.repaidUsd = snapshot.repaidUsd.plus(bigIntToBigDecimal(amount));
     }
 
     snapshot.save();
