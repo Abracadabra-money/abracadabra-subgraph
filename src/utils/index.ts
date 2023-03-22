@@ -5,3 +5,4 @@ export * from './is-deprecated';
 export * from './exponent-to-big-int';
 export * from './number-to-big-decimals';
 export * from './exponent-big-number';
+export * from './get-liquidation-price';

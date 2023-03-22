@@ -12,20 +12,20 @@ import {
 } from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
-import { Address, BigInt, ethereum, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { updateAccountState, updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
 import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
-import { getOrCreateAccount, getOrCreateAccountState } from '../helpers/account';
+import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.to.toHexString(), EventType.DEPOSIT, event.params.share, event.block);
+    updateAccountState(cauldron, event.params.to.toHexString(), EventType.DEPOSIT, event.params.share, event.block, event.transaction);
     updateTvl(event.block);
 }
 
@@ -34,7 +34,7 @@ export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block);
+    updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block, event.transaction);
     updateTvl(event.block);
 }
 
@@ -43,7 +43,7 @@ export function handleLogBorrow(event: LogBorrow): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.from.toHexString(), EventType.BORROW, event.params.part, event.block);
+    updateAccountState(cauldron, event.params.from.toHexString(), EventType.BORROW, event.params.part, event.block, event.transaction);
 }
 
 export function handleBorrowCall(call: BorrowCall): void {
@@ -73,6 +73,11 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         const borrowPart = call.inputs.maxBorrowParts[i].gt(accountState.borrowPart) ? accountState.borrowPart : call.inputs.maxBorrowParts[i];
         const borrowAmount = borrowPart.times(totalBorrowElastic).div(totalBorrowBase);
         allBorrowAmount = allBorrowAmount.plus(borrowAmount);
+
+        const accountStateSnapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, call.block, call.transaction);
+        accountStateSnapshot.isLiquidated = true;
+        accountStateSnapshot.liquidationPrice = cauldron.collateralPriceUsd;
+        accountStateSnapshot.save();
     }
     const distributionAmount = allBorrowAmount
         .times(cauldron.liquidationMultiplier)
@@ -104,7 +109,7 @@ export function handleLogRepay(event: LogRepay): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.to.toHexString(), EventType.REPAY, event.params.part, event.block);
+    updateAccountState(cauldron, event.params.to.toHexString(), EventType.REPAY, event.params.part, event.block, event.transaction);
     updateTvl(event.block);
 }
 

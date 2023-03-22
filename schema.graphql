@@ -189,13 +189,13 @@ type Collateral @entity {
   decimals: Int!
 
   " Optional field to track the price of a token, mostly for caching purposes "
-  lastPriceUsd: BigDecimal
+  lastPriceUsd: BigDecimal!
 
   " Optional field to track the block number of the last token price "
-  lastPriceBlockNumber: BigInt
+  lastPriceBlockNumber: BigInt!
 
   " Optional field to track the timestamp of the last token price "
-  lastPriceTimestamp: BigInt
+  lastPriceTimestamp: BigInt!
 }
 
 type MagicApe @entity {
@@ -303,4 +303,47 @@ type AccountState @entity {
   borrowPart: BigInt!
 
   collateralShare: BigInt!
+
+  " Position daily snapshots for open positions "
+  snapshots: [AccountStateSnapshot!]! @derivedFrom(field: "state")
+}
+
+type AccountStateSnapshot @entity {
+  " { Account address }-{ Cauldron address }-{ Transaction hash }"
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  state: AccountState!
+
+  borrowPart: BigInt!
+
+  collateralShare: BigInt!
+
+  collateralPriceUsd: BigDecimal!
+
+  liquidationPrice: BigDecimal!
+
+  withdrawidAmount: BigInt!
+
+  withdrawidAmountUsd: BigDecimal!
+
+  repaid: BigInt!
+
+  repaidUsd: BigDecimal!
+
+  isLiquidated: Boolean!
+
+  " Transaction hash of the transaction that emitted this event "
+  hash: String!
+
+  " Block number of this event "
+  blockNumber: BigInt!
+
+  " Timestamp of this event "
+  timestamp: BigInt!
 }
