@@ -9,6 +9,8 @@ export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block:
         account = new Account(accountId);
         account.save();
 
+        account.liquidationCount = 0;
+
         const cauldronDailySnapshot = getOrCreateUsageCauldronMetricsDailySnapshot(cauldron, block);
         cauldronDailySnapshot.cumulativeUniqueUsers += 1;
         cauldronDailySnapshot.save();

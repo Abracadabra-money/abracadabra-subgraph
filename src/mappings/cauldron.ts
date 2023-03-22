@@ -13,10 +13,10 @@ import {
 import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
-import { updateAccountState, updateTokenPrice } from '../helpers/updates';
+import { updateAccountState, updateLiquidationCount, updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
-import { bigIntToBigDecimal } from '../utils';
+import { arrayUnique, bigIntToBigDecimal } from '../utils';
 import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
 
@@ -80,6 +80,13 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         accountStateSnapshot.save();
     }
+    const accounts = arrayUnique(call.inputs.users);
+
+    for (let i = 0; i < accounts.length; i++) {
+        const account = getOrCreateAccount(cauldron, accounts[i].toHexString(), call.block);
+        updateLiquidationCount(cauldron, account, call.block);
+    }
+
     const distributionAmount = allBorrowAmount
         .times(cauldron.liquidationMultiplier)
         .div(LIQUIDATION_MULTIPLIER_PRECISION)

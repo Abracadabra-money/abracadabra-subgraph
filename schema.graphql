@@ -27,6 +27,9 @@ type Protocol @entity {
 
   " Daily financial metrics for this protocol "
   financialMetrics: [FinanceialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type UsageProtocolMetricsDailySnapshot @entity {
@@ -44,6 +47,9 @@ type UsageProtocolMetricsDailySnapshot @entity {
 
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type FinanceialProtocolMetricsDailySnapshot @entity {
@@ -130,6 +136,9 @@ type Cauldron @entity {
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
@@ -147,6 +156,9 @@ type UsageCauldronMetricsDailySnapshot @entity {
 
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type FinanceialCauldronMetricsDailySnapshot @entity {
@@ -288,6 +300,9 @@ type Account @entity {
 
   " All positions that belong to this account "
   states: [AccountState!]! @derivedFrom(field: "account")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type AccountState @entity {

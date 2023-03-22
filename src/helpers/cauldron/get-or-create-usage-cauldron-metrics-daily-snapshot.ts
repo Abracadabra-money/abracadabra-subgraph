@@ -14,6 +14,7 @@ export function getOrCreateUsageCauldronMetricsDailySnapshot(cauldron: Cauldron,
     dailySnapshot.blockNumber = block.number;
     dailySnapshot.timestamp = block.timestamp;
     dailySnapshot.cumulativeUniqueUsers = 0;
+    dailySnapshot.liquidationCount = 0;
 
     return dailySnapshot;
 }
