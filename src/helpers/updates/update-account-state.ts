@@ -29,7 +29,7 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
     accountState.save();
 
     const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, block, transaction);
-    snapshot.liquidationPrice = getLiquidationPrice(cauldron, accountState);
+    snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
 
     if (eventType == EventType.WITHDRAW) {
         snapshot.withdrawidAmount = amount;
