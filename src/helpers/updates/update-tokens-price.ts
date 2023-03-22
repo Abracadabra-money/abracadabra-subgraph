@@ -20,7 +20,7 @@ export function updateTokensPrice(block: ethereum.Block): void {
         }
 
         const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
-        if (collateral.lastPriceBlockNumber && collateral.lastPriceBlockNumber!.ge(block.number)) {
+        if (collateral.lastPriceBlockNumber && collateral.lastPriceBlockNumber.ge(block.number)) {
             continue;
         }
 
