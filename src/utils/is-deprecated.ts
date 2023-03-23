@@ -8,6 +8,6 @@ export function isDeprecated(cauldron: Cauldron, block: ethereum.Block): boolean
     const lastActive = cauldron.lastActive.toI64() / SECONDS_PER_DAY;
     const currentTimestamp = block.timestamp.toI64() / SECONDS_PER_DAY;
 
-    if (currentTimestamp > lastActive + 90) return true;
+    if (currentTimestamp > lastActive + 14) return true;
     return false;
 }
