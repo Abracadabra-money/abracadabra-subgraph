@@ -10,7 +10,7 @@ import {
     LiquidateCall,
     Cauldron as CauldronTemplate,
 } from '../../generated/templates/Cauldron/Cauldron';
-import { getCauldron } from '../helpers/cauldron';
+import { getCauldron, getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { updateAccountState, updateLiquidationCount, updateTokenPrice } from '../helpers/updates';
@@ -19,6 +19,7 @@ import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
 import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
+import { getOrCreateFinanceialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -60,6 +61,10 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
     updateLastActive(cauldron, call.block);
+    const protocol = getOrCreateProtocol();
+    const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block);
+    const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block);
+
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
     const totalBorrowCall = contract.try_totalBorrow();
     if (totalBorrowCall.reverted) return;
@@ -79,6 +84,22 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         accountStateSnapshot.liquidationPrice = cauldron.collateralPriceUsd;
         accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         accountStateSnapshot.save();
+
+        protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        protocol.repaidAmount = protocol.repaidAmount.plus(accountStateSnapshot.repaidUsd);
+        protocol.save();
+
+        cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        cauldron.repaidAmount = cauldron.repaidAmount.plus(accountStateSnapshot.repaidUsd);
+        cauldron.save();
+
+        protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        protocolDailySnapshot.repaidAmount = protocolDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
+        protocolDailySnapshot.save();
+
+        cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
+        cauldronDailySnapshot.save();
     }
     const accounts = arrayUnique(call.inputs.users);
 

@@ -18,6 +18,8 @@ export function getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron: Caul
     dailySnapshot.borrowFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.interestFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
+    dailySnapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
+    dailySnapshot.repaidAmount = BIGDECIMAL_ZERO;
 
     return dailySnapshot;
 }

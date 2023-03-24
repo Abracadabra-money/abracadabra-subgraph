@@ -15,6 +15,8 @@ export function getOrCreateProtocol(): Protocol {
     protocol.totalCauldronCount = 0;
     protocol.cumulativeUniqueUsers = 0;
     protocol.liquidationCount = 0;
+    protocol.liquidationAmountUsd = BIGDECIMAL_ZERO;
+    protocol.repaidAmount = BIGDECIMAL_ZERO;
     protocol.save();
     return protocol;
 }

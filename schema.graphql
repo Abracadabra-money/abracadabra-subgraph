@@ -30,6 +30,10 @@ type Protocol @entity {
 
   " Number of times this account has been liquidated "
   liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type UsageProtocolMetricsDailySnapshot @entity {
@@ -76,6 +80,10 @@ type FinanceialProtocolMetricsDailySnapshot @entity {
   interestFeesGenerated: BigDecimal!
 
   liquidationFeesGenerated: BigDecimal!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type Cauldron @entity {
@@ -139,6 +147,10 @@ type Cauldron @entity {
 
   " Number of times this account has been liquidated "
   liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
@@ -185,6 +197,10 @@ type FinanceialCauldronMetricsDailySnapshot @entity {
   interestFeesGenerated: BigDecimal!
 
   liquidationFeesGenerated: BigDecimal!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type Collateral @entity {
