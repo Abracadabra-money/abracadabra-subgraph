@@ -345,6 +345,8 @@ type AccountState @entity {
 
   collateralShare: BigInt!
 
+  lastAction: AccountStateSnapshot
+
   " Position daily snapshots for open positions "
   snapshots: [AccountStateSnapshot!]! @derivedFrom(field: "state")
 }

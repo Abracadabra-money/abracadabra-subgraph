@@ -26,8 +26,6 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
         accountState.borrowPart = accountState.borrowPart.minus(amount);
     }
 
-    accountState.save();
-
     const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, block, transaction);
     snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
     snapshot.borrowPart = accountState.borrowPart;
@@ -45,4 +43,7 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
     }
 
     snapshot.save();
+
+    accountState.lastAction = snapshot.id;
+    accountState.save();
 }
