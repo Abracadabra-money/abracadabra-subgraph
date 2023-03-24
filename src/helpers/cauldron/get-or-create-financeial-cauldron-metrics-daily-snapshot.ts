@@ -13,14 +13,14 @@ export function getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron: Caul
     dailySnapshot.cauldron = cauldron.id;
     dailySnapshot.blockNumber = block.number;
     dailySnapshot.timestamp = block.timestamp;
-    dailySnapshot.totalValueLockedUsd = BIGDECIMAL_ZERO;
+    dailySnapshot.totalValueLockedUsd = cauldron.totalValueLockedUsd;
     dailySnapshot.feesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.borrowFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.interestFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     dailySnapshot.repaidAmount = BIGDECIMAL_ZERO;
-    dailySnapshot.totalMimBorrowed = BIGDECIMAL_ZERO;
+    dailySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
 
     return dailySnapshot;
 }
