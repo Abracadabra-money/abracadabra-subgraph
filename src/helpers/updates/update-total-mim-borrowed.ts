@@ -7,11 +7,11 @@ import { getCauldron } from '../cauldron';
 import { bigIntToBigDecimal, isDeprecated } from '../../utils';
 import { Cauldron } from '../../../generated/templates/Cauldron/Cauldron';
 
-export function updateTvl(block: ethereum.Block): void {
+export function updateTotalMimBorrowed(block: ethereum.Block): void {
     const protocol = getOrCreateProtocol();
 
     const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(block);
-    let totalValueLockedUsd = BIGDECIMAL_ZERO;
+    let totalMimBorrowed = BIGDECIMAL_ZERO;
 
     for (let i = 0; i < protocol.cauldronIds.length; i++) {
         const cauldronId = protocol.cauldronIds[i];
@@ -27,29 +27,29 @@ export function updateTvl(block: ethereum.Block): void {
 
         const contract = Cauldron.bind(Address.fromString(cauldron.id));
 
-        const totalCollateralShareCall = contract.try_totalCollateralShare();
+        const totalBorrowCall = contract.try_totalBorrow();
 
-        if (totalCollateralShareCall.reverted) {
-            log.warning('[updateTvl] totalCollateralShareCall faild {}', [cauldron.id]);
+        if (totalBorrowCall.reverted) {
+            log.warning('[updateTotalMimBorrowed] totalBorrowCall faild {}', [cauldron.id]);
             continue;
         }
 
-        const marketTVL = bigIntToBigDecimal(totalCollateralShareCall.value).times(cauldron.collateralPriceUsd);
-        totalValueLockedUsd = totalValueLockedUsd.plus(marketTVL);
+        const mimBorrowed = bigIntToBigDecimal(totalBorrowCall.value.getElastic());
+        totalMimBorrowed = totalMimBorrowed.plus(mimBorrowed);
 
         const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, block);
-        cauldronDailySnapshot.totalValueLockedUsd = marketTVL;
+        cauldronDailySnapshot.totalMimBorrowed = mimBorrowed;
         cauldronDailySnapshot.save();
 
-        cauldron.totalValueLockedUsd = marketTVL;
+        cauldron.totalMimBorrowed = mimBorrowed;
         cauldron.save();
     }
 
-    protocolDailySnapshot.totalValueLockedUsd = totalValueLockedUsd;
+    protocolDailySnapshot.totalMimBorrowed = totalMimBorrowed;
     protocolDailySnapshot.blockNumber = block.number;
     protocolDailySnapshot.timestamp = block.timestamp;
     protocolDailySnapshot.save();
 
-    protocol.totalValueLockedUsd = totalValueLockedUsd;
+    protocol.totalMimBorrowed = totalMimBorrowed;
     protocol.save();
 }

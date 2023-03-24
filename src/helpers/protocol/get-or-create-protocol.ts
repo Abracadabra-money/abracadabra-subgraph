@@ -17,6 +17,7 @@ export function getOrCreateProtocol(): Protocol {
     protocol.liquidationCount = 0;
     protocol.liquidationAmountUsd = BIGDECIMAL_ZERO;
     protocol.repaidAmount = BIGDECIMAL_ZERO;
+    protocol.totalMimBorrowed = BIGDECIMAL_ZERO;
     protocol.save();
     return protocol;
 }

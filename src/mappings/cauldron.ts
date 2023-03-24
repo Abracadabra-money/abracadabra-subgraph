@@ -13,7 +13,7 @@ import {
 import { getCauldron, getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
-import { updateAccountState, updateLiquidationCount, updateTokenPrice } from '../helpers/updates';
+import { updateAccountState, updateLiquidationCount, updateTokenPrice, updateTotalMimBorrowed } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
@@ -45,6 +45,7 @@ export function handleLogBorrow(event: LogBorrow): void {
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
     updateAccountState(cauldron, event.params.from.toHexString(), EventType.BORROW, event.params.part, event.block, event.transaction);
+    updateTotalMimBorrowed(event.block);
 }
 
 export function handleBorrowCall(call: BorrowCall): void {
@@ -140,6 +141,7 @@ export function handleLogRepay(event: LogRepay): void {
     updateTokensPrice(event.block);
     updateAccountState(cauldron, event.params.to.toHexString(), EventType.REPAY, event.params.part, event.block, event.transaction);
     updateTvl(event.block);
+    updateTotalMimBorrowed(event.block);
 }
 
 export function handleLogExchangeRate(event: LogExchangeRate): void {

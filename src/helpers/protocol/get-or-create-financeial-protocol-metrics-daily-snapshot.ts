@@ -23,6 +23,7 @@ export function getOrCreateFinanceialProtocolMetricsDailySnapshot(block: ethereu
     dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     dailySnapshot.repaidAmount = BIGDECIMAL_ZERO;
+    dailySnapshot.totalMimBorrowed = BIGDECIMAL_ZERO;
 
     return dailySnapshot;
 }

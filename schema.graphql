@@ -4,6 +4,8 @@ type Protocol @entity {
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
 
+  totalMimBorrowed: BigDecimal!
+
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
 
@@ -71,6 +73,8 @@ type FinanceialProtocolMetricsDailySnapshot @entity {
 
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
 
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!
@@ -151,6 +155,10 @@ type Cauldron @entity {
   liquidationAmountUsd: BigDecimal!
 
   repaidAmount: BigDecimal!
+
+  totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
@@ -188,6 +196,8 @@ type FinanceialCauldronMetricsDailySnapshot @entity {
 
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
 
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!

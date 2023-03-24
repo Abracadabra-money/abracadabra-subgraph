@@ -38,6 +38,8 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.liquidationCount = 0;
     CauldronEntity.liquidationAmountUsd = BIGDECIMAL_ZERO;
     CauldronEntity.repaidAmount = BIGDECIMAL_ZERO;
+    CauldronEntity.totalMimBorrowed = BIGDECIMAL_ZERO;
+    CauldronEntity.totalValueLockedUsd = BIGDECIMAL_ZERO;
 
     CauldronEntity.save();
 
