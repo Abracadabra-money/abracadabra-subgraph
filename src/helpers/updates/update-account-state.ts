@@ -33,8 +33,8 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
     snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
 
     if (eventType == EventType.WITHDRAW) {
-        snapshot.withdrawidAmount = snapshot.withdrawidAmount.plus(amount);
-        snapshot.withdrawidAmountUsd = snapshot.withdrawidAmountUsd.plus(bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd));
+        snapshot.withdrawAmount = snapshot.withdrawAmount.plus(amount);
+        snapshot.withdrawAmountUsd = snapshot.withdrawAmountUsd.plus(bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd));
     }
 
     if (eventType == EventType.REPAY) {

@@ -86,19 +86,19 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         accountStateSnapshot.save();
 
-        protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
         protocol.repaidAmount = protocol.repaidAmount.plus(accountStateSnapshot.repaidUsd);
         protocol.save();
 
-        cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
         cauldron.repaidAmount = cauldron.repaidAmount.plus(accountStateSnapshot.repaidUsd);
         cauldron.save();
 
-        protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
         protocolDailySnapshot.repaidAmount = protocolDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
         protocolDailySnapshot.save();
 
-        cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawidAmountUsd);
+        cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
         cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
         cauldronDailySnapshot.save();
     }

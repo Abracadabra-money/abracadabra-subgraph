@@ -20,8 +20,8 @@ export function getOrCreateAccountStateSnapshot(
         snapshot.collateralShare = BIGINT_ZERO;
         snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
         snapshot.liquidationPrice = BIGDECIMAL_ZERO;
-        snapshot.withdrawidAmount = BIGINT_ZERO;
-        snapshot.withdrawidAmountUsd = BIGDECIMAL_ZERO;
+        snapshot.withdrawAmount = BIGINT_ZERO;
+        snapshot.withdrawAmountUsd = BIGDECIMAL_ZERO;
         snapshot.repaid = BIGINT_ZERO;
         snapshot.repaidUsd = BIGDECIMAL_ZERO;
         snapshot.isLiquidated = false;

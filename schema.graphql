@@ -371,9 +371,9 @@ type AccountStateSnapshot @entity {
 
   liquidationPrice: BigDecimal!
 
-  withdrawidAmount: BigInt!
+  withdrawAmount: BigInt!
 
-  withdrawidAmountUsd: BigDecimal!
+  withdrawAmountUsd: BigDecimal!
 
   repaid: BigInt!
 
