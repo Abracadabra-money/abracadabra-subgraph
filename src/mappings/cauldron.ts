@@ -10,7 +10,7 @@ import {
     LiquidateCall,
     Cauldron as CauldronTemplate,
 } from '../../generated/templates/Cauldron/Cauldron';
-import { getCauldron, getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
+import { getCauldron, getOrCreateFinancialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { updateAccountState, updateLiquidationCount, updateTokenPrice, updateTotalMimBorrowed } from '../helpers/updates';
@@ -19,7 +19,7 @@ import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
 import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
-import { getOrCreateFinanceialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
+import { getOrCreateFinancialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -63,8 +63,8 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     if (cauldron.liquidationMultiplier.isZero()) return;
     updateLastActive(cauldron, call.block);
     const protocol = getOrCreateProtocol();
-    const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block);
-    const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block);
+    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block);
+    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block);
 
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
     const totalBorrowCall = contract.try_totalBorrow();

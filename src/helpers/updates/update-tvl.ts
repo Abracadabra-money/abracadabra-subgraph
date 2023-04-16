@@ -1,7 +1,7 @@
 import { Address, ethereum, log } from '@graphprotocol/graph-ts';
 import { getOrCreateProtocol } from '../protocol';
-import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financeial-protocol-metrics-daily-snapshot';
-import { getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financeial-cauldron-metrics-daily-snapshot';
+import { getOrCreateFinancialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financial-protocol-metrics-daily-snapshot';
+import { getOrCreateFinancialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financial-cauldron-metrics-daily-snapshot';
 import { BIGDECIMAL_ZERO } from '../../constants';
 import { getCauldron } from '../cauldron';
 import { bigIntToBigDecimal, isDeprecated } from '../../utils';
@@ -10,7 +10,7 @@ import { Cauldron } from '../../../generated/templates/Cauldron/Cauldron';
 export function updateTvl(block: ethereum.Block): void {
     const protocol = getOrCreateProtocol();
 
-    const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(block);
+    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(block);
     let totalValueLockedUsd = BIGDECIMAL_ZERO;
 
     for (let i = 0; i < protocol.cauldronIds.length; i++) {
@@ -37,7 +37,7 @@ export function updateTvl(block: ethereum.Block): void {
         const marketTVL = bigIntToBigDecimal(totalCollateralShareCall.value).times(cauldron.collateralPriceUsd);
         totalValueLockedUsd = totalValueLockedUsd.plus(marketTVL);
 
-        const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, block);
+        const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, block);
         cauldronDailySnapshot.totalValueLockedUsd = marketTVL;
         cauldronDailySnapshot.save();
 

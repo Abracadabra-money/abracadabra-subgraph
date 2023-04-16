@@ -28,7 +28,7 @@ type Protocol @entity {
   usageMetrics: [UsageProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
 
   " Daily financial metrics for this protocol "
-  financialMetrics: [FinanceialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
 
   " Number of times this account has been liquidated "
   liquidationCount: Int!
@@ -58,7 +58,7 @@ type UsageProtocolMetricsDailySnapshot @entity {
   liquidationCount: Int!
 }
 
-type FinanceialProtocolMetricsDailySnapshot @entity {
+type FinancialProtocolMetricsDailySnapshot @entity {
   " ID is # of days since Unix epoch time "
   id: ID!
 
@@ -144,7 +144,7 @@ type Cauldron @entity {
   usageMetrics: [UsageCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
 
   " Daily financial metrics for this protocol "
-  financialMetrics: [FinanceialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+  financialMetrics: [FinancialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
@@ -181,7 +181,7 @@ type UsageCauldronMetricsDailySnapshot @entity {
   liquidationCount: Int!
 }
 
-type FinanceialCauldronMetricsDailySnapshot @entity {
+type FinancialCauldronMetricsDailySnapshot @entity {
   " ID is # of days since Unix epoch time "
   id: ID!
 

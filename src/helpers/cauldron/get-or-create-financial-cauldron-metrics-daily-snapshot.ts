@@ -1,29 +1,26 @@
 import { ethereum } from '@graphprotocol/graph-ts';
 import { BIGDECIMAL_ZERO, SECONDS_PER_DAY } from '../../constants';
-import { FinanceialProtocolMetricsDailySnapshot } from '../../../generated/schema';
-import { getOrCreateProtocol } from './get-or-create-protocol';
+import { Cauldron, FinancialCauldronMetricsDailySnapshot } from '../../../generated/schema';
 
-export function getOrCreateFinanceialProtocolMetricsDailySnapshot(block: ethereum.Block): FinanceialProtocolMetricsDailySnapshot {
+export function getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron: Cauldron, block: ethereum.Block): FinancialCauldronMetricsDailySnapshot {
     const id: i64 = block.timestamp.toI64() / SECONDS_PER_DAY;
 
-    let dailySnapshot = FinanceialProtocolMetricsDailySnapshot.load(id.toString());
+    let dailySnapshot = FinancialCauldronMetricsDailySnapshot.load(id.toString());
 
     if (dailySnapshot) return dailySnapshot;
 
-    const protocol = getOrCreateProtocol();
-
-    dailySnapshot = new FinanceialProtocolMetricsDailySnapshot(id.toString());
-    dailySnapshot.protocol = protocol.id;
+    dailySnapshot = new FinancialCauldronMetricsDailySnapshot(id.toString());
+    dailySnapshot.cauldron = cauldron.id;
     dailySnapshot.blockNumber = block.number;
     dailySnapshot.timestamp = block.timestamp;
-    dailySnapshot.totalValueLockedUsd = protocol.totalValueLockedUsd;
+    dailySnapshot.totalValueLockedUsd = cauldron.totalValueLockedUsd;
     dailySnapshot.feesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.borrowFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.interestFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     dailySnapshot.repaidAmount = BIGDECIMAL_ZERO;
-    dailySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;
+    dailySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
 
     return dailySnapshot;
 }
