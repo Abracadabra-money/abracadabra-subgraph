@@ -144,6 +144,35 @@ dataSources:
           handler: handleLogTransfer
       file: ./src/mappings/magic-glp.ts
   {{/magicGlp.enable}}
+  # 5. LevelFinance (if applicable)
+  {{#levelFinance.enable}}
+  - kind: ethereum
+    name: LevelFinance
+    network: {{network}}
+    source:
+      address: "{{ levelFinance.address }}"
+      abi: MagicLevelHarvestor
+      startBlock: {{ levelFinance.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LevelFinance
+      abis:
+        - name: LevelFinanceLPToken
+          file: ./abis/LevelFinanceLPToken.json
+        - name: MagicLevelHarvestor
+          file: ./abis/MagicLevelHarvestor.json
+        - name: LevelFinanceLiquidityPool
+          file: ./abis/LevelFinanceLiquidityPool.json
+        - name: MagicLevel
+          file: ./abis/MagicLevel.json
+      eventHandlers:
+        - event: LogHarvest(indexed address,uint256,uint256,uint256)
+          handler: handleLogHarvest
+      file: ./src/mappings/magic-glp.ts
+  {{/levelFinance.enable}}
 templates:
   - name: Cauldron
     kind: ethereum/contract

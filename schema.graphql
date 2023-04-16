@@ -19,6 +19,8 @@ type Protocol @entity {
 
   magicGlp: MagicGlp @derivedFrom(field: "protocol")
 
+  levelFinance: LevelFinance @derivedFrom(field: "protocol")
+
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
 
@@ -303,4 +305,74 @@ type AccountState @entity {
   borrowPart: BigInt!
 
   collateralShare: BigInt!
+}
+
+type LevelFinance @entity {
+  id: ID!
+
+  " The protocol this cauldron belongs to "
+  protocol: Protocol!
+
+  senior: LevelFinanceSenior @derivedFrom(field: "levelFinance")
+
+  mezzanine: LevelFinanceMezzanine @derivedFrom(field: "levelFinance")
+
+  junior: LevelFinanceJunior @derivedFrom(field: "levelFinance")
+
+  dailySnapshot: [LevelFinanceDailySnapshot!]! @derivedFrom(field: "levelFinance")
+}
+
+type LevelFinanceSenior  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+  
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceMezzanine  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceJunior  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceDailySnapshot @entity {
+   " ID is # of days since Unix epoch time "
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  juniorRewards: BigInt!
+
+  juniorApy: BigDecimal!
+
+  seniorRewards: BigInt!
+
+  seniorApy: BigDecimal!
+
+  mezzanineRewards: BigInt!
+
+  mezzanineApy: BigDecimal!
+
+  " Block number of this snapshot "
+  blockNumber: BigInt!
+
+  " Timestamp of this snapshot "
+  timestamp: BigInt!
 }

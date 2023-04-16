@@ -15,5 +15,10 @@
     },
     "magicGlp": {
         "enable": false
+    },
+    "levelFinance": {
+        "enable": true,
+        "address": "0xa32D03497FF5C32bcfeebE6A677Dbe4A496fD918",
+        "startBlock": 27341967
     }
 }
