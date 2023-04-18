@@ -35,7 +35,7 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.oracle = decoded[1].toAddress();
     CauldronEntity.cumulativeUniqueUsers = 0;
     CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
-
+    CauldronEntity.txCount = BIGINT_ZERO;
     CauldronEntity.save();
 
     Cauldron.create(cauldronAddress);

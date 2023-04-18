@@ -1,6 +1,6 @@
 import { dataSource } from '@graphprotocol/graph-ts';
 import { Protocol } from '../../../generated/schema';
-import { BIGDECIMAL_ZERO } from '../../constants';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO } from '../../constants';
 import { getBentoBoxAddress } from '../get-bento-box-address';
 
 export function getOrCreateProtocol(): Protocol {
@@ -14,6 +14,7 @@ export function getOrCreateProtocol(): Protocol {
     protocol.cauldronIds = [];
     protocol.totalCauldronCount = 0;
     protocol.cumulativeUniqueUsers = 0;
+    protocol.txCount = BIGINT_ZERO;
     protocol.save();
     return protocol;
 }

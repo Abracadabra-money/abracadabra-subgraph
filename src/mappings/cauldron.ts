@@ -17,8 +17,18 @@ import { updateAccountState, updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { bigIntToBigDecimal } from '../utils';
-import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
+import {
+    BORROW_OPENING_FEE_PRECISION,
+    ACTION_BORROW,
+    LIQUIDATION_MULTIPLIER_PRECISION,
+    DISTRIBUTION_PART,
+    DISTRIBUTION_PRECISION,
+    EventType,
+    FeeType,
+    BIGINT_ONE,
+} from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState } from '../helpers/account';
+import { getOrCreateProtocol } from '../helpers/protocol';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -50,6 +60,13 @@ export function handleBorrowCall(call: BorrowCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.borrowOpeningFee.isZero()) return;
+    const protocol = getOrCreateProtocol();
+    protocol.txCount = protocol.txCount.plus(BIGINT_ONE);
+    protocol.save();
+
+    cauldron.txCount = cauldron.txCount.plus(BIGINT_ONE);
+    cauldron.save();
+
     updateLastActive(cauldron, call.block);
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
     updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
@@ -59,6 +76,13 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
+    const protocol = getOrCreateProtocol();
+    protocol.txCount = protocol.txCount.plus(BIGINT_ONE);
+    protocol.save();
+
+    cauldron.txCount = cauldron.txCount.plus(BIGINT_ONE);
+    cauldron.save();
+
     updateLastActive(cauldron, call.block);
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
     const totalBorrowCall = contract.try_totalBorrow();
