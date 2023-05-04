@@ -171,7 +171,7 @@ dataSources:
       eventHandlers:
         - event: LogHarvest(indexed address,uint256,uint256,uint256)
           handler: handleLogHarvest
-      file: ./src/mappings/magic-glp.ts
+      file: ./src/mappings/level-finance.ts
   {{/levelFinance.enable}}
 templates:
   - name: Cauldron
