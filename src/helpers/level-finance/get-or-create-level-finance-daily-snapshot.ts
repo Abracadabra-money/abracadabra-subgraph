@@ -20,6 +20,7 @@ export function getOrCreateLevelFinanceDailySnapshot(block: ethereum.Block): Lev
     levelFinanceDailySnapshot.seniorApy = BIGDECIMAL_ZERO;
     levelFinanceDailySnapshot.blockNumber = block.number;
     levelFinanceDailySnapshot.timestamp = block.timestamp;
+    levelFinanceDailySnapshot.save();
 
     return levelFinanceDailySnapshot;
 }

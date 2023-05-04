@@ -10,6 +10,7 @@ export function getOrCreateLevelFinance(): LevelFinance {
 
     levelFinance = new LevelFinance(MAGIC_LEVEL_HARVESTOR_BSC);
     levelFinance.protocol = protocol.id;
+    levelFinance.save();
 
     return levelFinance;
 }

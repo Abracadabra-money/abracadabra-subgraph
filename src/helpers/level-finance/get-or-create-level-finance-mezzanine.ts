@@ -12,6 +12,7 @@ export function getOrCreateLevelFinanceMezzanine(): LevelFinanceMezzanine {
     levelFinanceMezzanine.levelFinance = levelFinance.id;
     levelFinanceMezzanine.lpPriceUsd = BIGDECIMAL_ZERO;
     levelFinanceMezzanine.totalRewards = BIGINT_ZERO;
+    levelFinanceMezzanine.save();
 
     return levelFinanceMezzanine;
 }

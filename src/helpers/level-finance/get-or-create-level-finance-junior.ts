@@ -12,6 +12,7 @@ export function getOrCreateLevelFinanceJunior(): LevelFinanceJunior {
     levelFinanceJunior.levelFinance = levelFinance.id;
     levelFinanceJunior.lpPriceUsd = BIGDECIMAL_ZERO;
     levelFinanceJunior.totalRewards = BIGINT_ZERO;
+    levelFinanceJunior.save();
 
     return levelFinanceJunior;
 }
