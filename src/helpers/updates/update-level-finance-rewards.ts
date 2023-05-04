@@ -16,7 +16,7 @@ import {
 } from '../../constants';
 import { getLevelFinanceApy } from '../level-finance/get-level-finance-apy';
 
-export function updateLevelFinanceRewards(vault: Address, assetAmount: BigInt, block: ethereum.Block) {
+export function updateLevelFinanceRewards(vault: Address, assetAmount: BigInt, block: ethereum.Block): void {
     const dailySnapshot = getOrCreateLevelFinanceDailySnapshot(block);
 
     const junior = getOrCreateLevelFinanceJunior();
