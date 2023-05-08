@@ -46,9 +46,9 @@ export function updateLevelFinanceRewards(vault: Address, assetAmount: BigInt, b
     mezzanine.save();
     senior.save();
 
-    dailySnapshot.juniorApy = getLevelFinanceApy(Address.fromString(LEVEL_FINANCE_JUNIOR_LLP_BSC), dailySnapshot.juniorRewards, junior.lpPriceUsd);
-    dailySnapshot.mezzanineApy = getLevelFinanceApy(Address.fromString(LEVEL_FINANCE_MEZZANINE_LLP_BSC), dailySnapshot.mezzanineRewards, mezzanine.lpPriceUsd);
-    dailySnapshot.seniorApy = getLevelFinanceApy(Address.fromString(LEVEL_FINANCE_SENIOR_LLP_BSC), dailySnapshot.seniorRewards, senior.lpPriceUsd);
+    dailySnapshot.juniorApy = getLevelFinanceApy(Address.fromString(MAGIC_LLP_JUNIOR_BSC), dailySnapshot.juniorRewards, junior.lpPriceUsd);
+    dailySnapshot.mezzanineApy = getLevelFinanceApy(Address.fromString(MAGIC_LLP_MEZZANINE_BSC), dailySnapshot.mezzanineRewards, mezzanine.lpPriceUsd);
+    dailySnapshot.seniorApy = getLevelFinanceApy(Address.fromString(MAGIC_LLP_SENIOR_BSC), dailySnapshot.seniorRewards, senior.lpPriceUsd);
 
     dailySnapshot.save();
 }
