@@ -14,7 +14,6 @@ export function getOrCreateProtocol(): Protocol {
     protocol.cauldronIds = [];
     protocol.totalCauldronCount = 0;
     protocol.cumulativeUniqueUsers = 0;
-    protocol.txCount = BIGINT_ZERO;
     protocol.save();
     return protocol;
 }

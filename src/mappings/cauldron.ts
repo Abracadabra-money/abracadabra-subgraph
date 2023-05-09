@@ -60,12 +60,6 @@ export function handleBorrowCall(call: BorrowCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.borrowOpeningFee.isZero()) return;
-    const protocol = getOrCreateProtocol();
-    protocol.txCount = protocol.txCount.plus(BIGINT_ONE);
-    protocol.save();
-
-    cauldron.txCount = cauldron.txCount.plus(BIGINT_ONE);
-    cauldron.save();
 
     updateLastActive(cauldron, call.block);
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
@@ -76,12 +70,6 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
-    const protocol = getOrCreateProtocol();
-    protocol.txCount = protocol.txCount.plus(BIGINT_ONE);
-    protocol.save();
-
-    cauldron.txCount = cauldron.txCount.plus(BIGINT_ONE);
-    cauldron.save();
 
     updateLastActive(cauldron, call.block);
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));

@@ -27,9 +27,6 @@ type Protocol @entity {
 
   " Daily financial metrics for this protocol "
   financialMetrics: [FinanceialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
-
-  # amoutn of transactions all time
-  txCount: BigInt!
 }
 
 type UsageProtocolMetricsDailySnapshot @entity {
@@ -133,9 +130,6 @@ type Cauldron @entity {
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
-
-  # amoutn of transactions all time
-  txCount: BigInt!
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
