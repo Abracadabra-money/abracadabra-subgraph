@@ -15,5 +15,8 @@
     },
     "magicGlp": {
         "enable": false
+    },
+    "levelFinance": {
+        "enable": false
     }
 }

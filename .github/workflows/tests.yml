@@ -30,11 +30,14 @@ jobs:
         run: yarn install --frozen-lockfile
 
       # This is required separately from yarn test because it generates the typechain definitions
-      - name: Compile yaml
-        run: yarn prepare:ethereum
+      - name: Compile ethereum and Codegen
+        run: yarn prepare:ethereum && yarn codegen
 
-      - name: Codegen
-        run: yarn codegen
+      - name: Compile arbitrum and Codegen
+        run: yarn prepare:arbitrum && yarn codegen
+      
+      - name: Compile bsc and Codegen
+        run: yarn prepare:bsc && yarn codegen
       
       - name: Run unit tests
         run: yarn test
