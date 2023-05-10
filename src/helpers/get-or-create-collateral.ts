@@ -18,6 +18,7 @@ export function getOrCreateCollateral(address: Address): Collateral {
 
         collateral.lastPriceUsd = address == Address.fromString(getMIMAddress(dataSource.network())) ? BIGDECIMAL_ONE : BIGDECIMAL_ZERO;
         collateral.lastPriceBlockNumber = BIGINT_ZERO;
+        collateral.lastPriceTimestamp = BIGINT_ZERO;
         collateral.save();
     }
     return collateral;

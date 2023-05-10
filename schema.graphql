@@ -4,6 +4,8 @@ type Protocol @entity {
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
 
+  totalMimBorrowed: BigDecimal!
+
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
 
@@ -28,7 +30,14 @@ type Protocol @entity {
   usageMetrics: [UsageProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
 
   " Daily financial metrics for this protocol "
-  financialMetrics: [FinanceialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type UsageProtocolMetricsDailySnapshot @entity {
@@ -46,9 +55,12 @@ type UsageProtocolMetricsDailySnapshot @entity {
 
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
-type FinanceialProtocolMetricsDailySnapshot @entity {
+type FinancialProtocolMetricsDailySnapshot @entity {
   " ID is # of days since Unix epoch time "
   id: ID!
 
@@ -64,6 +76,8 @@ type FinanceialProtocolMetricsDailySnapshot @entity {
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
 
+  totalMimBorrowed: BigDecimal!
+
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!
 
@@ -72,6 +86,10 @@ type FinanceialProtocolMetricsDailySnapshot @entity {
   interestFeesGenerated: BigDecimal!
 
   liquidationFeesGenerated: BigDecimal!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type Cauldron @entity {
@@ -128,10 +146,21 @@ type Cauldron @entity {
   usageMetrics: [UsageCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
 
   " Daily financial metrics for this protocol "
-  financialMetrics: [FinanceialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+  financialMetrics: [FinancialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
+
+  totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
 }
 
 type UsageCauldronMetricsDailySnapshot @entity {
@@ -149,9 +178,12 @@ type UsageCauldronMetricsDailySnapshot @entity {
 
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
-type FinanceialCauldronMetricsDailySnapshot @entity {
+type FinancialCauldronMetricsDailySnapshot @entity {
   " ID is # of days since Unix epoch time "
   id: ID!
 
@@ -167,6 +199,8 @@ type FinanceialCauldronMetricsDailySnapshot @entity {
   " Current TVL (Total Value Locked) of the entire protocol "
   totalValueLockedUsd: BigDecimal!
 
+  totalMimBorrowed: BigDecimal!
+
   " Amount of fees earned for the entire protocol "
   feesGenerated: BigDecimal!
 
@@ -175,6 +209,10 @@ type FinanceialCauldronMetricsDailySnapshot @entity {
   interestFeesGenerated: BigDecimal!
 
   liquidationFeesGenerated: BigDecimal!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
 }
 
 type Collateral @entity {
@@ -191,13 +229,13 @@ type Collateral @entity {
   decimals: Int!
 
   " Optional field to track the price of a token, mostly for caching purposes "
-  lastPriceUsd: BigDecimal
+  lastPriceUsd: BigDecimal!
 
   " Optional field to track the block number of the last token price "
-  lastPriceBlockNumber: BigInt
+  lastPriceBlockNumber: BigInt!
 
   " Optional field to track the timestamp of the last token price "
-  lastPriceTimestamp: BigInt
+  lastPriceTimestamp: BigInt!
 }
 
 type MagicApe @entity {
@@ -290,6 +328,9 @@ type Account @entity {
 
   " All positions that belong to this account "
   states: [AccountState!]! @derivedFrom(field: "account")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
 }
 
 type AccountState @entity {
@@ -305,6 +346,51 @@ type AccountState @entity {
   borrowPart: BigInt!
 
   collateralShare: BigInt!
+
+  lastAction: AccountStateSnapshot
+
+  " Position daily snapshots for open positions "
+  snapshots: [AccountStateSnapshot!]! @derivedFrom(field: "state")
+}
+
+type AccountStateSnapshot @entity {
+  " { Account address }-{ Cauldron address }-{ Transaction hash }"
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  state: AccountState!
+
+  borrowPart: BigInt!
+
+  collateralShare: BigInt!
+
+  collateralPriceUsd: BigDecimal!
+
+  liquidationPrice: BigDecimal!
+
+  withdrawAmount: BigInt!
+
+  withdrawAmountUsd: BigDecimal!
+
+  repaid: BigInt!
+
+  repaidUsd: BigDecimal!
+
+  isLiquidated: Boolean!
+
+  " Transaction hash of the transaction that emitted this event "
+  hash: String!
+
+  " Block number of this event "
+  blockNumber: BigInt!
+
+  " Timestamp of this event "
+  timestamp: BigInt!
 }
 
 type LevelFinance @entity {
