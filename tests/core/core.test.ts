@@ -53,6 +53,7 @@ describe('Mocked Events', () => {
         assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'totalFeesGenerated', BIGDECIMAL_ZERO.toString());
         assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'totalCauldronCount', '1');
         assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'cumulativeUniqueUsers', '0');
+        assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'liquidationCount', '0');
 
         // Created Collateral
         const collateralId = getOrCreateCollateral(COLLATERAL_ADDRESS).id;
@@ -84,5 +85,6 @@ describe('Mocked Events', () => {
         assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'oracle', '0x75e14253de6a5c2af12d5f1a1ea0a2e11e69ec10');
         assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'cumulativeUniqueUsers', '0');
         assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'oracleData', '0x00');
+        assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'liquidationCount', '0');
     });
 });

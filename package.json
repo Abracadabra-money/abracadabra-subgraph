@@ -16,13 +16,15 @@
         "test": "graph test",
         "coverage": "graph test -- -c",
         "auth": "graph auth --studio",
-        "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/"
+        "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@graphprotocol/graph-cli": "^0.30.1",
         "@graphprotocol/graph-ts": "^0.27.0"
     },
     "devDependencies": {
+        "husky": "^8.0.3",
         "matchstick-as": "^0.5.2",
         "mustache": "^4.2.0",
         "prettier": "2.3.1"

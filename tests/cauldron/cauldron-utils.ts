@@ -1,7 +1,7 @@
-import { ethereum, BigInt, Address } from '@graphprotocol/graph-ts';
+import { ethereum, BigInt } from '@graphprotocol/graph-ts';
 import { newMockCall, newMockEvent } from 'matchstick-as';
 import { LiquidateCall, CookCall, BorrowCall, LogAccrue } from '../../generated/templates/Cauldron/Cauldron';
-import { ABRA_DEPLOYERS, ACTION_BORROW } from '../../src/constants';
+import { ACTION_BORROW } from '../../src/constants';
 import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT, MOCK_COOK_BORROW } from '../constants';
 
 export function createLiquidateCall(): LiquidateCall {

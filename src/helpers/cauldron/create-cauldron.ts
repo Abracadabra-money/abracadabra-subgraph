@@ -21,7 +21,7 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.name = collateral.symbol;
     CauldronEntity.createdTimestamp = blockTimestamp;
     CauldronEntity.createdBlockNumber = blockNumber;
-    CauldronEntity.collateralPriceUsd = collateral.lastPriceUsd!;
+    CauldronEntity.collateralPriceUsd = collateral.lastPriceUsd;
     CauldronEntity.exchangeRate = BIGINT_ZERO;
     CauldronEntity.protocol = protocol.id;
     CauldronEntity.isActive = false;
@@ -35,6 +35,12 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.oracle = decoded[1].toAddress();
     CauldronEntity.cumulativeUniqueUsers = 0;
     CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
+    CauldronEntity.liquidationCount = 0;
+    CauldronEntity.liquidationAmountUsd = BIGDECIMAL_ZERO;
+    CauldronEntity.repaidAmount = BIGDECIMAL_ZERO;
+    CauldronEntity.totalMimBorrowed = BIGDECIMAL_ZERO;
+    CauldronEntity.totalValueLockedUsd = BIGDECIMAL_ZERO;
+
     CauldronEntity.save();
 
     Cauldron.create(cauldronAddress);

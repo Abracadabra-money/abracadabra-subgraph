@@ -1,6 +1,6 @@
 import { BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
 import { afterEach, assert, beforeEach, clearStore, createMockedFunction, describe, test } from 'matchstick-as';
-import { createCauldron, getCauldron, getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../../src/helpers/cauldron';
+import { createCauldron, getCauldron, getOrCreateFinancialCauldronMetricsDailySnapshot } from '../../src/helpers/cauldron';
 import {
     CLONE_ADDRESS,
     BLOCK_NUMBER,
@@ -11,14 +11,14 @@ import {
     COLLATERAL_NAME,
     COLLATERAL_SYMBOL,
     MOCK_ACCOUNT,
-    FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT,
-    FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT,
+    FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT,
+    FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT,
     CAULDRON_ENTITY_TYPE,
 } from '../constants';
 import { handleBorrowCall, handleCookCall, handleLiquidateCall, handleLogAccrue } from '../../src/mappings/cauldron';
 
 import { getOrCreateAccount, getOrCreateAccountState } from '../../src/helpers/account';
-import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../../src/helpers/protocol';
+import { getOrCreateFinancialProtocolMetricsDailySnapshot } from '../../src/helpers/protocol';
 import { createBorrowCall, createBorrowCookCall, createLiquidateCall, createLogAccrueEvent } from './cauldron-utils';
 
 describe('Mock contract functions', () => {
@@ -53,16 +53,16 @@ describe('Mock contract functions', () => {
 
         handleBorrowCall(call);
 
-        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
-        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.000000000000005');
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
+        const protocolDailySnapshotId = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.000000000000005');
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
 
         const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
-        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
-        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000000005');
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
+        const cauldronDailySnapshotId = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000000005');
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.000000000000005');
     });
 
     test('Can get fee from cook call', () => {
@@ -70,16 +70,16 @@ describe('Mock contract functions', () => {
 
         handleCookCall(call);
 
-        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
-        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.92');
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.92');
+        const protocolDailySnapshotId = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.92');
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'borrowFeesGenerated', '0.92');
 
         const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
-        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
-        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.92');
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.92');
+        const cauldronDailySnapshotId = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.92');
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'borrowFeesGenerated', '0.92');
     });
 
     test('Can get fee from liquidate call', () => {
@@ -102,15 +102,15 @@ describe('Mock contract functions', () => {
 
         handleLiquidateCall(call);
 
-        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(call.block).id;
-        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '12.088305789336019234');
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
+        const protocolDailySnapshotId = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block).id;
+        assert.entityCount(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '12.088305789336019234');
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
 
-        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, call.block).id;
-        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '12.088305789336019234');
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
+        const cauldronDailySnapshotId = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block).id;
+        assert.entityCount(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '12.088305789336019234');
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'liquidationFeesGenerated', '12.088305789336019234');
     });
 });
 
@@ -146,16 +146,16 @@ describe('Mocked Events', () => {
 
         handleLogAccrue(newLogAccrueEvent);
 
-        const protocolDailySnapshotId = getOrCreateFinanceialProtocolMetricsDailySnapshot(newLogAccrueEvent.block).id;
-        assert.entityCount(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.000000000001');
-        assert.fieldEquals(FINANCEIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'interestFeesGenerated', '0.000000000001');
+        const protocolDailySnapshotId = getOrCreateFinancialProtocolMetricsDailySnapshot(newLogAccrueEvent.block).id;
+        assert.entityCount(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'feesGenerated', '0.000000000001');
+        assert.fieldEquals(FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT, protocolDailySnapshotId, 'interestFeesGenerated', '0.000000000001');
 
         const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
-        const cauldronDailySnapshotId = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, newLogAccrueEvent.block).id;
-        assert.entityCount(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000001');
-        assert.fieldEquals(FINANCEIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'interestFeesGenerated', '0.000000000001');
+        const cauldronDailySnapshotId = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, newLogAccrueEvent.block).id;
+        assert.entityCount(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, 1);
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'feesGenerated', '0.000000000001');
+        assert.fieldEquals(FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT, cauldronDailySnapshotId, 'interestFeesGenerated', '0.000000000001');
 
         assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldron.id, 'isActive', 'true');
     });

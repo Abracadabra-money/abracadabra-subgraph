@@ -7,6 +7,7 @@ export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block:
     let account = Account.load(accountId);
     if (!account) {
         account = new Account(accountId);
+        account.liquidationCount = 0;
         account.save();
 
         const cauldronDailySnapshot = getOrCreateUsageCauldronMetricsDailySnapshot(cauldron, block);

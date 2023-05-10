@@ -1,13 +1,13 @@
-import { BigDecimal, BigInt, ethereum } from '@graphprotocol/graph-ts';
+import { BigDecimal, ethereum } from '@graphprotocol/graph-ts';
 import { Cauldron } from '../../../generated/schema';
-import { getOrCreateFinanceialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financeial-cauldron-metrics-daily-snapshot';
-import { getOrCreateFinanceialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financeial-protocol-metrics-daily-snapshot';
+import { getOrCreateFinancialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financial-cauldron-metrics-daily-snapshot';
+import { getOrCreateFinancialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financial-protocol-metrics-daily-snapshot';
 import { getOrCreateProtocol } from '../protocol';
 import { FeeType } from '../../constants';
 
 export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, block: ethereum.Block, feeType: string): void {
-    const protocolDailySnapshot = getOrCreateFinanceialProtocolMetricsDailySnapshot(block);
-    const cauldronDailySnapshot = getOrCreateFinanceialCauldronMetricsDailySnapshot(cauldron, block);
+    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(block);
+    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, block);
 
     const protocol = getOrCreateProtocol();
 

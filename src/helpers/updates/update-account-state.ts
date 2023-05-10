@@ -1,9 +1,12 @@
-import { BigInt, ethereum } from '@graphprotocol/graph-ts';
+import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { Cauldron } from '../../../generated/schema';
 import { EventType } from '../../constants';
-import { getOrCreateAccount, getOrCreateAccountState } from '../account';
+import { bigIntToBigDecimal, getLiquidationPrice } from '../../utils';
+import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../account';
+import { getOrCreateCollateral } from '../get-or-create-collateral';
 
-export function updateAccountState(cauldron: Cauldron, accountId: string, eventType: string, amount: BigInt, block: ethereum.Block): void {
+export function updateAccountState(cauldron: Cauldron, accountId: string, eventType: string, amount: BigInt, block: ethereum.Block, transaction: ethereum.Transaction): void {
+    const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
     const account = getOrCreateAccount(cauldron, accountId, block);
     const accountState = getOrCreateAccountState(cauldron, account);
 
@@ -23,5 +26,24 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
         accountState.borrowPart = accountState.borrowPart.minus(amount);
     }
 
+    const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, block, transaction);
+    snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
+    snapshot.borrowPart = accountState.borrowPart;
+    snapshot.collateralShare = accountState.collateralShare;
+    snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
+
+    if (eventType == EventType.WITHDRAW) {
+        snapshot.withdrawAmount = snapshot.withdrawAmount.plus(amount);
+        snapshot.withdrawAmountUsd = snapshot.withdrawAmountUsd.plus(bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd));
+    }
+
+    if (eventType == EventType.REPAY) {
+        snapshot.repaid = snapshot.repaid.plus(amount);
+        snapshot.repaidUsd = snapshot.repaidUsd.plus(bigIntToBigDecimal(amount));
+    }
+
+    snapshot.save();
+
+    accountState.lastAction = snapshot.id;
     accountState.save();
 }
