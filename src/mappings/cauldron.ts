@@ -17,9 +17,9 @@ import { updateAccountState, updateLiquidationCount, updateTokenPrice, updateTot
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
-import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
 import { getOrCreateFinancialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
+import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -52,6 +52,7 @@ export function handleBorrowCall(call: BorrowCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.borrowOpeningFee.isZero()) return;
+
     updateLastActive(cauldron, call.block);
     const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
     updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
@@ -61,6 +62,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
+
     updateLastActive(cauldron, call.block);
     const protocol = getOrCreateProtocol();
     const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block);
