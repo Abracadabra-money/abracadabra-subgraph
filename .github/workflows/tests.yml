@@ -31,7 +31,7 @@ jobs:
 
       # This is required separately from yarn test because it generates the typechain definitions
       - name: Compile yaml
-        run: yarn prepare:ethereum
+        run: yarn prepare:bsc
 
       - name: Codegen
         run: yarn codegen
