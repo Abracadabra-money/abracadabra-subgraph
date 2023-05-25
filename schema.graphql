@@ -96,6 +96,9 @@ type Cauldron @entity {
   " Smart contract address of the cauldron "
   id: ID!
 
+  " Master contract address of the cauldron "
+  masterContract: Bytes!
+
   " The protocol this cauldron belongs to "
   protocol: Protocol!
 

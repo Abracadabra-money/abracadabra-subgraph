@@ -1,22 +1,31 @@
-import { BigInt, Address, Bytes, ethereum, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, dataSource, ethereum, log } from '@graphprotocol/graph-ts';
 import { Cauldron as CauldronSchema } from '../../../generated/schema';
-import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
+import { Cauldron } from '../../../generated/templates';
+import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO, CAULDRON_V1_BORROW_PARAMETERS, CauldronBorrowParameters } from '../../constants';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
 import { getOrCreateProtocol } from '../protocol';
-import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
-import { Cauldron } from '../../../generated/templates';
 
-export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
+export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
-    const borrowOpeningFeeCall = CauldronContract.try_BORROW_OPENING_FEE();
-    if (borrowOpeningFeeCall.reverted) return;
 
-    const decoded = ethereum.decode('(address,address, bytes, uint64, uint256, uint256, uint256)', data)!.toTuple();
+    const masterContractChainAddress = `${dataSource.network()}:${masterContract.toHexString()}`.toLowerCase();
+
+    let cauldronDefinition: CauldronDefinition | null = null;
+    if (CAULDRON_V1_BORROW_PARAMETERS.has(masterContractChainAddress)) {
+        cauldronDefinition = CauldronDefinition.fromParameters(decodeCauldronInitV1(data), CAULDRON_V1_BORROW_PARAMETERS.get(masterContractChainAddress));
+    } else if (!CauldronContract.try_BORROW_OPENING_FEE().reverted) {
+        cauldronDefinition = decodeCauldronInitV2Plus(data);
+    } else {
+        log.warning('[createCauldron] Unable to create cauldron: {}', [cauldronAddress.toHexString()]);
+        return;
+    }
 
     const CauldronEntity = new CauldronSchema(cauldronAddress.toHexString());
     const protocol = getOrCreateProtocol();
 
-    const collateral = getOrCreateCollateral(decoded[0].toAddress());
+    const collateral = getOrCreateCollateral(cauldronDefinition.collateral);
+    CauldronEntity.masterContract = masterContract;
     CauldronEntity.collateral = collateral.id;
     CauldronEntity.name = collateral.symbol;
     CauldronEntity.createdTimestamp = blockTimestamp;
@@ -28,11 +37,11 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     CauldronEntity.deprecated = false;
     CauldronEntity.lastActive = blockTimestamp;
     CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
-    CauldronEntity.borrowOpeningFee = decoded[6].toBigInt();
-    CauldronEntity.collaterizationRate = decoded[5].toBigInt();
-    CauldronEntity.interestPerSecond = decoded[3].toBigInt();
-    CauldronEntity.liquidationMultiplier = decoded[4].toBigInt();
-    CauldronEntity.oracle = decoded[1].toAddress();
+    CauldronEntity.borrowOpeningFee = cauldronDefinition.borrowOpeningFee;
+    CauldronEntity.collaterizationRate = cauldronDefinition.collaterizationRate;
+    CauldronEntity.interestPerSecond = cauldronDefinition.interestPerSecond;
+    CauldronEntity.liquidationMultiplier = cauldronDefinition.liquidationMultiplier;
+    CauldronEntity.oracle = cauldronDefinition.oracle;
     CauldronEntity.cumulativeUniqueUsers = 0;
     CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
     CauldronEntity.liquidationCount = 0;
@@ -52,4 +61,40 @@ export function createCauldron(cauldronAddress: Address, blockNumber: BigInt, bl
     protocol.cauldronIds = cauldronIds;
 
     protocol.save();
+}
+
+class CauldronCollateralParameters {
+    constructor(public readonly collateral: Address, public readonly oracle: Address) {}
+}
+
+class CauldronDefinition {
+    constructor(
+        public readonly collateral: Address,
+        public readonly oracle: Address,
+        public readonly interestPerSecond: BigInt,
+        public readonly liquidationMultiplier: BigInt,
+        public readonly collaterizationRate: BigInt,
+        public readonly borrowOpeningFee: BigInt,
+    ) {}
+
+    static fromParameters(collateralParamters: CauldronCollateralParameters, borrowParameters: CauldronBorrowParameters): CauldronDefinition {
+        return new CauldronDefinition(
+            collateralParamters.collateral,
+            collateralParamters.oracle,
+            borrowParameters.interestPerSecond,
+            borrowParameters.liquidationMultiplier,
+            borrowParameters.collaterizationRate,
+            borrowParameters.borrowOpeningFee,
+        );
+    }
+}
+
+function decodeCauldronInitV1(data: Bytes): CauldronCollateralParameters {
+    const decoded = ethereum.decode('(address,address, bytes)', data)!.toTuple();
+    return new CauldronCollateralParameters(decoded[0].toAddress(), decoded[1].toAddress());
+}
+
+function decodeCauldronInitV2Plus(data: Bytes): CauldronDefinition {
+    const decoded = ethereum.decode('(address,address, bytes, uint64, uint256, uint256, uint256)', data)!.toTuple();
+    return new CauldronDefinition(decoded[0].toAddress(), decoded[1].toAddress(), decoded[3].toBigInt(), decoded[4].toBigInt(), decoded[5].toBigInt(), decoded[6].toBigInt());
 }

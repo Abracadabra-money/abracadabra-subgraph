@@ -5,8 +5,6 @@ import {
     CLONE_ADDRESS,
     BLOCK_NUMBER,
     BLOCK_TIMESTAMP,
-    DATA,
-    COLLATERAL_ADDRESS,
     COLLATERAL_DECIMALS,
     COLLATERAL_NAME,
     COLLATERAL_SYMBOL,
@@ -14,6 +12,9 @@ import {
     FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT,
     FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT,
     CAULDRON_ENTITY_TYPE,
+    NON_CAULDRON_V1_COLLATERAL_ADDRESS,
+    NON_CAULDRON_V1_DATA,
+    NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS,
 } from '../constants';
 import { handleBorrowCall, handleCookCall, handleLiquidateCall, handleLogAccrue } from '../../src/mappings/cauldron';
 
@@ -31,17 +32,17 @@ describe('Mock contract functions', () => {
             .withArgs([])
             .returns([ethereum.Value.fromBytes(Bytes.fromHexString('0x00'))]);
         // Create collateral mock functions
-        createMockedFunction(COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])
             .returns([ethereum.Value.fromString(COLLATERAL_SYMBOL)]);
-        createMockedFunction(COLLATERAL_ADDRESS, 'name', 'name():(string)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'name', 'name():(string)')
             .withArgs([])
             .returns([ethereum.Value.fromString(COLLATERAL_NAME)]);
-        createMockedFunction(COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
             .withArgs([])
             .returns([ethereum.Value.fromI32(COLLATERAL_DECIMALS)]);
 
-        createCauldron(CLONE_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, DATA);
+        createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
     });
 
     afterEach(() => {
@@ -124,17 +125,17 @@ describe('Mocked Events', () => {
             .withArgs([])
             .returns([ethereum.Value.fromBytes(Bytes.fromHexString('0x00'))]);
         // Create collateral mock functions
-        createMockedFunction(COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])
             .returns([ethereum.Value.fromString(COLLATERAL_SYMBOL)]);
-        createMockedFunction(COLLATERAL_ADDRESS, 'name', 'name():(string)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'name', 'name():(string)')
             .withArgs([])
             .returns([ethereum.Value.fromString(COLLATERAL_NAME)]);
-        createMockedFunction(COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
+        createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
             .withArgs([])
             .returns([ethereum.Value.fromI32(COLLATERAL_DECIMALS)]);
 
-        createCauldron(CLONE_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, DATA);
+        createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
     });
 
     afterEach(() => {
