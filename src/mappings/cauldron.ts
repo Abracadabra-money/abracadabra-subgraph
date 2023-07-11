@@ -104,10 +104,10 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
         cauldronDailySnapshot.save();
     }
-    const accounts = arrayUnique(call.inputs.users);
+    const accounts = arrayUnique(call.inputs.users.map((user) => user.toHexString()));
 
     for (let i = 0; i < accounts.length; i++) {
-        const account = getOrCreateAccount(cauldron, accounts[i].toHexString(), call.block);
+        const account = getOrCreateAccount(cauldron, accounts[i], call.block);
         updateLiquidationCount(cauldron, account, call.block);
     }
 
