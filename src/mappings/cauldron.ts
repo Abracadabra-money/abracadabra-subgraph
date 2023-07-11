@@ -75,7 +75,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
     const totalBorrowBase = totalBorrowCall.value.getBase();
     const totalBorrowElastic = totalBorrowCall.value.getElastic();
     let allBorrowAmount = BigInt.fromI32(0);
-    for (let i = 0; i < call.inputs.maxBorrowParts.length; i++) {
+    for (let i = 0; i < call.inputs.users.length; i++) {
         const account = getOrCreateAccount(cauldron, call.inputs.users[i].toHexString(), call.block);
         const accountState = getOrCreateAccountState(cauldron, account);
         const borrowPart = call.inputs.maxBorrowParts[i].gt(accountState.borrowPart) ? accountState.borrowPart : call.inputs.maxBorrowParts[i];
