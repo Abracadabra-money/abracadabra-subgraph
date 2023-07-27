@@ -1,5 +1,6 @@
 {
     "network": "arbitrum-one",
+    "callHandlerSupport": false,
     "bentoBox": {
         "enable": true,
         "address": "0x74c764D41B77DBbb4fe771daB1939B00b146894A",
@@ -21,5 +22,13 @@
     "levelFinance": {
         "enable": false
     },
-    "callHandlerSupport": false
+    "beam": {
+        "enable": true,
+        "address": "0x957A8Af7894E76e16DB17c2A913496a4E60B7090",
+        "startBlock": 98066187,
+        "wrapper": {
+            "address": "0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC",
+            "startBlock": 115739967
+        }
+    }
 }

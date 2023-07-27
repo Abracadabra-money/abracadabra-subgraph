@@ -1,5 +1,6 @@
 {
     "network": "mainnet",
+    "callHandlerSupport": true,
     "bentoBox": {
         "enable": true,
         "address": "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966",
@@ -23,5 +24,13 @@
     "levelFinance": {
         "enable": false
     },
-    "callHandlerSupport": true
+    "beam": {
+        "enable": true,
+        "address": "0x439a5f0f5E8d149DDA9a0Ca367D4a8e4D6f83C10",
+        "startBlock": 17414874,
+        "wrapper": {
+            "address": "0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC",
+            "startBlock": 17790681
+        }
+    }
 }

@@ -1,13 +1,11 @@
 {
-    "network": "optimism",
-    "callHandlerSupport": false,
+    "network": "kava-evm",
+    "callHandlerSupport": true,
     "bentoBox": {
         "enable": false
     },
     "degenBox": {
-        "enable": true,
-        "address": "0xa93C81f564579381116ee3E007C9fCFd2EBa1723",
-        "startBlock": 18084162
+        "enable": false
     },
     "magicApe": {
         "enable": false
@@ -20,11 +18,11 @@
     },
     "beam": {
         "enable": true,
-        "address": "0x48686c24697fe9042531B64D792304e514E74339",
-        "startBlock": 104883234,
+        "address": "0xc7a161Cfd0e133d289B13692b636B8e8B5CD8d8c",
+        "startBlock": 5477525,
         "wrapper": {
             "address": "0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC",
-            "startBlock": 107469310
+            "startBlock": 5844338
         }
     }
 }

@@ -1,4 +1,4 @@
-import { BigInt, BigDecimal } from '@graphprotocol/graph-ts';
+import { BigInt, BigDecimal, Address } from '@graphprotocol/graph-ts';
 
 export namespace Network {
     export const ARBITRUM_ONE = 'ARBITRUM_ONE';
@@ -101,6 +101,30 @@ export const MAGIC_LEVEL_HARVESTOR_BSC = '0xa32D03497FF5C32bcfeebE6A677Dbe4A496f
 export const MAGIC_LLP_SENIOR_BSC = '0xD8Cbd5b22D7D37c978609e4e394cE8B9C003993b'.toLowerCase();
 export const MAGIC_LLP_MEZZANINE_BSC = '0x87aC701ba8acb1966526375da68A692CebB8AF75'.toLowerCase();
 export const MAGIC_LLP_JUNIOR_BSC = '0xC094c2a5C349eAd7839C1805126Da71Cc1cc1A39'.toLowerCase();
+
+// Beam
+export const BEAM_OFT = new Map<string, Address>()
+    .set('arbitrum-one', Address.fromString('0x957A8Af7894E76e16DB17c2A913496a4E60B7090'))
+    .set('avalanche', Address.fromString('0xB3a66127cCB143bFB01D3AECd3cE9D17381B130d'))
+    .set('bsc', Address.fromString('0x41D5A04B4e03dC27dC1f5C5A576Ad2187bc601Af'))
+    .set('mainnet', Address.fromString('0x439a5f0f5E8d149DDA9a0Ca367D4a8e4D6f83C10'))
+    .set('fantom', Address.fromString('0xc5c01568a3B5d8c203964049615401Aaf0783191'))
+    .set('kava-evm', Address.fromString('0xc7a161Cfd0e133d289B13692b636B8e8B5CD8d8c'))
+    .set('matic', Address.fromString('0xca0d86afc25c57a6d2aCdf331CaBd4C9CEE05533'))
+    .set('moonriver', Address.fromString('0xeF2dBDfeC54c466F7Ff92C9c5c75aBB6794f0195'))
+    .set('optimism', Address.fromString('0x48686c24697fe9042531B64D792304e514E74339'));
+
+export const BEAM_OFT_WRAPPER = new Map<string, Address>()
+    .set('arbitrum-one', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('avalanche', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('bsc', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('mainnet', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('fantom', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('kava-evm', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('matic', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('moonriver', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'))
+    .set('optimism', Address.fromString('0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC'));
+
 // Token
 export const INVALID_TOKEN_DECIMALS = 0;
 export const UNKNOWN_TOKEN_VALUE = 'unknown';

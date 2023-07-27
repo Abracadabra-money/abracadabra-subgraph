@@ -1,5 +1,6 @@
 {
     "network": "avalanche",
+    "callHandlerSupport": false,
     "bentoBox": {
         "enable": true,
         "address": "0xf4F46382C2bE1603Dc817551Ff9A7b333Ed1D18f",
@@ -21,5 +22,13 @@
     "levelFinance": {
         "enable": false
     },
-    "callHandlerSupport": true
+    "beam": {
+        "enable": true,
+        "address": "0xB3a66127cCB143bFB01D3AECd3cE9D17381B130d",
+        "startBlock": 30943828,
+        "wrapper": {
+            "address": "0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC",
+            "startBlock": 33180737
+        }
+    }
 }

@@ -21,6 +21,7 @@ export function getOrCreateFinancialProtocolMetricsDailySnapshot(block: ethereum
     dailySnapshot.borrowFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.interestFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
+    dailySnapshot.beamFeesGenerated = BIGDECIMAL_ZERO;
     dailySnapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     dailySnapshot.repaidAmount = BIGDECIMAL_ZERO;
     dailySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;

@@ -23,6 +23,8 @@ type Protocol @entity {
 
   levelFinance: LevelFinance @derivedFrom(field: "protocol")
 
+  beam: Beam @derivedFrom(field: "protocol")
+
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
 
@@ -86,6 +88,8 @@ type FinancialProtocolMetricsDailySnapshot @entity {
   interestFeesGenerated: BigDecimal!
 
   liquidationFeesGenerated: BigDecimal!
+
+  beamFeesGenerated: BigDecimal!
 
   liquidationAmountUsd: BigDecimal!
 
@@ -464,4 +468,101 @@ type LevelFinanceDailySnapshot @entity {
 
   " Timestamp of this snapshot "
   timestamp: BigInt!
+}
+
+type Beam @entity {
+  id: ID!
+ 
+  protocol: Protocol!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+
+  rxCount: BigInt!
+
+  rxVolume: BigInt!
+
+  beamByChain: [BeamByChain!]! @derivedFrom(field: "beam")
+
+  beamBySource: [BeamBySource!]! @derivedFrom(field: "beam")
+
+  dailySnapshot: [BeamDailySnapshot!]! @derivedFrom(field: "beam")
+}
+
+type BeamDailySnapshot @entity {
+  " BeamContractAddress-daysSinceEpoch "
+  id: ID!
+
+  beam: Beam!
+
+  timestamp: BigInt!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+
+  rxCount: BigInt!
+
+  rxVolume: BigInt!
+}
+
+type BeamBySource @entity {
+  " BeamContractAddress-Source"
+  id: ID!
+ 
+  beam: Beam!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+
+  dailySnapshot: [BeamBySourceDailySnapshot!]! @derivedFrom(field: "beamBySource")
+}
+
+type BeamBySourceDailySnapshot @entity {
+  " BeamContractAddress-Source-daysSinceEpoch "
+  id: ID!
+
+  beamBySource: BeamBySource!
+
+  timestamp: BigInt!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+}
+
+type BeamByChain @entity {
+  " BeamContractAddress-ChainId "
+  id: ID!
+ 
+  beam: Beam!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+
+  rxCount: BigInt!
+
+  rxVolume: BigInt!
+
+  dailySnapshot: [BeamByChainDailySnapshot!]! @derivedFrom(field: "beamByChain")
+}
+
+type BeamByChainDailySnapshot @entity {
+  " BeamContractAddress-ChainId-daysSinceEpoch "
+  id: ID!
+
+  beamByChain: BeamByChain!
+
+  timestamp: BigInt!
+
+  txCount: BigInt!
+
+  txVolume: BigInt!
+
+  rxCount: BigInt!
+
+  rxVolume: BigInt!
 }

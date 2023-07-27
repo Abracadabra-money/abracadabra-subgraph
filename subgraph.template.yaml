@@ -173,6 +173,64 @@ dataSources:
           handler: handleLogHarvest
       file: ./src/mappings/level-finance.ts
   {{/levelFinance.enable}}
+  # 6. Beam (if applicable)
+  {{#beam.enable}}
+  - kind: ethereum
+    name: Beam
+    network: {{network}}
+    source:
+      address: "{{ beam.address }}"
+      abi: LzBaseOFTV2
+      startBlock: {{ beam.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Beam
+        - BeamDailySnapshot
+        - BeamChain
+        - BeamChainDailySnapshot
+      abis:
+        - name: LzBaseOFTV2
+          file: ./abis/LzBaseOFTV2.json
+      eventHandlers:
+      {{^callHandlerSupport}}
+        - event: SendToChain(indexed uint16,indexed address,indexed bytes32,uint256)
+          handler: handleSendToChain
+      {{/callHandlerSupport}}
+        - event: ReceiveFromChain(indexed uint16,indexed address,uint256)
+          handler: handleReceiveFromChain
+      {{#callHandlerSupport}}
+      callHandlers:
+        - function: sendFrom(address,uint16,bytes32,uint256,(address,address,bytes))
+          handler: handleSendFromCall
+      {{/callHandlerSupport}}
+      file: ./src/mappings/beam.ts
+  - kind: ethereum
+    name: BeamFees
+    network: {{network}}
+    source:
+      address: "{{ beam.wrapper.address }}"
+      abi: IOFTWrapper
+      startBlock: {{ beam.wrapper.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FinancialProtocolMetricsDailySnapshot
+        - FinancialCauldronMetricsDailySnapshot
+      abis:
+        - name: IOFTWrapper
+          file: ./abis/IOFTWrapper.json
+      eventHandlers:
+        - event: LogWrapperFeeWithdrawn(address,uint256)
+          handler: handleLogWrapperFeeWithdrawn
+      file: ./src/mappings/beam-fees.ts
+  {{/beam.enable}}
+{{#bentoBox.enable}}
+{{#degenBox.enable}}
 templates:
   - name: Cauldron
     kind: ethereum/contract
@@ -215,3 +273,5 @@ templates:
         - function: liquidate(address[],uint256[],address,address)
           handler: handleLiquidateCall
       {{/callHandlerSupport}}
+{{/degenBox.enable}}
+{{/bentoBox.enable}}

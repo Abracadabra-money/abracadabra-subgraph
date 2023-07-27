@@ -1,0 +1,226 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldExchangeRate",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newExchangeRate",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogDefaultExchangeRateChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "enum IOFTWrapper.QUOTE_TYPE",
+                "name": "oldValue",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IOFTWrapper.QUOTE_TYPE",
+                "name": "newValue",
+                "type": "uint8"
+            }
+        ],
+        "name": "LogDefaultQuoteTypeChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldAddress",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "name": "LogFeeToChange",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IAggregator",
+                "name": "oldOracle",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IAggregator",
+                "name": "newOracle",
+                "type": "address"
+            }
+        ],
+        "name": "LogOracleImplementationChange",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "LogWrapperFeeWithdrawn",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_toAddress",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_adapterParams",
+                "type": "bytes"
+            }
+        ],
+        "name": "estimateSendFeeV2",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "nativeFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "zroFee",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_toAddress",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "refundAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "zroPaymentAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "adapterParams",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ILzCommonOFT.LzCallParams",
+                "name": "_callParams",
+                "type": "tuple"
+            }
+        ],
+        "name": "sendOFTV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "_dstChainId",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_toAddress",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "refundAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "zroPaymentAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "adapterParams",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct ILzCommonOFT.LzCallParams",
+                "name": "_callParams",
+                "type": "tuple"
+            }
+        ],
+        "name": "sendProxyOFTV2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

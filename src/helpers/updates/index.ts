@@ -7,3 +7,4 @@ export * from './update-account-state';
 export * from './update-level-finance-rewards';
 export * from './update-liquidation-count';
 export * from './update-total-mim-borrowed';
+export * from './update-beam';
