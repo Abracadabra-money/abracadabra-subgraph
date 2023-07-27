@@ -5,21 +5,19 @@ import {
     LogRemoveCollateral,
     LogRepay,
     LogExchangeRate,
-    BorrowCall,
-    CookCall,
     LiquidateCall,
     Cauldron as CauldronTemplate,
 } from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron, getOrCreateFinancialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
-import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
+import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { updateAccountState, updateLiquidationCount, updateTokenPrice, updateTotalMimBorrowed } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
 import { getOrCreateFinancialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
-import { BORROW_OPENING_FEE_PRECISION, ACTION_BORROW, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
+import { BORROW_OPENING_FEE_PRECISION, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType, BIGDECIMAL_ONE } from '../constants';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -46,16 +44,10 @@ export function handleLogBorrow(event: LogBorrow): void {
     updateTokensPrice(event.block);
     updateAccountState(cauldron, event.params.from.toHexString(), EventType.BORROW, event.params.part, event.block, event.transaction);
     updateTotalMimBorrowed(event.block);
-}
-
-export function handleBorrowCall(call: BorrowCall): void {
-    const cauldron = getCauldron(call.to.toHexString());
-    if (!cauldron) return;
-    if (cauldron.borrowOpeningFee.isZero()) return;
-
-    updateLastActive(cauldron, call.block);
-    const feeAmount = call.inputs.amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
+    const borrowAmountWithFee = bigIntToBigDecimal(event.params.amount);
+    const borrowAmount = borrowAmountWithFee.div(cauldron.borrowOpeningFee.divDecimal(BORROW_OPENING_FEE_PRECISION.toBigDecimal()).plus(BIGDECIMAL_ONE));
+    const feeAmount = borrowAmountWithFee.minus(borrowAmount);
+    updateFeesGenerated(cauldron, feeAmount, event.block, FeeType.BORROW);
 }
 
 export function handleLiquidateCall(call: LiquidateCall): void {
@@ -118,22 +110,6 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         .times(DISTRIBUTION_PART)
         .div(DISTRIBUTION_PRECISION);
     updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), call.block, FeeType.LIQUADATION);
-}
-
-export function handleCookCall(call: CookCall): void {
-    const cauldron = getCauldron(call.to.toHexString());
-    if (!cauldron) return;
-    if (cauldron.borrowOpeningFee.isZero()) return;
-    updateLastActive(cauldron, call.block);
-    for (let i = 0; i < call.inputs.actions.length; i++) {
-        const action = call.inputs.actions[i];
-        if (action == ACTION_BORROW) {
-            const decode = ethereum.decode('(int256,address)', call.inputs.datas[i])!.toTuple();
-            const amount = decode[0].toBigInt();
-            const feeAmount = amount.times(cauldron.borrowOpeningFee).div(BORROW_OPENING_FEE_PRECISION);
-            updateFeesGenerated(cauldron, bigIntToBigDecimal(feeAmount), call.block, FeeType.BORROW);
-        }
-    }
 }
 
 export function handleLogRepay(event: LogRepay): void {

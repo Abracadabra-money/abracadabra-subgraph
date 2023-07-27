@@ -1,8 +1,7 @@
 import { ethereum, BigInt } from '@graphprotocol/graph-ts';
 import { newMockCall, newMockEvent } from 'matchstick-as';
-import { LiquidateCall, CookCall, BorrowCall, LogAccrue } from '../../generated/templates/Cauldron/Cauldron';
-import { ACTION_BORROW } from '../../src/constants';
-import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT, MOCK_COOK_BORROW } from '../constants';
+import { LiquidateCall, LogAccrue, LogBorrow } from '../../generated/templates/Cauldron/Cauldron';
+import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT } from '../constants';
 
 export function createLiquidateCall(): LiquidateCall {
     const call: LiquidateCall = changetype<LiquidateCall>(newMockCall());
@@ -15,22 +14,20 @@ export function createLiquidateCall(): LiquidateCall {
     return call;
 }
 
-export function createBorrowCookCall(): CookCall {
-    const call: CookCall = changetype<CookCall>(newMockCall());
-    call.to = CLONE_ADDRESS;
-    call.inputValues = [
-        new ethereum.EventParam('actions', ethereum.Value.fromArray([ethereum.Value.fromI32(ACTION_BORROW)])),
-        new ethereum.EventParam('values', ethereum.Value.fromArray([ethereum.Value.fromI32(0)])),
-        new ethereum.EventParam('datas', ethereum.Value.fromArray([ethereum.Value.fromBytes(MOCK_COOK_BORROW)])),
-    ];
-    return call;
-}
+export function createLogBorrowEvent(): LogBorrow {
+    const logBorrowEvent: LogBorrow = changetype<LogBorrow>(newMockEvent());
 
-export function createBorrowCall(): BorrowCall {
-    const call: BorrowCall = changetype<BorrowCall>(newMockCall());
-    call.to = CLONE_ADDRESS;
-    call.inputValues = [new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)), new ethereum.EventParam('amount', ethereum.Value.fromI32(1000000))];
-    return call;
+    logBorrowEvent.block.number = BLOCK_NUMBER;
+    logBorrowEvent.block.timestamp = BLOCK_TIMESTAMP;
+    logBorrowEvent.address = CLONE_ADDRESS;
+
+    logBorrowEvent.parameters = new Array();
+    logBorrowEvent.parameters.push(new ethereum.EventParam('from', ethereum.Value.fromAddress(MOCK_ACCOUNT)));
+    logBorrowEvent.parameters.push(new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)));
+    logBorrowEvent.parameters.push(new ethereum.EventParam('amount', ethereum.Value.fromI32(1005000)));
+    logBorrowEvent.parameters.push(new ethereum.EventParam('part', ethereum.Value.fromI32(1000000)));
+
+    return logBorrowEvent;
 }
 
 export function createLogAccrueEvent(): LogAccrue {
