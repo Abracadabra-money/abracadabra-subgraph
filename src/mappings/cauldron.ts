@@ -7,11 +7,12 @@ import {
     LogExchangeRate,
     LiquidateCall,
     Cauldron as CauldronTemplate,
+    LogLiquidation,
 } from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron, getOrCreateFinancialCauldronMetricsDailySnapshot } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/get-or-create-collateral';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
-import { updateAccountState, updateLiquidationCount, updateTokenPrice, updateTotalMimBorrowed } from '../helpers/updates';
+import { updateAccountState, updateLiquidation, updateLiquidationCount, updateTokenPrice, updateTotalMimBorrowed } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
 import { updateTokensPrice } from '../helpers/updates/update-tokens-price';
 import { arrayUnique, bigIntToBigDecimal } from '../utils';
@@ -50,15 +51,32 @@ export function handleLogBorrow(event: LogBorrow): void {
     updateFeesGenerated(cauldron, feeAmount, event.block, FeeType.BORROW);
 }
 
+export function handleLogLiquidation(event: LogLiquidation): void {
+    const cauldron = getCauldron(event.address.toHexString());
+    if (!cauldron) return;
+    if (cauldron.liquidationMultiplier.isZero()) return;
+
+    updateLastActive(cauldron, event.block);
+
+    const account = getOrCreateAccount(cauldron, event.params.user.toHexString(), event.block);
+
+    updateLiquidation(cauldron, account, event.block, event.transaction);
+
+    const distributionAmount = event.params.borrowAmount
+        .times(cauldron.liquidationMultiplier)
+        .div(LIQUIDATION_MULTIPLIER_PRECISION)
+        .minus(event.params.borrowAmount)
+        .times(DISTRIBUTION_PART)
+        .div(DISTRIBUTION_PRECISION);
+    updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), event.block, FeeType.LIQUADATION);
+}
+
 export function handleLiquidateCall(call: LiquidateCall): void {
     const cauldron = getCauldron(call.to.toHexString());
     if (!cauldron) return;
     if (cauldron.liquidationMultiplier.isZero()) return;
 
     updateLastActive(cauldron, call.block);
-    const protocol = getOrCreateProtocol();
-    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block);
-    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block);
 
     const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
     const totalBorrowCall = contract.try_totalBorrow();
@@ -74,33 +92,7 @@ export function handleLiquidateCall(call: LiquidateCall): void {
         const borrowAmount = borrowPart.times(totalBorrowElastic).div(totalBorrowBase);
         allBorrowAmount = allBorrowAmount.plus(borrowAmount);
 
-        const accountStateSnapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, call.block, call.transaction);
-        accountStateSnapshot.isLiquidated = true;
-        accountStateSnapshot.liquidationPrice = cauldron.collateralPriceUsd;
-        accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
-        accountStateSnapshot.save();
-
-        protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        protocol.repaidAmount = protocol.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        protocol.save();
-
-        cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        cauldron.repaidAmount = cauldron.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        cauldron.save();
-
-        protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        protocolDailySnapshot.repaidAmount = protocolDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        protocolDailySnapshot.save();
-
-        cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        cauldronDailySnapshot.save();
-    }
-    const accounts = arrayUnique(call.inputs.users);
-
-    for (let i = 0; i < accounts.length; i++) {
-        const account = getOrCreateAccount(cauldron, accounts[i].toHexString(), call.block);
-        updateLiquidationCount(cauldron, account, call.block);
+        updateLiquidation(cauldron, account, call.block, call.transaction);
     }
 
     const distributionAmount = allBorrowAmount

@@ -51,6 +51,7 @@ Cauldron
     ├── LogRepay(indexed address,indexed address,uint256,uint256)
     ├── LogExchangeRate(uint256)
     └── LogAccrue(uint128)
+    └── LogLiquidation(indexed address,indexed address,indexed address,uint256,uint256,uint256)
 └── calls
     ├── liquidate(address[],uint256[],address,address,bytes)
     └── liquidate(address[],uint256[],address,address)

@@ -5,5 +5,6 @@ export * from './update-fees-generated';
 export * from './update-magic-ape-tvl';
 export * from './update-account-state';
 export * from './update-level-finance-rewards';
+export * from './update-liquidation';
 export * from './update-liquidation-count';
 export * from './update-total-mim-borrowed';

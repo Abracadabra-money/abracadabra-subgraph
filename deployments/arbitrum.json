@@ -21,5 +21,6 @@
     "levelFinance": {
         "enable": false
     },
-    "callHandlerSupport": false
+    "callHandlerSupport": false,
+    "hasLegacyCauldrons": true
 }

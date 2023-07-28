@@ -208,10 +208,22 @@ templates:
           handler: handleLogExchangeRate
         - event: LogAccrue(uint128)
           handler: handleLogAccrue
+        {{^callHandlerSupport}}
+        - event: LogLiquidation(indexed address,indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleLogLiquidation
+        {{/callHandlerSupport}}
+        {{#callHandlerSupport}}
+        {{^hasLegacyCauldrons}}
+        - event: LogLiquidation(indexed address,indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleLogLiquidation
+        {{/hasLegacyCauldrons}}
+        {{/callHandlerSupport}}
       {{#callHandlerSupport}}
+      {{#hasLegacyCauldrons}}
       callHandlers:
         - function: liquidate(address[],uint256[],address,address,bytes)
           handler: handleLiquidateCall
         - function: liquidate(address[],uint256[],address,address)
           handler: handleLiquidateCall
+      {{/hasLegacyCauldrons}}
       {{/callHandlerSupport}}
