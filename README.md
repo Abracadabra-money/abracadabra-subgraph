@@ -52,8 +52,6 @@ Cauldron
     ├── LogExchangeRate(uint256)
     └── LogAccrue(uint128)
 └── calls
-    ├── borrow(address,uint256)
-    ├── cook(uint8[],uint256[],bytes[])
     ├── liquidate(address[],uint256[],address,address,bytes)
     └── liquidate(address[],uint256[],address,address)
 
