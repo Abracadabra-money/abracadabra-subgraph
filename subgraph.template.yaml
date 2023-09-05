@@ -208,10 +208,3 @@ templates:
           handler: handleLogExchangeRate
         - event: LogAccrue(uint128)
           handler: handleLogAccrue
-      {{#callHandlerSupport}}
-      callHandlers:
-        - function: liquidate(address[],uint256[],address,address,bytes)
-          handler: handleLiquidateCall
-        - function: liquidate(address[],uint256[],address,address)
-          handler: handleLiquidateCall
-      {{/callHandlerSupport}}

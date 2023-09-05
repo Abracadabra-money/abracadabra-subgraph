@@ -18,6 +18,7 @@ import { arrayUnique, bigIntToBigDecimal } from '../utils';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../helpers/account';
 import { getOrCreateFinancialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../helpers/protocol';
 import { BORROW_OPENING_FEE_PRECISION, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType, BIGDECIMAL_ONE } from '../constants';
+import { isLiquidate } from '../utils/is-liquidate';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -33,7 +34,7 @@ export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
     if (!cauldron) return;
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block, event.transaction);
+    updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block, event.transaction, isLiquidate(event));
     updateTvl(event.block);
 }
 
@@ -50,76 +51,31 @@ export function handleLogBorrow(event: LogBorrow): void {
     updateFeesGenerated(cauldron, feeAmount, event.block, FeeType.BORROW);
 }
 
-export function handleLiquidateCall(call: LiquidateCall): void {
-    const cauldron = getCauldron(call.to.toHexString());
-    if (!cauldron) return;
-    if (cauldron.liquidationMultiplier.isZero()) return;
-
-    updateLastActive(cauldron, call.block);
-    const protocol = getOrCreateProtocol();
-    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(call.block);
-    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, call.block);
-
-    const contract = CauldronTemplate.bind(Address.fromString(cauldron.id));
-    const totalBorrowCall = contract.try_totalBorrow();
-    if (totalBorrowCall.reverted) return;
-
-    const totalBorrowBase = totalBorrowCall.value.getBase();
-    const totalBorrowElastic = totalBorrowCall.value.getElastic();
-    let allBorrowAmount = BigInt.fromI32(0);
-    for (let i = 0; i < call.inputs.users.length; i++) {
-        const account = getOrCreateAccount(cauldron, call.inputs.users[i].toHexString(), call.block);
-        const accountState = getOrCreateAccountState(cauldron, account);
-        const borrowPart = call.inputs.maxBorrowParts[i].gt(accountState.borrowPart) ? accountState.borrowPart : call.inputs.maxBorrowParts[i];
-        const borrowAmount = borrowPart.times(totalBorrowElastic).div(totalBorrowBase);
-        allBorrowAmount = allBorrowAmount.plus(borrowAmount);
-
-        const accountStateSnapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, call.block, call.transaction);
-        accountStateSnapshot.isLiquidated = true;
-        accountStateSnapshot.liquidationPrice = cauldron.collateralPriceUsd;
-        accountStateSnapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
-        accountStateSnapshot.save();
-
-        protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        protocol.repaidAmount = protocol.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        protocol.save();
-
-        cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        cauldron.repaidAmount = cauldron.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        cauldron.save();
-
-        protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        protocolDailySnapshot.repaidAmount = protocolDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        protocolDailySnapshot.save();
-
-        cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(accountStateSnapshot.withdrawAmountUsd);
-        cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(accountStateSnapshot.repaidUsd);
-        cauldronDailySnapshot.save();
-    }
-    const accounts = arrayUnique(call.inputs.users);
-
-    for (let i = 0; i < accounts.length; i++) {
-        const account = getOrCreateAccount(cauldron, accounts[i].toHexString(), call.block);
-        updateLiquidationCount(cauldron, account, call.block);
-    }
-
-    const distributionAmount = allBorrowAmount
-        .times(cauldron.liquidationMultiplier)
-        .div(LIQUIDATION_MULTIPLIER_PRECISION)
-        .minus(allBorrowAmount)
-        .times(DISTRIBUTION_PART)
-        .div(DISTRIBUTION_PRECISION);
-    updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), call.block, FeeType.LIQUADATION);
-}
-
 export function handleLogRepay(event: LogRepay): void {
     const cauldron = getCauldron(event.address.toHexString());
     if (!cauldron) return;
+    const account = getOrCreateAccount(cauldron, event.params.to.toHexString(), event.block);
+    const isLiquidationTx = isLiquidate(event);
+
     updateLastActive(cauldron, event.block);
     updateTokensPrice(event.block);
-    updateAccountState(cauldron, event.params.to.toHexString(), EventType.REPAY, event.params.part, event.block, event.transaction);
+    updateAccountState(cauldron, account.id, EventType.REPAY, event.params.part, event.block, event.transaction, isLiquidationTx);
     updateTvl(event.block);
     updateTotalMimBorrowed(event.block);
+
+    if (isLiquidationTx) {
+        updateLiquidationCount(cauldron, account, event.block);
+
+        if (cauldron.liquidationMultiplier.isZero()) return;
+        const distributionAmount = event.params.amount
+            .times(cauldron.liquidationMultiplier)
+            .div(LIQUIDATION_MULTIPLIER_PRECISION)
+            .minus(event.params.amount)
+            .times(DISTRIBUTION_PART)
+            .div(DISTRIBUTION_PRECISION);
+
+        updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), event.block, FeeType.LIQUADATION);
+    }
 }
 
 export function handleLogExchangeRate(event: LogExchangeRate): void {
