@@ -11,18 +11,18 @@ export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block:
         account.save();
 
         const cauldronDailySnapshot = getOrCreateUsageCauldronMetricsDailySnapshot(cauldron, block);
-        cauldronDailySnapshot.cumulativeUniqueUsers += 1;
+        cauldronDailySnapshot.cumulativeUniqueUsers = cauldronDailySnapshot.cumulativeUniqueUsers + 1;
         cauldronDailySnapshot.save();
 
-        cauldron.cumulativeUniqueUsers += 1;
+        cauldron.cumulativeUniqueUsers = cauldron.cumulativeUniqueUsers + 1;
         cauldron.save();
 
         const protocol = getOrCreateProtocol();
-        protocol.cumulativeUniqueUsers += 1;
+        protocol.cumulativeUniqueUsers = protocol.cumulativeUniqueUsers + 1;
         protocol.save();
 
         const protocolDailySnapshot = getOrCreateUsageProtocolMetricsDailySnapshot(block);
-        protocolDailySnapshot.cumulativeUniqueUsers += 1;
+        protocolDailySnapshot.cumulativeUniqueUsers = protocolDailySnapshot.cumulativeUniqueUsers + 1;
         protocolDailySnapshot.save();
     }
     return account;

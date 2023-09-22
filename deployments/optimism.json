@@ -16,6 +16,5 @@
     },
     "levelFinance": {
         "enable": false
-    },
-    "callHandlerSupport": true
+    }
 }

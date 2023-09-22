@@ -4,8 +4,21 @@ import { EventType } from '../../constants';
 import { bigIntToBigDecimal, getLiquidationPrice } from '../../utils';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../account';
 import { getOrCreateCollateral } from '../get-or-create-collateral';
+import { getOrCreateFinancialProtocolMetricsDailySnapshot, getOrCreateProtocol } from '../protocol';
+import { getOrCreateFinancialCauldronMetricsDailySnapshot } from '../cauldron';
 
-export function updateAccountState(cauldron: Cauldron, accountId: string, eventType: string, amount: BigInt, block: ethereum.Block, transaction: ethereum.Transaction): void {
+export function updateAccountState(
+    cauldron: Cauldron,
+    accountId: string,
+    eventType: string,
+    amount: BigInt,
+    block: ethereum.Block,
+    transaction: ethereum.Transaction,
+    isLiquidate: boolean = false,
+): void {
+    const protocol = getOrCreateProtocol();
+    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(block);
+    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, block);
     const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
     const account = getOrCreateAccount(cauldron, accountId, block);
     const accountState = getOrCreateAccountState(cauldron, account);
@@ -32,16 +45,42 @@ export function updateAccountState(cauldron: Cauldron, accountId: string, eventT
     snapshot.collateralShare = accountState.collateralShare;
     snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
 
+    if (isLiquidate) {
+        snapshot.isLiquidated = true;
+    }
+
     if (eventType == EventType.WITHDRAW) {
         snapshot.withdrawAmount = snapshot.withdrawAmount.plus(amount);
-        snapshot.withdrawAmountUsd = snapshot.withdrawAmountUsd.plus(bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd));
+
+        const collateralWithdrawAmountUsd = bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd);
+        snapshot.withdrawAmountUsd = snapshot.withdrawAmountUsd.plus(collateralWithdrawAmountUsd);
+
+        if (isLiquidate) {
+            protocol.liquidationAmountUsd = protocol.liquidationAmountUsd.plus(collateralWithdrawAmountUsd);
+            cauldron.liquidationAmountUsd = cauldron.liquidationAmountUsd.plus(collateralWithdrawAmountUsd);
+            protocolDailySnapshot.liquidationAmountUsd = protocolDailySnapshot.liquidationAmountUsd.plus(collateralWithdrawAmountUsd);
+            cauldronDailySnapshot.liquidationAmountUsd = cauldronDailySnapshot.liquidationAmountUsd.plus(collateralWithdrawAmountUsd);
+        }
     }
 
     if (eventType == EventType.REPAY) {
         snapshot.repaid = snapshot.repaid.plus(amount);
-        snapshot.repaidUsd = snapshot.repaidUsd.plus(bigIntToBigDecimal(amount));
+
+        const mimRepay = bigIntToBigDecimal(amount);
+        snapshot.repaidUsd = snapshot.repaidUsd.plus(mimRepay);
+
+        if (isLiquidate) {
+            protocol.repaidAmount = protocol.repaidAmount.plus(mimRepay);
+            cauldron.repaidAmount = cauldron.repaidAmount.plus(mimRepay);
+            protocolDailySnapshot.repaidAmount = protocolDailySnapshot.repaidAmount.plus(mimRepay);
+            cauldronDailySnapshot.repaidAmount = cauldronDailySnapshot.repaidAmount.plus(mimRepay);
+        }
     }
 
+    protocol.save();
+    protocolDailySnapshot.save();
+    cauldronDailySnapshot.save();
+    cauldron.save();
     snapshot.save();
 
     accountState.lastAction = snapshot.id;
