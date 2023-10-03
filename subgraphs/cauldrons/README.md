@@ -54,15 +54,4 @@ Cauldron
 └── calls
     ├── liquidate(address[],uint256[],address,address,bytes)
     └── liquidate(address[],uint256[],address,address)
-
-MagicApe
-└── events
-    ├── ClaimRewards(indexed address,uint256,address)
-    ├── Deposit(indexed address,uint256,address)
-    ├── Deposit(indexed address,indexed address,uint256,uint256)
-    └── Withdraw(indexed address,indexed address,indexed address,uint256,uint256)
-
-MagicGlp
-└── events
-    └── Transfer(indexed address,indexed address,uint256)
 ```

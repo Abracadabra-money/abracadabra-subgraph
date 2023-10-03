@@ -1,6 +1,6 @@
-import { MagicGlp } from '../../../generated/schema';
+import { MagicGlp } from '../../generated/schema';
 import { BIGDECIMAL_ZERO } from 'misc';
-import { MAGIC_GLP_ADDRESS } from '../../constants';
+import { MAGIC_GLP_ADDRESS } from '../constants';
 
 export function getOrCreateMagicGlp(): MagicGlp {
     let magicGlp = MagicGlp.load(MAGIC_GLP_ADDRESS);

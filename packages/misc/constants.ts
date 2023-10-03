@@ -17,3 +17,11 @@ export const BIGINT_ONE_HUNDRED = BigInt.fromI32(100);
 export const BIGDECIMAL_ZERO = new BigDecimal(BIGINT_ZERO);
 export const BIGDECIMAL_ONE = new BigDecimal(BIGINT_ONE);
 export const BIGDECIMAL_ONE_HUNDRED = new BigDecimal(BIGINT_ONE_HUNDRED);
+
+// Date/Time
+export const SECONDS_PER_HOUR = 60 * 60; // 360
+export const SECONDS_PER_DAY = 60 * 60 * 24; // 86400
+export const SECONDS_PER_YEAR = new BigDecimal(BigInt.fromI32(60 * 60 * 24 * 365));
+export const MS_PER_DAY = new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000));
+export const DAYS_PER_YEAR = new BigDecimal(BigInt.fromI32(365));
+export const MS_PER_YEAR = DAYS_PER_YEAR.times(new BigDecimal(BigInt.fromI32(24 * 60 * 60 * 1000)));

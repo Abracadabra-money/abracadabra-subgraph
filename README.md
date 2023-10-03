@@ -10,10 +10,10 @@ This repository contains multiple subgraphs:
 
 - [blocks](./subgraphs/blocks/README.md)
 - [cauldrons](./subgraphs/cauldrons/README.md)
-- [cauldrons](./subgraphs/cauldrons/README.md)
 - [magic-ape](./subgraphs/magic-ape/README.md)
 - [magic-glp](./subgraphs/magic-glp/README.md)
 - [level-finance](./subgraphs/level-finance/README.md)
+- [beam](./subgraphs/beam/README.md)
 
 ## Subgraphs
 
@@ -26,6 +26,8 @@ This repository contains multiple subgraphs:
 4. **Magic GLP**: Tracks Magic GLP rewards
 
 5. **Level Finance**: Tracks Level Finance rewards
+
+6. **Beam**: Tracks Beam
     
 
 ## Build

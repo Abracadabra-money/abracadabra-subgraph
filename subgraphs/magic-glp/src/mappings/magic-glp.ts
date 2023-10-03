@@ -1,6 +1,6 @@
 import { Address } from '@graphprotocol/graph-ts';
 import { Transfer } from '../../generated/MagicGlp/WETH';
-import { getOrCreateMagicGlp } from '../helpers/magic-glp/get-or-create-magic-glp';
+import { getOrCreateMagicGlp } from '../helpers/get-or-create-magic-glp';
 import { bigIntToBigDecimal } from 'misc';
 import { MAGIC_GLP_ADDRESS } from '../constants';
 

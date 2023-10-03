@@ -1,6 +1,5 @@
 import { Deposit, Withdraw } from '../../generated/MagicApe/MagicApe';
-import { updateMagicApeTvl } from '../helpers/updates';
-import { updateMagicApePrice } from '../helpers/updates/update-magic-ape-price';
+import { updateMagicApeTvl, updateMagicApePrice } from '../helpers/updates';
 
 export function handleLogDeposit(event: Deposit): void {
     updateMagicApeTvl(event.block);
