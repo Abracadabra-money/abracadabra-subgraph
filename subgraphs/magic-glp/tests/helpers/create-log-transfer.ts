@@ -1,5 +1,5 @@
 import { Address, ethereum } from '@graphprotocol/graph-ts';
-import { Transfer, } from '../../generated/MagicGlp/WETH';
+import { Transfer } from '../../generated/MagicGlp/WETH';
 import { newMockEvent } from 'matchstick-as/assembly';
 import { BIGINT_ZERO, ZERO_ADDRESS } from 'misc';
 
@@ -16,5 +16,4 @@ export function createLogAccrueEvent(from: Address, to: Address, amount: i32): T
     logTransfer.parameters.push(new ethereum.EventParam('amount', ethereum.Value.fromI32(amount)));
 
     return logTransfer;
-
 }
