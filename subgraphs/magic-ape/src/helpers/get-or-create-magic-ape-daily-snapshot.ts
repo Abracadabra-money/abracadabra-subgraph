@@ -1,9 +1,9 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from '@graphprotocol/graph-ts';
 import { MagicApeDailySnapshot } from '../../generated/schema';
 import { SECONDS_PER_DAY, BIGDECIMAL_ZERO } from 'misc';
 import { getOrCreateMagicApe } from './get-or-create-magic-ape';
 
-export function getOrCreateMagicApeDailySnapshot(block: ethereum.Block): MagicApeDailySnapshot{
+export function getOrCreateMagicApeDailySnapshot(block: ethereum.Block): MagicApeDailySnapshot {
     const timestamp = block.timestamp.toI32();
     const dayID = timestamp / SECONDS_PER_DAY;
     const dayStartTimestamp = dayID * SECONDS_PER_DAY;

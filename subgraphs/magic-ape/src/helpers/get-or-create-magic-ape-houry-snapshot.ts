@@ -1,9 +1,9 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from '@graphprotocol/graph-ts';
 import { MagicApeHourySnapshot } from '../../generated/schema';
 import { BIGDECIMAL_ZERO, SECONDS_PER_HOUR } from 'misc';
 import { getOrCreateMagicApe } from './get-or-create-magic-ape';
 
-export function getOrCreateMagicApeHourySnapshot(block: ethereum.Block): MagicApeHourySnapshot{
+export function getOrCreateMagicApeHourySnapshot(block: ethereum.Block): MagicApeHourySnapshot {
     const timestamp = block.timestamp.toI32();
     const hourIndex = timestamp / SECONDS_PER_HOUR; // get unique hour within unix history
     const hourStartUnix = hourIndex * SECONDS_PER_HOUR; // want the rounded effect
