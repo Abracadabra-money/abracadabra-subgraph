@@ -19,8 +19,6 @@ type Protocol @entity {
 
   magicApe: MagicApe @derivedFrom(field: "protocol")
 
-  magicGlp: MagicGlp @derivedFrom(field: "protocol")
-
   levelFinance: LevelFinance @derivedFrom(field: "protocol")
 
   " Number of cumulative unique users "
@@ -312,17 +310,6 @@ type MagicApePriceDailySnapshot @entity {
 
   " Timestamp of this snapshot "
   timestamp: BigInt!
-}
-
-type MagicGlp @entity {
-  " Smart contract address of the token "
-  id: ID!
-
-  " The protocol this cauldron belongs to "
-  protocol: Protocol!
-
-  " Total MagicApe rewards "
-  totalRewards: BigDecimal!
 }
 
 type Account @entity {

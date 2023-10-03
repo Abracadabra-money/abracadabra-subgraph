@@ -1,0 +1,7 @@
+{
+    "name": "misc",
+    "version": "0.0.0",
+    "dependencies": {
+      "@graphprotocol/graph-ts": "^0.31.0"
+    }
+}

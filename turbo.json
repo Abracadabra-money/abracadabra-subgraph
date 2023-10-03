@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "generate": {
+      "outputs": [
+        "generated",
+        "subgraph.yaml",
+        "src/constants/index.ts"
+      ],
+      "dependsOn": ["$NETWORK"]
+    },
+    "build": {
+      "outputs": ["build/**"],
+      "dependsOn": ["generate", "$NETWORK"]
+    },
+    "test": {
+      "outputs": []
+    }
+  },
+  "globalDependencies": ["$NETWORK"]
+}
