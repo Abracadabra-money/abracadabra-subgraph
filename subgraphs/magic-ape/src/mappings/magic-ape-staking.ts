@@ -44,6 +44,11 @@ export function handleLogDeposit(event: Deposit): void {
         .minus(numberToBigDecimals(1))
         .times(numberToBigDecimals(100));
 
+    const magicApe = getOrCreateMagicApe();
+    magicApe.apr = apr;
+    magicApe.apy = apy;
+    magicApe.save();
+
     const dailySnapshot = getOrCreateMagicApeDailySnapshot(event.block);
     dailySnapshot.apr = apr;
     dailySnapshot.apy = apy;

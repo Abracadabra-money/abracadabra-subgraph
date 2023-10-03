@@ -17,7 +17,7 @@ export function updateMagicApePrice(block: ethereum.Block): void {
         return log.warning('[updateMagicApePrice] MagicApe convertToAssets failed', []);
     }
 
-    const convertToAssets = bigIntToBigDecimal(convertToAssetsCall.value, DEFAULT_DECIMALS);
+    const convertToAssets = bigIntToBigDecimal(convertToAssetsCall.value);
 
     const dailySnapshot = getOrCreateMagicApeDailySnapshot(block);
     dailySnapshot.magicApe = magicApe.id;

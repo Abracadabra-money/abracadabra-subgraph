@@ -1,5 +1,5 @@
 import { assert, describe, test } from 'matchstick-as/assembly';
-import { createLogAccrueEvent } from './helpers/create-log-transfer';
+import { createLogTransfer } from './helpers/create-log-transfer';
 import { ZERO_ADDRESS, bigIntToBigDecimal } from 'misc';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { MAGIC_GLP_ADDRESS } from '../src/constants';
@@ -10,7 +10,7 @@ describe('Magic GLP', () => {
     test('handleLogTransfer', () => {
         const reward = 1000;
 
-        const logTransfer = createLogAccrueEvent(Address.fromString(ZERO_ADDRESS), Address.fromString(MAGIC_GLP_ADDRESS), reward);
+        const logTransfer = createLogTransfer(Address.fromString(ZERO_ADDRESS), Address.fromString(MAGIC_GLP_ADDRESS), reward);
 
         handleLogTransfer(logTransfer);
 

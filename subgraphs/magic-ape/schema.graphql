@@ -2,6 +2,12 @@ type MagicApe @entity {
     " Smart contract address of the token "
     id: ID!
 
+    " Ape staking apr "
+    apr: BigDecimal!
+
+    " MagicApe staking apy "
+    apy: BigDecimal!
+
     " Total MagicApe rewards "
     totalRewards: BigDecimal!
 

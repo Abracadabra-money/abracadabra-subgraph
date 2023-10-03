@@ -14,7 +14,8 @@
     "prepare:constants": "mustache ../../config/$NETWORK.js src/constants/index.template.ts > src/constants/index.ts",
     "build": "graph build",
     "codegen": "graph codegen",
-    "test": "graph test -r"
+    "test": "graph test -r",
+    "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.53.0",

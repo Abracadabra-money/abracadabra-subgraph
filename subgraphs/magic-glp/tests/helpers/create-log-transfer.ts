@@ -3,7 +3,7 @@ import { Transfer } from '../../generated/MagicGlp/WETH';
 import { newMockEvent } from 'matchstick-as/assembly';
 import { BIGINT_ZERO, ZERO_ADDRESS } from 'misc';
 
-export function createLogAccrueEvent(from: Address, to: Address, amount: i32): Transfer {
+export function createLogTransfer(from: Address, to: Address, amount: i32): Transfer {
     const logTransfer: Transfer = changetype<Transfer>(newMockEvent());
 
     logTransfer.block.number = BIGINT_ZERO;

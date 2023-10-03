@@ -8,6 +8,8 @@ export function getOrCreateMagicApe(): MagicApe {
 
     magicApe = new MagicApe(MAGIC_APE_ADDRESS);
     magicApe.totalRewards = BIGDECIMAL_ZERO;
+    magicApe.apr = BIGDECIMAL_ZERO;
+    magicApe.apy = BIGDECIMAL_ZERO;
     magicApe.save();
 
     return magicApe;
