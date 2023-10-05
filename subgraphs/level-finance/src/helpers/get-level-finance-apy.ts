@@ -1,7 +1,6 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts';
-import { bigIntToBigDecimal } from '../../utils';
-import { MagicLevel } from '../../../generated/LevelFinance/MagicLevel';
-import { BIGDECIMAL_ONE_HUNDRED, DAYS_PER_YEAR } from '../../constants';
+import { bigIntToBigDecimal, BIGDECIMAL_ONE_HUNDRED, DAYS_PER_YEAR } from 'misc';
+import { MagicLevel } from '../../generated/LevelFinance/MagicLevel';
 
 export function getLevelFinanceApy(tranche: Address, rewards: BigInt, priceUsd: BigDecimal): BigDecimal {
     const rewardsUsd = priceUsd.times(bigIntToBigDecimal(rewards));

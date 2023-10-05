@@ -1,0 +1,85 @@
+type LevelFinance @entity {
+  id: ID!
+
+  senior: LevelFinanceSenior @derivedFrom(field: "levelFinance")
+
+  mezzanine: LevelFinanceMezzanine @derivedFrom(field: "levelFinance")
+
+  junior: LevelFinanceJunior @derivedFrom(field: "levelFinance")
+
+  dailySnapshot: [LevelFinanceDailySnapshot!]! @derivedFrom(field: "levelFinance")
+}
+
+type LevelFinanceSenior  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+  
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceMezzanine  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceJunior  @entity {
+  id: ID!
+
+  levelFinance: LevelFinance!
+
+  totalRewards: BigInt!
+
+  lpPriceUsd: BigDecimal!
+}
+
+type LevelFinanceDailySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+
+    # unix timestamp for start of hour
+    timestamp: Int!
+
+    levelFinance: LevelFinance!
+
+    juniorRewards: BigInt!
+
+    juniorApy: BigDecimal!
+
+    seniorRewards: BigInt!
+
+    seniorApy: BigDecimal!
+
+    mezzanineRewards: BigInt!
+
+    mezzanineApy: BigDecimal!
+}
+
+type LevelFinanceHourySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+
+    # unix timestamp for start of hour
+    timestamp: Int!
+
+    levelFinance: LevelFinance!
+
+    juniorRewards: BigInt!
+
+    juniorApy: BigDecimal!
+
+    seniorRewards: BigInt!
+
+    seniorApy: BigDecimal!
+
+    mezzanineRewards: BigInt!
+
+    mezzanineApy: BigDecimal!
+}
