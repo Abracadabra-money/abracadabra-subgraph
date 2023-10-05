@@ -1,16 +1,15 @@
 specVersion: 0.0.4
 description: Blocks
-repository: https://github.com/Abracadabra-money/abracadabra-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: UniswapV3Factory
+    name: BentoBox
     network: {{ network }}
     source:
       address: '{{ blocks.address }}'
       startBlock: {{ blocks.startBlock }}
-      abi: UniswapV3Factory
+      abi: BentoBox
     mapping:
       kind: ethereun/events
       apiVersion: 0.0.6
@@ -19,7 +18,7 @@ dataSources:
       entities:
         - Blocks
       abis:
-        - name: UniswapV3Factory
-          file: ./abis/UniswapV3Factory.json
+        - name: BentoBox
+          file: ./node_modules/abi/BentoBox.json
       blockHandlers:
         - handler: onBlock
