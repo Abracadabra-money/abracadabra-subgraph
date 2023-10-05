@@ -2,9 +2,9 @@ import { BEAM_ADDRESS } from '../constants';
 import { Beam } from '../../generated/schema';
 import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
 
-export function getOrCreateBeam(): Beam{
+export function getOrCreateBeam(): Beam {
     let beam = Beam.load(BEAM_ADDRESS);
-    if(beam) return beam;
+    if (beam) return beam;
 
     beam = new Beam(BEAM_ADDRESS);
     beam.feesGenerated = BIGDECIMAL_ZERO;

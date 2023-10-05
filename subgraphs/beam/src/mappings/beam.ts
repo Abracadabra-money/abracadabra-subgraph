@@ -30,7 +30,7 @@ export function handleSendToChain(event: SendToChain): void {
     hourySnapshot.save();
 }
 
-export function handleReceiveFromChain(event: ReceiveFromChain): void{
+export function handleReceiveFromChain(event: ReceiveFromChain): void {
     createBeamReceiveTx(event);
 
     const amount = bigIntToBigDecimal(event.params._amount);

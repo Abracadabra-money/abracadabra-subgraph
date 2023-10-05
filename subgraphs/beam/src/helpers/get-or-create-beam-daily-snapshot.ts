@@ -3,7 +3,7 @@ import { BeamDailySnapshot } from '../../generated/schema';
 import { SECONDS_PER_DAY, BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
 import { getOrCreateBeam } from './get-or-create-beam';
 
-export function getOrCreateBeamDailySnapshot(block: ethereum.Block): BeamDailySnapshot{
+export function getOrCreateBeamDailySnapshot(block: ethereum.Block): BeamDailySnapshot {
     const timestamp = block.timestamp.toI32();
     const hourIndex = timestamp / SECONDS_PER_DAY; // get unique hour within unix history
     const hourStartUnix = hourIndex * SECONDS_PER_DAY; // want the rounded effect

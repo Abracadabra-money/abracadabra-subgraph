@@ -3,7 +3,7 @@ import { BeamReceiveTx } from '../../generated/schema';
 import { getOrCreateBeam } from './get-or-create-beam';
 import { bigIntToBigDecimal } from 'misc';
 
-export function createBeamReceiveTx(event: ReceiveFromChain): void{
+export function createBeamReceiveTx(event: ReceiveFromChain): void {
     const beam = getOrCreateBeam();
 
     const tx = new BeamReceiveTx(event.transaction.hash.toHexString());

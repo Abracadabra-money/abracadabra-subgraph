@@ -3,7 +3,7 @@ import { BeamHourySnapshot } from '../../generated/schema';
 import { SECONDS_PER_HOUR, BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
 import { getOrCreateBeam } from './get-or-create-beam';
 
-export function getOrCreateBeamHourySnapshot(block: ethereum.Block): BeamHourySnapshot{
+export function getOrCreateBeamHourySnapshot(block: ethereum.Block): BeamHourySnapshot {
     const timestamp = block.timestamp.toI32();
     const hourIndex = timestamp / SECONDS_PER_HOUR; // get unique hour within unix history
     const hourStartUnix = hourIndex * SECONDS_PER_HOUR; // want the rounded effect
