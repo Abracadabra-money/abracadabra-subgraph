@@ -23,5 +23,7 @@ export function getOrCreateMagicApeHourySnapshot(block: ethereum.Block): MagicAp
     snapshot.price = BIGDECIMAL_ZERO;
     snapshot.timestamp = hourStartUnix;
 
+    snapshot.save();
+
     return snapshot;
 }

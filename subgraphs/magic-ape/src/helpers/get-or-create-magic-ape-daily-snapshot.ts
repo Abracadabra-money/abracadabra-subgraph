@@ -23,5 +23,7 @@ export function getOrCreateMagicApeDailySnapshot(block: ethereum.Block): MagicAp
     snapshot.price = BIGDECIMAL_ZERO;
     snapshot.timestamp = dayStartTimestamp;
 
+    snapshot.save();
+
     return snapshot;
 }

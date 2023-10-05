@@ -9,4 +9,13 @@ module.exports = {
         },
         apeOracleAddress: '0x64422a1337082Bf99E6052fF52684374Eb1A7fB7',
     },
+    beam: {
+        address: "0x439a5f0f5E8d149DDA9a0Ca367D4a8e4D6f83C10",
+        startBlock: 17414874,
+        wrapper: {
+            enable: true,
+            address: '0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC',
+            startBlock: 17790681,
+        }
+    }
 };

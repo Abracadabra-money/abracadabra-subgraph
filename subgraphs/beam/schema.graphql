@@ -1,0 +1,94 @@
+type Beam @entity {
+    # Beam address #
+    id: ID!
+    # Total Beam fees generated #
+    feesGenerated: BigDecimal!
+    # Total Beam volume #
+    volume: BigDecimal!
+    # Send tx count #
+    sendCount: BigInt!
+    # Send Mim volume  #
+    sendVolume: BigDecimal!
+    # Receive Mim volume #
+    receiveCount: BigInt!
+    # Receive tx count #
+    receiveVolume: BigDecimal!
+    
+    dailySnapshots: [BeamDailySnapshot!]! @derivedFrom(field: "beam")
+    hourySnapshots: [BeamHourySnapshot!]! @derivedFrom(field: "beam")
+    sendTxs: [BeamSendTx!]! @derivedFrom(field: "beam")
+    receiveTxs: [BeamReceiveTx!]! @derivedFrom(field: "beam")
+}
+
+type BeamDailySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+    " Beam ref "
+    beam: Beam!
+    # Total Beam fees generated #
+    feesGenerated: BigDecimal!
+    # Total Beam volume #
+    volume: BigDecimal!
+    # Send tx count #
+    sendCount: BigInt!
+    # Send Mim volume  #
+    sendVolume: BigDecimal!
+    # Receive Mim volume #
+    receiveCount: BigInt!
+    # Receive tx count #
+    receiveVolume: BigDecimal!
+}
+
+type BeamHourySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # unix timestamp for start of hour
+    timestamp: Int!
+    " Beam ref "
+    beam: Beam!
+    # Total Beam fees generated #
+    feesGenerated: BigDecimal!
+    # Total Beam volume #
+    volume: BigDecimal!
+    # Send tx count #
+    sendCount: BigInt!
+    # Send Mim volume  #
+    sendVolume: BigDecimal!
+    # Receive Mim volume #
+    receiveCount: BigInt!
+    # Receive tx count #
+    receiveVolume: BigDecimal!
+} 
+
+type BeamSendTx @entity(immutable: false) {
+    # tx hash
+    id: ID!
+    " Beam ref "
+    beam: Beam!
+    # destination tx
+    dstChainId: Int!
+    # from  address
+    from: String!
+    # to  address
+    to: String!
+    # Mim was send
+    amount: BigDecimal!
+    blockNumber: BigInt!
+    timestamp: BigInt!
+}
+
+type BeamReceiveTx @entity(immutable: false) {
+    # tx hash
+    id: ID!
+    " Beam ref "
+    beam: Beam!
+    srcChainId: Int!
+    # to  address
+    to: String!
+    # Mim was send
+    amount: BigDecimal!
+    blockNumber: BigInt!
+    timestamp: BigInt!
+}
