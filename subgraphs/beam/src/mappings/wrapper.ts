@@ -17,6 +17,6 @@ export function handleLogWrapperFeeWithdrawn(event: LogWrapperFeeWithdrawn): voi
     dailySnapshot.save();
 
     const hourySnapshot = getOrCreateBeamHourySnapshot(event.block);
-    hourySnapshot.feesGenerated = dailySnapshot.feesGenerated.plus(amount);
+    hourySnapshot.feesGenerated = hourySnapshot.feesGenerated.plus(amount);
     hourySnapshot.save();
 }

@@ -3,7 +3,7 @@
 ## Methods that are tracked
 
 ```
-MagicGlp
+WETH
 └── events
     └── Transfer(indexed address,indexed address,uint256)
 ```
