@@ -50,7 +50,7 @@ export function updateLevelFinanceRewards(vault: Address, assetAmount: BigInt, b
 
     const mezzanineApy = getLevelFinanceApy(Address.fromString(MAGIC_LLP_MEZZANINE), dailySnapshot.mezzanineRewards, mezzanine.lpPriceUsd);
     dailySnapshot.mezzanineApy = mezzanineApy;
-    hourySnapshot.mezzanineApy = juniorApy;
+    hourySnapshot.mezzanineApy = mezzanineApy;
 
     const seniorApy = getLevelFinanceApy(Address.fromString(MAGIC_LLP_SENIOR), dailySnapshot.seniorRewards, senior.lpPriceUsd);
     dailySnapshot.seniorApy = seniorApy;
