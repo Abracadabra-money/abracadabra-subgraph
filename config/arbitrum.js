@@ -1,3 +1,5 @@
+const MIM_ADDRESS = '0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A';
+
 module.exports = {
     network: 'arbitrum-one',
     magicGlp: {
@@ -12,5 +14,18 @@ module.exports = {
             address: '0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC',
             startBlock: 115739967,
         },
+    },
+    cauldrons: {
+        bentoBox: {
+            enable: true,
+            address: '0x74c764D41B77DBbb4fe771daB1939B00b146894A',
+            startBlock: 229409,
+        },
+        degenBox: {
+            enable: true,
+            address: '0x7C8FeF8eA9b1fE46A7689bfb8149341C90431D38',
+            startBlock: 15370694,
+        },
+        mimAddress: MIM_ADDRESS,
     },
 };

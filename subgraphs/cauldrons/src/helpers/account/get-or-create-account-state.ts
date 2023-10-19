@@ -1,5 +1,5 @@
 import { Account, AccountState, Cauldron } from '../../../generated/schema';
-import { BIGINT_ZERO } from '../../constants';
+import { BIGINT_ZERO } from 'misc';
 
 export function getOrCreateAccountState(cauldron: Cauldron, account: Account): AccountState {
     const id = `${cauldron.id}-${account.id}`;

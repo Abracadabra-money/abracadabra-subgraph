@@ -1,3 +1,5 @@
+const MIM_ADDRESS = '0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba';
+
 module.exports = {
     network: 'bsc',
     beam: {
@@ -21,5 +23,18 @@ module.exports = {
         magicLlpSenior: '0xD8Cbd5b22D7D37c978609e4e394cE8B9C003993b',
         magicLlpMezzanine: '0x87aC701ba8acb1966526375da68A692CebB8AF75',
         magicLlpJunior: '0xC094c2a5C349eAd7839C1805126Da71Cc1cc1A39',
+    },
+    cauldrons: {
+        bentoBox: {
+            enable: true,
+            address: '0xF5BCE5077908a1b7370B9ae04AdC565EBd643966',
+            startBlock: 5926250,
+        },
+        degenBox: {
+            enable: true,
+            address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',
+            startBlock: 12750809,
+        },
+        mimAddress: MIM_ADDRESS,
     },
 };

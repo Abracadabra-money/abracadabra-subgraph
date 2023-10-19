@@ -1,10 +1,10 @@
 import { Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { afterEach, assert, clearStore, createMockedFunction, describe, test } from 'matchstick-as/assembly/index';
-import { BIGDECIMAL_ZERO, BIGINT_ZERO } from '../../src/constants';
-import { getCauldron } from '../../src/helpers/cauldron';
-import { getOrCreateCollateral } from '../../src/helpers/get-or-create-collateral';
-import { getOrCreateProtocol } from '../../src/helpers/protocol';
-import { handleLogDeploy } from '../../src/mappings/core';
+import { assert, beforeEach, clearStore, createMockedFunction, describe, test } from 'matchstick-as/assembly/index';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
+import { getCauldron } from '../src/helpers/cauldron';
+import { getOrCreateCollateral } from '../src/helpers/collateral';
+import { getOrCreateProtocol } from '../src/helpers/protocol';
+import { handleLogDeploy } from '../src/mappings/core';
 import {
     CAULDRON_ENTITY_TYPE,
     CAULDRON_V1_COLLATERAL_ADDRESS,
@@ -19,18 +19,14 @@ import {
     NON_CAULDRON_V1_DATA,
     NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS,
     PROTOCOL_ENTITY_TYPE,
-} from '../constants';
-import { createLogDeployEvent } from './core-utils';
+} from './constants';
+import { createLogDeploy } from './helpers/create-log-deploy';
 
 describe('handleLogDeploy()', () => {
-    afterEach(() => {
-        clearStore();
-    });
-
     describe('When master contract is not a CauldronV1', () => {
-        test('it creates a new cauldron', () => {
-            const newLogDeployEvent = createLogDeployEvent(NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, NON_CAULDRON_V1_DATA, CLONE_ADDRESS);
-            // Create cauldron mock functions
+        beforeEach(() => {
+            clearStore();
+
             createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)')
                 .withArgs([])
                 .returns([ethereum.Value.fromI32(0)]);
@@ -47,10 +43,13 @@ describe('handleLogDeploy()', () => {
             createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
                 .withArgs([])
                 .returns([ethereum.Value.fromI32(COLLATERAL_DECIMALS)]);
+        });
+
+        test('should create protocol', () => {
+            const newLogDeployEvent = createLogDeploy(NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, NON_CAULDRON_V1_DATA, CLONE_ADDRESS);
 
             handleLogDeploy(newLogDeployEvent);
 
-            // Created protocol
             assert.entityCount(PROTOCOL_ENTITY_TYPE, 1);
             const protocolId = getOrCreateProtocol().id;
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'totalValueLockedUsd', BIGDECIMAL_ZERO.toString());
@@ -58,6 +57,12 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'totalCauldronCount', '1');
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'cumulativeUniqueUsers', '0');
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'liquidationCount', '0');
+        });
+
+        test('should create collateral', () => {
+            const newLogDeployEvent = createLogDeploy(NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, NON_CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
 
             // Created Collateral
             const collateralId = getOrCreateCollateral(NON_CAULDRON_V1_COLLATERAL_ADDRESS).id;
@@ -67,9 +72,18 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'decimals', COLLATERAL_DECIMALS.toString());
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'lastPriceUsd', BIGDECIMAL_ZERO.toString());
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'lastPriceBlockNumber', BIGINT_ZERO.toString());
+        });
+
+        test('should create cauldron', () => {
+            const newLogDeployEvent = createLogDeploy(NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, NON_CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
 
             // Created Cauldron
             const cauldronId = getCauldron(CLONE_ADDRESS.toHexString())!.id;
+            const collateralId = getOrCreateCollateral(NON_CAULDRON_V1_COLLATERAL_ADDRESS).id;
+            const protocolId = getOrCreateProtocol().id;
+
             assert.entityCount(CAULDRON_ENTITY_TYPE, 1);
             assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'masterContract', NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS.toHexString());
             assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'collateral', collateralId);
@@ -95,9 +109,9 @@ describe('handleLogDeploy()', () => {
     });
 
     describe('When master contract is a CauldronV1', () => {
-        test('it creates a new cauldron', () => {
-            const newLogDeployEvent = createLogDeployEvent(CAULDRON_V1_MASTER_CONTRACT_ADDRESS, CAULDRON_V1_DATA, CLONE_ADDRESS);
-            // Create cauldron mock functions
+        beforeEach(() => {
+            clearStore();
+
             createMockedFunction(CLONE_ADDRESS, 'BORROW_OPENING_FEE', 'BORROW_OPENING_FEE():(uint256)').withArgs([]).reverts();
             createMockedFunction(CLONE_ADDRESS, 'oracleData', 'oracleData():(bytes)')
                 .withArgs([])
@@ -112,6 +126,10 @@ describe('handleLogDeploy()', () => {
             createMockedFunction(CAULDRON_V1_COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
                 .withArgs([])
                 .returns([ethereum.Value.fromI32(COLLATERAL_DECIMALS)]);
+        });
+
+        test('should create protocol', () => {
+            const newLogDeployEvent = createLogDeploy(CAULDRON_V1_MASTER_CONTRACT_ADDRESS, CAULDRON_V1_DATA, CLONE_ADDRESS);
 
             handleLogDeploy(newLogDeployEvent);
 
@@ -123,6 +141,12 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'totalCauldronCount', '1');
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'cumulativeUniqueUsers', '0');
             assert.fieldEquals(PROTOCOL_ENTITY_TYPE, protocolId, 'liquidationCount', '0');
+        });
+
+        test('should create collateral', () => {
+            const newLogDeployEvent = createLogDeploy(CAULDRON_V1_MASTER_CONTRACT_ADDRESS, CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
 
             // Created Collateral
             const collateralId = getOrCreateCollateral(CAULDRON_V1_COLLATERAL_ADDRESS).id;
@@ -132,9 +156,18 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'decimals', COLLATERAL_DECIMALS.toString());
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'lastPriceUsd', BIGDECIMAL_ZERO.toString());
             assert.fieldEquals(COLLATERAL_ENTITY_TYPE, collateralId, 'lastPriceBlockNumber', BIGINT_ZERO.toString());
+        });
+
+        test('should create cauldron', () => {
+            const newLogDeployEvent = createLogDeploy(CAULDRON_V1_MASTER_CONTRACT_ADDRESS, CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
 
             // Created Cauldron
             const cauldronId = getCauldron(CLONE_ADDRESS.toHexString())!.id;
+            const collateralId = getOrCreateCollateral(CAULDRON_V1_COLLATERAL_ADDRESS).id;
+            const protocolId = getOrCreateProtocol().id;
+
             assert.entityCount(CAULDRON_ENTITY_TYPE, 1);
             assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'masterContract', CAULDRON_V1_MASTER_CONTRACT_ADDRESS.toHexString());
             assert.fieldEquals(CAULDRON_ENTITY_TYPE, cauldronId, 'collateral', collateralId);

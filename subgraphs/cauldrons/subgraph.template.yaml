@@ -2,15 +2,14 @@ specVersion: 0.0.5
 schema:
   file: ./schema.graphql
 dataSources:
-  # 1. BentoBox (if applicable)
-  {{#bentoBox.enable}}
+  {{#cauldrons.bentoBox.enable}}
   - kind: ethereum
     name: BentoBox
     network: {{network}}
     source:
-      address: "{{ bentoBox.address }}"
+      address: "{{ cauldrons.bentoBox.address }}"
       abi: BentoBox
-      startBlock: {{ bentoBox.startBlock }}
+      startBlock: {{ cauldrons.bentoBox.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -19,30 +18,29 @@ dataSources:
         - LogDeploy
       abis:
         - name: BentoBox
-          file: ./abis/BentoBox.json
+          file: ./node_modules/abi/BentoBox.json
         - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: SymbolBytes
+          file: ./node_modules/abi/ERC20/SymbolBytes.json
+        - name: NameBytes
+          file: ./node_modules/abi/ERC20/NameBytes.json
         - name: Cauldron
           file: ./abis/Cauldron.json
       eventHandlers:
         - event: LogDeploy(indexed address,bytes,indexed address)
           handler: handleLogDeploy
       file: ./src/mappings/core.ts
-  {{/bentoBox.enable}}
+  {{/cauldrons.bentoBox.enable}}
 
-  # 2. DegenBox (if applicable)
-  {{#degenBox.enable}}
+  {{#cauldrons.degenBox.enable}}
   - kind: ethereum
     name: DegenBox
     network: {{network}}
     source:
-      address: "{{ degenBox.address }}"
+      address: "{{ cauldrons.degenBox.address }}"
       abi: DegenBox
-      startBlock: {{ degenBox.startBlock }}
+      startBlock: {{ cauldrons.degenBox.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -51,54 +49,24 @@ dataSources:
         - LogDeploy
       abis:
         - name: DegenBox
-          file: ./abis/DegenBox.json
+          file: ./node_modules/abi/DegenBox.json
         - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: SymbolBytes
+          file: ./node_modules/abi/ERC20/SymbolBytes.json
+        - name: NameBytes
+          file: ./node_modules/abi/ERC20/NameBytes.json
         - name: Cauldron
           file: ./abis/Cauldron.json
       eventHandlers:
         - event: LogDeploy(indexed address,bytes,indexed address)
           handler: handleLogDeploy
       file: ./src/mappings/core.ts
-  {{/degenBox.enable}}
-
-  # 5. LevelFinance (if applicable)
-  {{#levelFinance.enable}}
-  - kind: ethereum
-    name: LevelFinance
-    network: {{network}}
-    source:
-      address: "{{ levelFinance.address }}"
-      abi: MagicLevelHarvestor
-      startBlock: {{ levelFinance.startBlock }}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - LevelFinance
-      abis:
-        - name: LevelFinanceLPToken
-          file: ./abis/LevelFinanceLPToken.json
-        - name: MagicLevelHarvestor
-          file: ./abis/MagicLevelHarvestor.json
-        - name: LevelFinanceLiquidityPool
-          file: ./abis/LevelFinanceLiquidityPool.json
-        - name: MagicLevel
-          file: ./abis/MagicLevel.json
-      eventHandlers:
-        - event: LogHarvest(indexed address,uint256,uint256,uint256)
-          handler: handleLogHarvest
-      file: ./src/mappings/level-finance.ts
-  {{/levelFinance.enable}}
+  {{/cauldrons.degenBox.enable}}
 templates:
   - name: Cauldron
     kind: ethereum/contract
-    network: {{network}}
+    network: {{ network }}
     source:
       abi: Cauldron
     mapping:
@@ -112,11 +80,11 @@ templates:
         - name: Cauldron
           file: ./abis/Cauldron.json
         - name: DegenBox
-          file: ./abis/DegenBox.json
+          file: ./node_modules/abi/DegenBox.json
         - name: ERC20
-          file: ./abis/ERC20.json
+          file: ./node_modules/abi/ERC20/ERC20.json
         - name: Oracle
-          file: ./abis/Oracle.json
+          file: ./node_modules/abi/Oracle.json
       eventHandlers:
         - event: LogAddCollateral(indexed address,indexed address,uint256)
           handler: handleLogAddCollateral

@@ -1,6 +1,6 @@
 import { Account, Cauldron } from '../../../generated/schema';
-import { getOrCreateProtocol, getOrCreateUsageProtocolMetricsDailySnapshot } from '../protocol';
-import { getOrCreateUsageCauldronMetricsDailySnapshot } from '../cauldron';
+import { getOrCreateProtocol, getOrCreateProtocolDailySnapshot, getOrCreateProtocolHourySnapshot } from '../protocol';
+import { getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } from '../cauldron';
 import { ethereum } from '@graphprotocol/graph-ts';
 
 export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block: ethereum.Block): Account {
@@ -10,9 +10,13 @@ export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block:
         account.liquidationCount = 0;
         account.save();
 
-        const cauldronDailySnapshot = getOrCreateUsageCauldronMetricsDailySnapshot(cauldron, block);
+        const cauldronDailySnapshot = getOrCreateCauldronDailySnapshot(cauldron, block);
         cauldronDailySnapshot.cumulativeUniqueUsers = cauldronDailySnapshot.cumulativeUniqueUsers + 1;
         cauldronDailySnapshot.save();
+
+        const cauldronHourySnapshot = getOrCreateCauldronHourySnapshot(cauldron, block);
+        cauldronHourySnapshot.cumulativeUniqueUsers = cauldronHourySnapshot.cumulativeUniqueUsers + 1;
+        cauldronHourySnapshot.save();
 
         cauldron.cumulativeUniqueUsers = cauldron.cumulativeUniqueUsers + 1;
         cauldron.save();
@@ -21,9 +25,13 @@ export function getOrCreateAccount(cauldron: Cauldron, accountId: string, block:
         protocol.cumulativeUniqueUsers = protocol.cumulativeUniqueUsers + 1;
         protocol.save();
 
-        const protocolDailySnapshot = getOrCreateUsageProtocolMetricsDailySnapshot(block);
+        const protocolDailySnapshot = getOrCreateProtocolDailySnapshot(block);
         protocolDailySnapshot.cumulativeUniqueUsers = protocolDailySnapshot.cumulativeUniqueUsers + 1;
         protocolDailySnapshot.save();
+
+        const protocolHourySnapshot = getOrCreateProtocolHourySnapshot(block);
+        protocolHourySnapshot.cumulativeUniqueUsers = protocolHourySnapshot.cumulativeUniqueUsers + 1;
+        protocolHourySnapshot.save();
     }
     return account;
 }

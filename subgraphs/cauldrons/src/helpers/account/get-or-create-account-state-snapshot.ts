@@ -1,6 +1,6 @@
 import { ethereum } from '@graphprotocol/graph-ts';
 import { Account, AccountStateSnapshot, Cauldron, AccountState } from '../../../generated/schema';
-import { BIGINT_ZERO, BIGDECIMAL_ZERO } from '../../constants';
+import { BIGINT_ZERO, BIGDECIMAL_ZERO } from 'misc';
 
 export function getOrCreateAccountStateSnapshot(
     cauldron: Cauldron,

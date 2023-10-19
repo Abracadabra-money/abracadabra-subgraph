@@ -1,16 +1,17 @@
-import { Address, ethereum, log } from '@graphprotocol/graph-ts';
+import { ethereum } from '@graphprotocol/graph-ts';
 import { getOrCreateProtocol } from '../protocol';
-import { getOrCreateFinancialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financial-protocol-metrics-daily-snapshot';
-import { getOrCreateFinancialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financial-cauldron-metrics-daily-snapshot';
-import { BIGDECIMAL_ZERO } from '../../constants';
+import { getOrCreateProtocolDailySnapshot, getOrCreateProtocolHourySnapshot } from '../protocol';
+import { getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } from '../cauldron';
+import { BIGDECIMAL_ZERO } from 'misc';
 import { getCauldron } from '../cauldron';
-import { bigIntToBigDecimal, isDeprecated } from '../../utils';
-import { Cauldron } from '../../../generated/templates/Cauldron/Cauldron';
+import { isDeprecated } from '../../utils';
 
 export function updateTvl(block: ethereum.Block): void {
     const protocol = getOrCreateProtocol();
 
-    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(block);
+    const protocolDailySnapshot = getOrCreateProtocolDailySnapshot(block);
+    const protocolHourySnapshot = getOrCreateProtocolHourySnapshot(block);
+
     let totalValueLockedUsd = BIGDECIMAL_ZERO;
 
     for (let i = 0; i < protocol.cauldronIds.length; i++) {
@@ -25,30 +26,26 @@ export function updateTvl(block: ethereum.Block): void {
             cauldron.save();
         }
 
-        const contract = Cauldron.bind(Address.fromString(cauldron.id));
-
-        const totalCollateralShareCall = contract.try_totalCollateralShare();
-
-        if (totalCollateralShareCall.reverted) {
-            log.warning('[updateTvl] totalCollateralShareCall faild {}', [cauldron.id]);
-            continue;
-        }
-
-        const marketTVL = bigIntToBigDecimal(totalCollateralShareCall.value).times(cauldron.collateralPriceUsd);
+        const marketTVL = cauldron.totalCollateralShare.times(cauldron.collateralPriceUsd);
         totalValueLockedUsd = totalValueLockedUsd.plus(marketTVL);
 
-        const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, block);
+        const cauldronDailySnapshot = getOrCreateCauldronDailySnapshot(cauldron, block);
         cauldronDailySnapshot.totalValueLockedUsd = marketTVL;
         cauldronDailySnapshot.save();
+
+        const cauldronHourySnapshot = getOrCreateCauldronHourySnapshot(cauldron, block);
+        cauldronHourySnapshot.totalValueLockedUsd = marketTVL;
+        cauldronHourySnapshot.save();
 
         cauldron.totalValueLockedUsd = marketTVL;
         cauldron.save();
     }
 
     protocolDailySnapshot.totalValueLockedUsd = totalValueLockedUsd;
-    protocolDailySnapshot.blockNumber = block.number;
-    protocolDailySnapshot.timestamp = block.timestamp;
     protocolDailySnapshot.save();
+
+    protocolHourySnapshot.totalValueLockedUsd = totalValueLockedUsd;
+    protocolHourySnapshot.save();
 
     protocol.totalValueLockedUsd = totalValueLockedUsd;
     protocol.save();

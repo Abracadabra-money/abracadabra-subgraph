@@ -1,6 +1,6 @@
 import { ethereum } from '@graphprotocol/graph-ts';
 import { Cauldron } from '../../generated/schema';
-import { SECONDS_PER_DAY } from '../constants';
+import { SECONDS_PER_DAY } from 'misc';
 
 export function isDeprecated(cauldron: Cauldron, block: ethereum.Block): boolean {
     if (cauldron.deprecated) return false;

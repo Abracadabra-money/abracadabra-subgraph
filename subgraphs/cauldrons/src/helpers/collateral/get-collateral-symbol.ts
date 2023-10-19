@@ -1,12 +1,12 @@
 import { Address } from '@graphprotocol/graph-ts';
 import { ERC20 } from '../../../generated/DegenBox/ERC20';
-import { ERC20SymbolBytes } from '../../../generated/DegenBox/ERC20SymbolBytes';
-import { UNKNOWN_TOKEN_VALUE } from '../../constants';
+import { SymbolBytes } from '../../../generated/DegenBox/SymbolBytes';
+import { UNKNOWN_TOKEN_VALUE } from 'misc';
 import { isNullEthValue } from '../../utils';
 
-export function getTokenSymbol(address: Address): string {
+export function getCollateralSymbol(address: Address): string {
     const contract = ERC20.bind(address);
-    const contractSymbolBytes = ERC20SymbolBytes.bind(address);
+    const contractSymbolBytes = SymbolBytes.bind(address);
 
     // try types string and bytes32 for symbol
     let symbolValue = UNKNOWN_TOKEN_VALUE;

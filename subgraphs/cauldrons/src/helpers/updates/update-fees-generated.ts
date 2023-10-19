@@ -1,13 +1,16 @@
 import { BigDecimal, ethereum } from '@graphprotocol/graph-ts';
 import { Cauldron } from '../../../generated/schema';
-import { getOrCreateFinancialCauldronMetricsDailySnapshot } from '../cauldron/get-or-create-financial-cauldron-metrics-daily-snapshot';
-import { getOrCreateFinancialProtocolMetricsDailySnapshot } from '../protocol/get-or-create-financial-protocol-metrics-daily-snapshot';
+import { getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } from '../cauldron';
+import { getOrCreateProtocolDailySnapshot, getOrCreateProtocolHourySnapshot } from '../protocol';
 import { getOrCreateProtocol } from '../protocol';
 import { FeeType } from '../../constants';
 
 export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, block: ethereum.Block, feeType: string): void {
-    const protocolDailySnapshot = getOrCreateFinancialProtocolMetricsDailySnapshot(block);
-    const cauldronDailySnapshot = getOrCreateFinancialCauldronMetricsDailySnapshot(cauldron, block);
+    const protocolDailySnapshot = getOrCreateProtocolDailySnapshot(block);
+    const protocolHourySnapshot = getOrCreateProtocolHourySnapshot(block);
+
+    const cauldronDailySnapshot = getOrCreateCauldronDailySnapshot(cauldron, block);
+    const cauldronHourySnapshot = getOrCreateCauldronHourySnapshot(cauldron, block);
 
     const protocol = getOrCreateProtocol();
 
@@ -15,25 +18,41 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
     cauldron.save();
 
     protocolDailySnapshot.feesGenerated = protocolDailySnapshot.feesGenerated.plus(amount);
+    protocolHourySnapshot.feesGenerated = protocolHourySnapshot.feesGenerated.plus(amount);
+
     cauldronDailySnapshot.feesGenerated = cauldronDailySnapshot.feesGenerated.plus(amount);
+    cauldronHourySnapshot.feesGenerated = cauldronHourySnapshot.feesGenerated.plus(amount);
+
     protocol.totalFeesGenerated = protocol.totalFeesGenerated.plus(amount);
+    protocol.save();
 
     if (feeType == FeeType.BORROW) {
         protocolDailySnapshot.borrowFeesGenerated = protocolDailySnapshot.borrowFeesGenerated.plus(amount);
+        protocolHourySnapshot.borrowFeesGenerated = protocolHourySnapshot.borrowFeesGenerated.plus(amount);
+
         cauldronDailySnapshot.borrowFeesGenerated = cauldronDailySnapshot.borrowFeesGenerated.plus(amount);
+        cauldronHourySnapshot.borrowFeesGenerated = cauldronHourySnapshot.borrowFeesGenerated.plus(amount);
     }
 
     if (feeType == FeeType.INTEREST) {
         protocolDailySnapshot.interestFeesGenerated = protocolDailySnapshot.interestFeesGenerated.plus(amount);
+        protocolHourySnapshot.interestFeesGenerated = protocolHourySnapshot.interestFeesGenerated.plus(amount);
+
         cauldronDailySnapshot.interestFeesGenerated = cauldronDailySnapshot.interestFeesGenerated.plus(amount);
+        cauldronHourySnapshot.interestFeesGenerated = cauldronHourySnapshot.interestFeesGenerated.plus(amount);
     }
 
     if (feeType == FeeType.LIQUADATION) {
         protocolDailySnapshot.liquidationFeesGenerated = protocolDailySnapshot.liquidationFeesGenerated.plus(amount);
+        protocolHourySnapshot.liquidationFeesGenerated = protocolHourySnapshot.liquidationFeesGenerated.plus(amount);
+
         cauldronDailySnapshot.liquidationFeesGenerated = cauldronDailySnapshot.liquidationFeesGenerated.plus(amount);
+        cauldronHourySnapshot.liquidationFeesGenerated = cauldronHourySnapshot.liquidationFeesGenerated.plus(amount);
     }
 
     protocolDailySnapshot.save();
+    protocolHourySnapshot.save();
+
     cauldronDailySnapshot.save();
-    protocol.save();
+    cauldronHourySnapshot.save();
 }

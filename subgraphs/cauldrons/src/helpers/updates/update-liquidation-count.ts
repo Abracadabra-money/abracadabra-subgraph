@@ -1,7 +1,7 @@
 import { ethereum } from '@graphprotocol/graph-ts';
 import { Account, Cauldron } from '../../../generated/schema';
-import { getOrCreateProtocol, getOrCreateUsageProtocolMetricsDailySnapshot } from '../protocol';
-import { getOrCreateUsageCauldronMetricsDailySnapshot } from '../cauldron';
+import { getOrCreateProtocol, getOrCreateProtocolDailySnapshot, getOrCreateProtocolHourySnapshot } from '../protocol';
+import { getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } from '../cauldron';
 
 export function updateLiquidationCount(cauldron: Cauldron, account: Account, block: ethereum.Block): void {
     const protocol = getOrCreateProtocol();
@@ -14,11 +14,19 @@ export function updateLiquidationCount(cauldron: Cauldron, account: Account, blo
     account.liquidationCount = account.liquidationCount + 1;
     account.save();
 
-    const protocolSnapshot = getOrCreateUsageProtocolMetricsDailySnapshot(block);
-    protocolSnapshot.liquidationCount = protocolSnapshot.liquidationCount + 1;
-    protocolSnapshot.save();
+    const protocolDailySnapshot = getOrCreateProtocolDailySnapshot(block);
+    protocolDailySnapshot.liquidationCount = protocolDailySnapshot.liquidationCount + 1;
+    protocolDailySnapshot.save();
 
-    const cauldronSnapshot = getOrCreateUsageCauldronMetricsDailySnapshot(cauldron, block);
-    cauldronSnapshot.liquidationCount = cauldronSnapshot.liquidationCount + 1;
-    cauldronSnapshot.save();
+    const protocolHourySnapshot = getOrCreateProtocolHourySnapshot(block);
+    protocolHourySnapshot.liquidationCount = protocolHourySnapshot.liquidationCount + 1;
+    protocolHourySnapshot.save();
+
+    const cauldronDailySnapshot = getOrCreateCauldronDailySnapshot(cauldron, block);
+    cauldronDailySnapshot.liquidationCount = cauldronDailySnapshot.liquidationCount + 1;
+    cauldronDailySnapshot.save();
+
+    const cauldronHourySnapshot = getOrCreateCauldronHourySnapshot(cauldron, block);
+    cauldronHourySnapshot.liquidationCount = cauldronHourySnapshot.liquidationCount + 1;
+    cauldronHourySnapshot.save();
 }

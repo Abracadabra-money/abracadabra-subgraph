@@ -17,17 +17,12 @@ type Protocol @entity {
 
   cauldronIds: [String!]!
 
-  levelFinance: LevelFinance @derivedFrom(field: "protocol")
-
   " Number of cumulative unique users "
   cumulativeUniqueUsers: Int!
 
-  " Daily usage metrics for this protocol "
-  usageMetrics: [UsageProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  dailySnapshots: [ProtocolDailySnapshot!]! @derivedFrom(field: "protocol")
 
-  " Daily financial metrics for this protocol "
-  financialMetrics: [FinancialProtocolMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
-
+  hourySnapshots: [ProtocolHourySnapshot!]! @derivedFrom(field: "protocol")
   " Number of times this account has been liquidated "
   liquidationCount: Int!
 
@@ -36,56 +31,62 @@ type Protocol @entity {
   repaidAmount: BigDecimal!
 }
 
-type UsageProtocolMetricsDailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
+type ProtocolDailySnapshot @entity{
+  # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+    " Protocol this snapshot is associated with "
+    protocol: Protocol!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
 
-  " Protocol this snapshot is associated with "
-  protocol: Protocol!
+    totalMimBorrowed: BigDecimal!
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
 
-  " Block number of this snapshot "
-  blockNumber: BigInt!
+    borrowFeesGenerated: BigDecimal!
 
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
+    interestFeesGenerated: BigDecimal!
 
-  " Number of cumulative unique users "
-  cumulativeUniqueUsers: Int!
+    liquidationFeesGenerated: BigDecimal!
 
-  " Number of times this account has been liquidated "
-  liquidationCount: Int!
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
 }
 
-type FinancialProtocolMetricsDailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
+type ProtocolHourySnapshot @entity{
+  # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+    " Protocol this snapshot is associated with "
+    protocol: Protocol!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
 
-  " Protocol this snapshot is associated with "
-  protocol: Protocol!
+    totalMimBorrowed: BigDecimal!
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
 
-  " Block number of this snapshot "
-  blockNumber: BigInt!
+    borrowFeesGenerated: BigDecimal!
 
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
+    interestFeesGenerated: BigDecimal!
 
-  " Current TVL (Total Value Locked) of the entire protocol "
-  totalValueLockedUsd: BigDecimal!
+    liquidationFeesGenerated: BigDecimal!
 
-  totalMimBorrowed: BigDecimal!
+    liquidationAmountUsd: BigDecimal!
 
-  " Amount of fees earned for the entire protocol "
-  feesGenerated: BigDecimal!
-
-  borrowFeesGenerated: BigDecimal!
-
-  interestFeesGenerated: BigDecimal!
-
-  liquidationFeesGenerated: BigDecimal!
-
-  liquidationAmountUsd: BigDecimal!
-
-  repaidAmount: BigDecimal!
+    repaidAmount: BigDecimal!
 }
 
 type Cauldron @entity {
@@ -142,10 +143,10 @@ type Cauldron @entity {
   cumulativeUniqueUsers: Int!
 
   " Daily usage metrics for this protocol "
-  usageMetrics: [UsageCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+  dailySnapshots: [CauldronDailySnapshot!]! @derivedFrom(field: "cauldron")
 
   " Daily financial metrics for this protocol "
-  financialMetrics: [FinancialCauldronMetricsDailySnapshot!]! @derivedFrom(field: "cauldron")
+  hourySnapshots: [CauldronHourySnapshot!]! @derivedFrom(field: "cauldron")
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
@@ -160,58 +161,80 @@ type Cauldron @entity {
   totalValueLockedUsd: BigDecimal!
 
   totalMimBorrowed: BigDecimal!
+
+  totalCollateralShare: BigDecimal!
 }
 
-type UsageCauldronMetricsDailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
+type CauldronDailySnapshot @entity {
+   # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
 
-  " Protocol this snapshot is associated with "
-  cauldron: Cauldron!
+    " Protocol this snapshot is associated with "
+    cauldron: Cauldron!
 
-  " Block number of this snapshot "
-  blockNumber: BigInt!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
 
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
 
-  " Number of cumulative unique users "
-  cumulativeUniqueUsers: Int!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
 
-  " Number of times this account has been liquidated "
-  liquidationCount: Int!
+    totalMimBorrowed: BigDecimal!
+
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
+
+    borrowFeesGenerated: BigDecimal!
+
+    interestFeesGenerated: BigDecimal!
+
+    liquidationFeesGenerated: BigDecimal!
+
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
+
+    totalCollateralShare: BigDecimal!
 }
 
-type FinancialCauldronMetricsDailySnapshot @entity {
-  " ID is # of days since Unix epoch time "
-  id: ID!
+type CauldronHourySnapshot @entity {
+   # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
 
-  " Protocol this snapshot is associated with "
-  cauldron: Cauldron!
+    " Protocol this snapshot is associated with "
+    cauldron: Cauldron!
 
-  " Block number of this snapshot "
-  blockNumber: BigInt!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
 
-  " Timestamp of this snapshot "
-  timestamp: BigInt!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
 
-  " Current TVL (Total Value Locked) of the entire protocol "
-  totalValueLockedUsd: BigDecimal!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
 
-  totalMimBorrowed: BigDecimal!
+    totalMimBorrowed: BigDecimal!
 
-  " Amount of fees earned for the entire protocol "
-  feesGenerated: BigDecimal!
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
 
-  borrowFeesGenerated: BigDecimal!
+    borrowFeesGenerated: BigDecimal!
 
-  interestFeesGenerated: BigDecimal!
+    interestFeesGenerated: BigDecimal!
 
-  liquidationFeesGenerated: BigDecimal!
+    liquidationFeesGenerated: BigDecimal!
 
-  liquidationAmountUsd: BigDecimal!
+    liquidationAmountUsd: BigDecimal!
 
-  repaidAmount: BigDecimal!
+    repaidAmount: BigDecimal!
+
+    totalCollateralShare: BigDecimal!
 }
 
 type Collateral @entity {

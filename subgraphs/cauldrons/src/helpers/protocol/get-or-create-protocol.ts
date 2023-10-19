@@ -1,10 +1,9 @@
-import { dataSource } from '@graphprotocol/graph-ts';
 import { Protocol } from '../../../generated/schema';
-import { BIGDECIMAL_ZERO } from '../../constants';
-import { getBentoBoxAddress } from '../get-bento-box-address';
+import { BIGDECIMAL_ZERO } from 'misc';
+import { BENTOBOX_ADDRESS, DEGENBOX_ADDRESS } from '../../constants';
 
 export function getOrCreateProtocol(): Protocol {
-    const protocolId = getBentoBoxAddress(dataSource.network());
+    const protocolId = BENTOBOX_ADDRESS || DEGENBOX_ADDRESS;
     let protocol = Protocol.load(protocolId);
     if (protocol) return protocol;
     protocol = new Protocol(protocolId);

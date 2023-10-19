@@ -1,10 +1,12 @@
-import { Address, BigInt, Bytes, dataSource, ethereum, log } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, dataSource, log } from '@graphprotocol/graph-ts';
 import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { Cauldron } from '../../../generated/templates';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
-import { BIGDECIMAL_ZERO, BIGINT_ZERO, CAULDRON_V1_BORROW_PARAMETERS, CauldronBorrowParameters } from '../../constants';
-import { getOrCreateCollateral } from '../get-or-create-collateral';
+import { CAULDRON_V1_BORROW_PARAMETERS } from '../../constants';
+import { getOrCreateCollateral } from '../collateral';
 import { getOrCreateProtocol } from '../protocol';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
+import { CauldronDefinition, decodeCauldronInitV1, decodeCauldronInitV2Plus } from '../../utils';
 
 export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
@@ -13,7 +15,7 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
 
     let cauldronDefinition: CauldronDefinition | null = null;
     if (CAULDRON_V1_BORROW_PARAMETERS.has(masterContractChainAddress)) {
-        cauldronDefinition = CauldronDefinition.fromParameters(decodeCauldronInitV1(data), CAULDRON_V1_BORROW_PARAMETERS.get(masterContractChainAddress));
+        cauldronDefinition = CauldronDefinition.fromParameters(decodeCauldronInitV1(data), CAULDRON_V1_BORROW_PARAMETERS.get(masterContractChainAddress)!);
     } else if (!CauldronContract.try_BORROW_OPENING_FEE().reverted) {
         cauldronDefinition = decodeCauldronInitV2Plus(data);
     } else {
@@ -49,6 +51,7 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
     CauldronEntity.repaidAmount = BIGDECIMAL_ZERO;
     CauldronEntity.totalMimBorrowed = BIGDECIMAL_ZERO;
     CauldronEntity.totalValueLockedUsd = BIGDECIMAL_ZERO;
+    CauldronEntity.totalCollateralShare = BIGDECIMAL_ZERO;
 
     CauldronEntity.save();
 
@@ -61,40 +64,4 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
     protocol.cauldronIds = cauldronIds;
 
     protocol.save();
-}
-
-class CauldronCollateralParameters {
-    constructor(public readonly collateral: Address, public readonly oracle: Address) {}
-}
-
-class CauldronDefinition {
-    constructor(
-        public readonly collateral: Address,
-        public readonly oracle: Address,
-        public readonly interestPerSecond: BigInt,
-        public readonly liquidationMultiplier: BigInt,
-        public readonly collaterizationRate: BigInt,
-        public readonly borrowOpeningFee: BigInt,
-    ) {}
-
-    static fromParameters(collateralParamters: CauldronCollateralParameters, borrowParameters: CauldronBorrowParameters): CauldronDefinition {
-        return new CauldronDefinition(
-            collateralParamters.collateral,
-            collateralParamters.oracle,
-            borrowParameters.interestPerSecond,
-            borrowParameters.liquidationMultiplier,
-            borrowParameters.collaterizationRate,
-            borrowParameters.borrowOpeningFee,
-        );
-    }
-}
-
-function decodeCauldronInitV1(data: Bytes): CauldronCollateralParameters {
-    const decoded = ethereum.decode('(address,address, bytes)', data)!.toTuple();
-    return new CauldronCollateralParameters(decoded[0].toAddress(), decoded[1].toAddress());
-}
-
-function decodeCauldronInitV2Plus(data: Bytes): CauldronDefinition {
-    const decoded = ethereum.decode('(address,address, bytes, uint64, uint256, uint256, uint256)', data)!.toTuple();
-    return new CauldronDefinition(decoded[0].toAddress(), decoded[1].toAddress(), decoded[3].toBigInt(), decoded[4].toBigInt(), decoded[5].toBigInt(), decoded[6].toBigInt());
 }

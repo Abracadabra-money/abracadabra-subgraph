@@ -1,7 +1,6 @@
 import { BigInt, ethereum } from '@graphprotocol/graph-ts';
-import { BIGDECIMAL_ZERO, BIGINT_ZERO, BIGDECIMAL_ONE } from '../../constants';
+import { BIGDECIMAL_ZERO, BIGDECIMAL_ONE, bigIntToBigDecimal } from 'misc';
 import { Collateral, Cauldron } from '../../../generated/schema';
-import { bigIntToBigDecimal } from '../../utils';
 
 export function updateTokenPrice(rate: BigInt, collateral: Collateral, cauldron: Cauldron, block: ethereum.Block): void {
     let price = BIGDECIMAL_ZERO;
