@@ -1,0 +1,54 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Beam
+    network: {{network}}
+    source:
+      address: "{{ beam.address }}"
+      abi: LzIndirectOFTV2
+      startBlock: {{ beam.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Beam
+        - BeamDailySnapshot
+        - BeamApeHourySnapshot
+        - BeamSendTx
+        - BeamReceiveTx
+      abis:
+        - name: LzIndirectOFTV2
+          file: ./abis/LzIndirectOFTV2.json
+      eventHandlers:
+        - event: SendToChain(indexed uint16,indexed address,indexed bytes32,uint256)
+          handler: handleSendToChain
+        - event: ReceiveFromChain(indexed uint16,indexed address,uint256)
+          handler: handleReceiveFromChain
+      file: ./src/mappings/beam.ts
+  {{#beam.wrapper.enable}}
+  - kind: ethereum
+    name: Wrapper
+    network: {{network}}
+    source:
+      address: "{{ beam.wrapper.address }}"
+      abi: OFTWrapper
+      startBlock: {{ beam.wrapper.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Beam
+        - BeamDailySnapshot
+        - BeamApeHourySnapshot
+      abis:
+        - name: OFTWrapper
+          file: ./abis/OFTWrapper.json
+      eventHandlers:
+        - event: LogWrapperFeeWithdrawn(address,uint256)
+          handler: handleLogWrapperFeeWithdrawn
+      file: ./src/mappings/wrapper.ts
+  {{/beam.wrapper.enable}}

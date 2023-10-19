@@ -1,0 +1,68 @@
+type MagicApe @entity {
+    " Smart contract address of the token "
+    id: ID!
+
+    " Ape staking apr "
+    apr: BigDecimal!
+
+    " MagicApe staking apy "
+    apy: BigDecimal!
+
+    " Total MagicApe rewards "
+    totalRewards: BigDecimal!
+
+    dailySnapshots: [MagicApeDailySnapshot!]! @derivedFrom(field: "magicApe")
+
+    hourySnapshots: [MagicApeHourySnapshot!]! @derivedFrom(field: "magicApe")
+}
+
+type MagicApeDailySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+
+    " MagicApe ref "
+    magicApe: MagicApe!
+
+    " Ape staking apr "
+    apr: BigDecimal!
+
+    " MagicApe staking apy "
+    apy: BigDecimal!
+
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    " MagicApe Price "
+    price: BigDecimal!
+
+    " Ape rewards"
+    rewards: BigDecimal!
+}
+
+type MagicApeHourySnapshot @entity {
+    # timestamp rounded to current day by dividing by 86400
+    id: ID!
+
+    # unix timestamp for start of hour
+    timestamp: Int!
+
+    " MagicApe ref "
+    magicApe: MagicApe!
+
+    " Ape staking apr "
+    apr: BigDecimal!
+
+    " MagicApe staking apy "
+    apy: BigDecimal!
+
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    " MagicApe Price "
+    price: BigDecimal!
+
+    " Ape rewards"
+    rewards: BigDecimal!
+}

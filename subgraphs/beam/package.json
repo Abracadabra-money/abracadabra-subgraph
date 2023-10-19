@@ -1,0 +1,31 @@
+{
+  "name": "beam",
+  "license": "MIT",
+  "repository": {
+    "url": "Abracadabra-money/abracadabra-subgraph",
+    "directory": "subgraphs/beam"
+  },
+  "files": [
+    "generated"
+  ],
+  "scripts": {
+    "generate": "pnpm run prepare:yaml && pnpm run prepare:constants && pnpm run codegen",
+    "prepare:yaml": "mustache ../../config/$NETWORK.js subgraph.template.yaml > subgraph.yaml",
+    "prepare:constants": "mustache ../../config/$NETWORK.js src/constants/index.template.ts > src/constants/index.ts",
+    "build": "graph build",
+    "codegen": "graph codegen",
+    "test": "graph test -r",
+    "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.53.0",
+    "@graphprotocol/graph-ts": "^0.27.0"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0",
+    "assemblyscript": "^0.19.20",
+    "wabt": "1.0.24",
+    "abi": "workspace:*",
+    "misc": "workspace:*"
+  }
+}

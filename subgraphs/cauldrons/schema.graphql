@@ -1,0 +1,332 @@
+type Protocol @entity {
+  id: ID!
+
+  " Current TVL (Total Value Locked) of the entire protocol "
+  totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
+
+  " Amount of fees earned for the entire protocol "
+  totalFeesGenerated: BigDecimal!
+
+  " Total number of cauldrons "
+  totalCauldronCount: Int!
+
+  " All cauldrons that belong to this protocol "
+  cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
+
+  cauldronIds: [String!]!
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+
+  dailySnapshots: [ProtocolDailySnapshot!]! @derivedFrom(field: "protocol")
+
+  hourySnapshots: [ProtocolHourySnapshot!]! @derivedFrom(field: "protocol")
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
+}
+
+type ProtocolDailySnapshot @entity{
+  # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+    " Protocol this snapshot is associated with "
+    protocol: Protocol!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    totalMimBorrowed: BigDecimal!
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
+
+    borrowFeesGenerated: BigDecimal!
+
+    interestFeesGenerated: BigDecimal!
+
+    liquidationFeesGenerated: BigDecimal!
+
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
+}
+
+type ProtocolHourySnapshot @entity{
+  # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+    " Protocol this snapshot is associated with "
+    protocol: Protocol!
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    totalMimBorrowed: BigDecimal!
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
+
+    borrowFeesGenerated: BigDecimal!
+
+    interestFeesGenerated: BigDecimal!
+
+    liquidationFeesGenerated: BigDecimal!
+
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
+}
+
+type Cauldron @entity {
+  " Smart contract address of the cauldron "
+  id: ID!
+
+  " Master contract address of the cauldron "
+  masterContract: Bytes!
+
+  " The protocol this cauldron belongs to "
+  protocol: Protocol!
+
+  " Name of cauldron "
+  name: String
+
+  " Token that need to be deposited to take a position in cauldron "
+  collateral: Collateral!
+
+  " Creation timestamp "
+  createdTimestamp: BigInt!
+
+  " Creation block number "
+  createdBlockNumber: BigInt!
+
+  " Amount of input token per full share of output token. Only applies when the output token exists (note this is a ratio and not a percentage value, i.e. 1.05 instead of 105%) "
+  exchangeRate: BigInt!
+
+  borrowOpeningFee: BigInt!
+
+  collaterizationRate: BigInt!
+
+  liquidationMultiplier: BigInt!
+
+  interestPerSecond: BigInt!
+
+  " Price per share of input token in USD "
+  collateralPriceUsd: BigDecimal!
+
+  " Is this cauldron active "
+  isActive: Boolean!
+
+  deprecated: Boolean!
+
+  " Last activity in this cauldron "
+  lastActive: BigInt!
+  " Oracle address "
+  oracle: Bytes
+
+  oracleData: String
+  " Amount of fees earned for the entire protocol "
+  totalFeesGenerated: BigDecimal!
+
+  " Number of cumulative unique users "
+  cumulativeUniqueUsers: Int!
+
+  " Daily usage metrics for this protocol "
+  dailySnapshots: [CauldronDailySnapshot!]! @derivedFrom(field: "cauldron")
+
+  " Daily financial metrics for this protocol "
+  hourySnapshots: [CauldronHourySnapshot!]! @derivedFrom(field: "cauldron")
+
+  " All positions in this market "
+  accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
+
+  liquidationAmountUsd: BigDecimal!
+
+  repaidAmount: BigDecimal!
+
+  totalValueLockedUsd: BigDecimal!
+
+  totalMimBorrowed: BigDecimal!
+
+  totalCollateralShare: BigDecimal!
+}
+
+type CauldronDailySnapshot @entity {
+   # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+
+    " Protocol this snapshot is associated with "
+    cauldron: Cauldron!
+
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    totalMimBorrowed: BigDecimal!
+
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
+
+    borrowFeesGenerated: BigDecimal!
+
+    interestFeesGenerated: BigDecimal!
+
+    liquidationFeesGenerated: BigDecimal!
+
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
+
+    totalCollateralShare: BigDecimal!
+}
+
+type CauldronHourySnapshot @entity {
+   # timestamp rounded to current day by dividing by 86400
+    id: ID!
+    # timestamp rounded to current day by dividing by 86400
+    timestamp: Int!
+
+    " Protocol this snapshot is associated with "
+    cauldron: Cauldron!
+
+    " Number of cumulative unique users "
+    cumulativeUniqueUsers: Int!
+
+    " Number of times this account has been liquidated "
+    liquidationCount: Int!
+
+    " Current TVL (Total Value Locked) of the entire protocol "
+    totalValueLockedUsd: BigDecimal!
+
+    totalMimBorrowed: BigDecimal!
+
+    " Amount of fees earned for the entire protocol "
+    feesGenerated: BigDecimal!
+
+    borrowFeesGenerated: BigDecimal!
+
+    interestFeesGenerated: BigDecimal!
+
+    liquidationFeesGenerated: BigDecimal!
+
+    liquidationAmountUsd: BigDecimal!
+
+    repaidAmount: BigDecimal!
+
+    totalCollateralShare: BigDecimal!
+}
+
+type Collateral @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  " Name of the token, mirrored from the smart contract "
+  name: String!
+
+  " Symbol of the token, mirrored from the smart contract "
+  symbol: String!
+
+  " The number of decimal places this token uses, default to 18 "
+  decimals: Int!
+
+  " Optional field to track the price of a token, mostly for caching purposes "
+  lastPriceUsd: BigDecimal!
+
+  " Optional field to track the block number of the last token price "
+  lastPriceBlockNumber: BigInt!
+
+  " Optional field to track the timestamp of the last token price "
+  lastPriceTimestamp: BigInt!
+}
+
+type Account @entity {
+  " { Account address } "
+  id: ID!
+
+  " All positions that belong to this account "
+  states: [AccountState!]! @derivedFrom(field: "account")
+
+  " Number of times this account has been liquidated "
+  liquidationCount: Int!
+}
+
+type AccountState @entity {
+  " { Account address }-{ Cauldron address }"
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  borrowPart: BigInt!
+
+  collateralShare: BigInt!
+
+  lastAction: AccountStateSnapshot
+
+  " Position daily snapshots for open positions "
+  snapshots: [AccountStateSnapshot!]! @derivedFrom(field: "state")
+}
+
+type AccountStateSnapshot @entity {
+  " { Account address }-{ Cauldron address }-{ Transaction hash }"
+  id: ID!
+
+  " Account that owns this position "
+  account: Account!
+
+  " The market in which this position was opened "
+  cauldron: Cauldron!
+
+  state: AccountState!
+
+  borrowPart: BigInt!
+
+  collateralShare: BigInt!
+
+  collateralPriceUsd: BigDecimal!
+
+  liquidationPrice: BigDecimal!
+
+  withdrawAmount: BigInt!
+
+  withdrawAmountUsd: BigDecimal!
+
+  repaid: BigInt!
+
+  repaidUsd: BigDecimal!
+
+  isLiquidated: Boolean!
+
+  " Transaction hash of the transaction that emitted this event "
+  hash: String!
+
+  " Block number of this event "
+  blockNumber: BigInt!
+
+  " Timestamp of this event "
+  timestamp: BigInt!
+}

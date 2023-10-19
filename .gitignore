@@ -3,5 +3,15 @@ node_modules/
 .DS_STORE
 generated
 docker
+subgraphs/**/src/constants/index.ts
 subgraph.yaml
-tests/.*
+.idea
+
+.pnp.*
+**/tests/.*/
+.vscode
+deploy.sh
+
+.turbo
+build/**
+dist/**

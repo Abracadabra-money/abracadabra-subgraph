@@ -1,22 +1,16 @@
 {
     "name": "abracadabra-subgraph",
-    "version": "1.0.0",
-    "license": "UNLICENSED",
+    "version": "2.0.0",
+    "license": "MIT",
     "repository": "https://github.com/Abracadabra-money/abracadabra-subgraph",
+    "workspaces": [
+        "packages/*",
+        "subgraphs/*"
+    ],
     "scripts": {
-        "prepare:arbitrum": "mustache deployments/arbitrum.json subgraph.template.yaml > subgraph.yaml",
-        "prepare:avalanche": "mustache deployments/avalanche.json subgraph.template.yaml > subgraph.yaml",
-        "prepare:bsc": "mustache deployments/bsc.json subgraph.template.yaml > subgraph.yaml",
-        "prepare:ethereum": "mustache deployments/ethereum.json subgraph.template.yaml > subgraph.yaml",
-        "prepare:fantom": "mustache deployments/fantom.json subgraph.template.yaml > subgraph.yaml",
-        "prepare:optimism": "mustache deployments/optimism.json subgraph.template.yaml > subgraph.yaml",
-        "build": "graph build",
-        "codegen": "graph codegen",
-        "prettier": "prettier --loglevel silent --write \"**/*.{md,jsx,tsx,ts,json,html,css,js}\"",
-        "test": "graph test",
-        "coverage": "graph test -- -c",
-        "auth": "graph auth --studio",
-        "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/",
+        "codegen": "turbo run codegen",
+        "build": "turbo run build",
+        "prettier": "prettier --loglevel silent --write \"*/**/*.{js,ts}\"",
         "prepare": "husky install"
     },
     "dependencies": {
@@ -24,9 +18,10 @@
         "@graphprotocol/graph-ts": "^0.31.0"
     },
     "devDependencies": {
+        "commander": "^11.0.0",
         "husky": "^8.0.3",
-        "matchstick-as": "^0.5.2",
         "mustache": "^4.2.0",
-        "prettier": "2.3.1"
+        "prettier": "2.3.1",
+        "turbo": "^1.10.13"
     }
 }
