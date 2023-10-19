@@ -1,4 +1,5 @@
 # Level finance
+[![Tests Level Finance Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml)
 
 ## Methods that are tracked
 

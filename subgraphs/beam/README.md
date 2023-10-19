@@ -1,4 +1,5 @@
 # Beam
+[![Tests Beam Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml)
 
 ## Methods that are tracked
 

@@ -1,19 +1,17 @@
 # Abracadabra Subgraph
 
-[![Tests](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/tests.yml)
-
 TheGraph exposes a GraphQL endpoint to query the events and entities within Abracadabra ecosystem.
 
 Currently, there are multiple subgraphs, but additional subgraphs can be added to this repository, following the current architecture.
 
 This repository contains multiple subgraphs:  
 
-- [blocks](./subgraphs/blocks/README.md)
-- [cauldrons](./subgraphs/cauldrons/README.md)
-- [magic-ape](./subgraphs/magic-ape/README.md)
-- [magic-glp](./subgraphs/magic-glp/README.md)
-- [level-finance](./subgraphs/level-finance/README.md)
-- [beam](./subgraphs/beam/README.md)
+- [blocks](./subgraphs/blocks/README.md) [![Tests Block Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/blocks-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/blocks-tests.yml)
+- [cauldrons](./subgraphs/cauldrons/README.md) [![Tests Cauldrons Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/cauldrons-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/cauldrons-tests.yml)
+- [magic-ape](./subgraphs/magic-ape/README.md) [![Tests Magic Ape Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-ape-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-ape-tests.yml)
+- [magic-glp](./subgraphs/magic-glp/README.md) [![Tests Magic Glp Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-glp-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-glp-tests.yml)
+- [level-finance](./subgraphs/level-finance/README.md) [![Tests Level Finance Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml)
+- [beam](./subgraphs/beam/README.md) [![Tests Beam Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml)
 
 ## Subgraphs
 

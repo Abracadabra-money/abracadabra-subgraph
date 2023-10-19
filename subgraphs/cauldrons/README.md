@@ -1,4 +1,5 @@
 # Abracadabra Cauldrons
+[![Tests Cauldrons Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/cauldrons-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/cauldrons-tests.yml)
 
 ## Whitelisted deployers
 

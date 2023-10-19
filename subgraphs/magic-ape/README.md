@@ -1,4 +1,5 @@
 # Magic APE
+[![Tests Magic Ape Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-ape-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-ape-tests.yml)
 
 ## Methods that are tracked
 
