@@ -1,7 +1,14 @@
 const MIM_ADDRESS = '0x130966628846bfd36ff31a822705796e8cb8c18d';
 
+const BENTOBOX_ADDRESS = '0xf4F46382C2bE1603Dc817551Ff9A7b333Ed1D18f';
+const BENTOBOX_START_BLOCK = 3621838;
+
 module.exports = {
     network: 'avalanche',
+    blocks: {
+        address: BENTOBOX_ADDRESS,
+        startBlock: BENTOBOX_START_BLOCK,
+    },
     magicGlp: {
         address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
         startBlock: 27525580,
@@ -18,8 +25,8 @@ module.exports = {
     cauldrons: {
         bentoBox: {
             enable: true,
-            address: '0xf4F46382C2bE1603Dc817551Ff9A7b333Ed1D18f',
-            startBlock: 3621838,
+            address: BENTOBOX_ADDRESS,
+            startBlock: BENTOBOX_START_BLOCK,
         },
         degenBox: {
             enable: true,

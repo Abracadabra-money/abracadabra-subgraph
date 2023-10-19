@@ -1,7 +1,14 @@
 const MIM_ADDRESS = '0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba';
 
+const BENTOBOX_ADDRESS = '0xF5BCE5077908a1b7370B9ae04AdC565EBd643966';
+const BENTOBOX_START_BLOCK = 5926250;
+
 module.exports = {
     network: 'bsc',
+    blocks: {
+        address: BENTOBOX_ADDRESS,
+        startBlock: BENTOBOX_START_BLOCK,
+    },
     beam: {
         address: '0x41D5A04B4e03dC27dC1f5C5A576Ad2187bc601Af',
         startBlock: 28838148,
@@ -27,8 +34,8 @@ module.exports = {
     cauldrons: {
         bentoBox: {
             enable: true,
-            address: '0xF5BCE5077908a1b7370B9ae04AdC565EBd643966',
-            startBlock: 5926250,
+            address: BENTOBOX_ADDRESS,
+            startBlock: BENTOBOX_START_BLOCK,
         },
         degenBox: {
             enable: true,
