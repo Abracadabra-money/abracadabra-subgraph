@@ -20,13 +20,21 @@ This repository contains multiple subgraphs:
 2. **Cauldrons**: Tracks all Abracadabra Cauldrons data with price, volume
 
 3. **Magic APE**: Tracks Magic APE rewards,apy and tvl
+    - [Ethereum](https://api.studio.thegraph.com/query/56065/magic-ape/version/latest)
 
 4. **Magic GLP**: Tracks Magic GLP rewards
-
+    - [Arbitrum](https://api.studio.thegraph.com/query/56065/magic-glp-arbitrum/version/latest)
+    - [Avalanche](https://api.studio.thegraph.com/query/56065/magic-glp-avalanche/version/latest)
 5. **Level Finance**: Tracks Level Finance rewards
 
 6. **Beam**: Tracks Beam
-    
+    - [Ethereum](https://api.studio.thegraph.com/query/56065/beam/version/latest)
+    - [Optimism](https://api.studio.thegraph.com/query/56065/beam-optimism/version/latest)
+    - [Matic](https://api.studio.thegraph.com/query/56065/beam-matic/version/latest)
+    - [Fantom](https://api.studio.thegraph.com/query/56065/beam-fantom/version/latest)
+    - [Arbitrum](https://api.studio.thegraph.com/query/56065/beam-arbitrum/version/latest)
+    - [Avalanche](https://api.studio.thegraph.com/query/56065/beam-avalanche/version/latest)
+    - [Beam](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
 
 ## Build
 
