@@ -18,6 +18,11 @@ This repository contains multiple subgraphs:
 1. **Blocks**: Tracks all blocks on Chain.
 
 2. **Cauldrons**: Tracks all Abracadabra Cauldrons data with price, volume
+    - [Ethereum](https://api.studio.thegraph.com/query/56065/cauldrons/version/latest)
+    - [Optimism](https://api.studio.thegraph.com/query/56065/cauldrons-optimism/version/latest)
+    - [Fantom](https://api.studio.thegraph.com/query/56065/cauldrons-fantom/version/latest)
+    - [Arbitrum](https://api.studio.thegraph.com/query/56065/cauldrons-arbitrum/version/latest)
+    - [Avalanche](https://api.studio.thegraph.com/query/56065/cauldrons-avalanche/version/latest)
 
 3. **Magic APE**: Tracks Magic APE rewards,apy and tvl
     - [Ethereum](https://api.studio.thegraph.com/query/56065/magic-ape/version/latest)
