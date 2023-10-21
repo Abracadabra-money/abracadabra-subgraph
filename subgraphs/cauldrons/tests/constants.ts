@@ -3,8 +3,10 @@ import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts';
 export const CAULDRON_ENTITY_TYPE = 'Cauldron';
 export const PROTOCOL_ENTITY_TYPE = 'Protocol';
 export const COLLATERAL_ENTITY_TYPE = 'Collateral';
-export const FINANCIAL_PROTOCOL_METRICS_DAILY_SNAPSHOT = 'FinancialProtocolMetricsDailySnapshot';
-export const FINANCIAL_CAULDRON_METRICS_DAILY_SNAPSHOT = 'FinancialCauldronMetricsDailySnapshot';
+export const PROTOCOL_DAILY_SNAPSHOT = 'ProtocolDailySnapshot';
+export const PROTOCOL_HOURY_SNAPSHOT = 'ProtocolHourySnapshot';
+export const CAULDRON_DAILY_SNAPSHOT = 'CauldronDailySnapshot';
+export const CAULDRON_HOURY_SNAPSHOT = 'CauldronHourySnapshot';
 
 export const MOCK_ACCOUNT = Address.fromString('0x33C52FBAB377F2C9F85DD6E678AE6BAF78A20EBE');
 
