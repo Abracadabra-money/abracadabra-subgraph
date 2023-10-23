@@ -10,7 +10,7 @@ type Protocol @entity {
   totalFeesGenerated: BigDecimal!
 
   " Total number of cauldrons "
-  totalCauldronCount: Int!
+  totalCauldronCount: BigInt!
 
   " All cauldrons that belong to this protocol "
   cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
@@ -18,13 +18,13 @@ type Protocol @entity {
   cauldronIds: [String!]!
 
   " Number of cumulative unique users "
-  cumulativeUniqueUsers: Int!
+  cumulativeUniqueUsers: BigInt!
 
   dailySnapshots: [ProtocolDailySnapshot!]! @derivedFrom(field: "protocol")
 
   hourySnapshots: [ProtocolHourySnapshot!]! @derivedFrom(field: "protocol")
   " Number of times this account has been liquidated "
-  liquidationCount: Int!
+  liquidationCount: BigInt!
 
   liquidationAmountUsd: BigDecimal!
 
@@ -39,9 +39,9 @@ type ProtocolDailySnapshot @entity{
     " Protocol this snapshot is associated with "
     protocol: Protocol!
     " Number of cumulative unique users "
-    cumulativeUniqueUsers: Int!
+    cumulativeUniqueUsers: BigInt!
     " Number of times this account has been liquidated "
-    liquidationCount: Int!
+    liquidationCount: BigInt!
     " Current TVL (Total Value Locked) of the entire protocol "
     totalValueLockedUsd: BigDecimal!
 
@@ -68,9 +68,9 @@ type ProtocolHourySnapshot @entity{
     " Protocol this snapshot is associated with "
     protocol: Protocol!
     " Number of cumulative unique users "
-    cumulativeUniqueUsers: Int!
+    cumulativeUniqueUsers: BigInt!
     " Number of times this account has been liquidated "
-    liquidationCount: Int!
+    liquidationCount: BigInt!
     " Current TVL (Total Value Locked) of the entire protocol "
     totalValueLockedUsd: BigDecimal!
 
@@ -140,7 +140,7 @@ type Cauldron @entity {
   totalFeesGenerated: BigDecimal!
 
   " Number of cumulative unique users "
-  cumulativeUniqueUsers: Int!
+  cumulativeUniqueUsers: BigInt!
 
   " Daily usage metrics for this protocol "
   dailySnapshots: [CauldronDailySnapshot!]! @derivedFrom(field: "cauldron")
@@ -152,7 +152,7 @@ type Cauldron @entity {
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
 
   " Number of times this account has been liquidated "
-  liquidationCount: Int!
+  liquidationCount: BigInt!
 
   liquidationAmountUsd: BigDecimal!
 
@@ -175,10 +175,10 @@ type CauldronDailySnapshot @entity {
     cauldron: Cauldron!
 
     " Number of cumulative unique users "
-    cumulativeUniqueUsers: Int!
+    cumulativeUniqueUsers: BigInt!
 
     " Number of times this account has been liquidated "
-    liquidationCount: Int!
+    liquidationCount: BigInt!
 
     " Current TVL (Total Value Locked) of the entire protocol "
     totalValueLockedUsd: BigDecimal!
@@ -211,10 +211,10 @@ type CauldronHourySnapshot @entity {
     cauldron: Cauldron!
 
     " Number of cumulative unique users "
-    cumulativeUniqueUsers: Int!
+    cumulativeUniqueUsers: BigInt!
 
     " Number of times this account has been liquidated "
-    liquidationCount: Int!
+    liquidationCount: BigInt!
 
     " Current TVL (Total Value Locked) of the entire protocol "
     totalValueLockedUsd: BigDecimal!
@@ -268,7 +268,7 @@ type Account @entity {
   states: [AccountState!]! @derivedFrom(field: "account")
 
   " Number of times this account has been liquidated "
-  liquidationCount: Int!
+  liquidationCount: BigInt!
 }
 
 type AccountState @entity {

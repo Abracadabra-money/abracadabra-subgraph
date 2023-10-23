@@ -1,5 +1,5 @@
 import { ethereum } from '@graphprotocol/graph-ts';
-import { SECONDS_PER_HOUR, BIGDECIMAL_ZERO } from 'misc';
+import { SECONDS_PER_HOUR, BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
 import { ProtocolHourySnapshot } from '../../../generated/schema';
 import { getOrCreateProtocol } from './get-or-create-protocol';
 
@@ -19,8 +19,8 @@ export function getOrCreateProtocolHourySnapshot(block: ethereum.Block): Protoco
     snapshot = new ProtocolHourySnapshot(id.toString());
     snapshot.timestamp = hourStartUnix;
     snapshot.protocol = protocol.id;
-    snapshot.cumulativeUniqueUsers = 0;
-    snapshot.liquidationCount = 0;
+    snapshot.cumulativeUniqueUsers = BIGINT_ZERO;
+    snapshot.liquidationCount = BIGINT_ZERO;
     snapshot.totalValueLockedUsd = protocol.totalValueLockedUsd;
     snapshot.totalMimBorrowed = protocol.totalMimBorrowed;
     snapshot.feesGenerated = BIGDECIMAL_ZERO;

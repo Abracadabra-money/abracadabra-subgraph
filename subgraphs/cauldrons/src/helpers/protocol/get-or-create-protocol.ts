@@ -1,5 +1,5 @@
 import { Protocol } from '../../../generated/schema';
-import { BIGDECIMAL_ZERO } from 'misc';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
 import { BENTOBOX_ADDRESS, DEGENBOX_ADDRESS } from '../../constants';
 
 export function getOrCreateProtocol(): Protocol {
@@ -11,9 +11,9 @@ export function getOrCreateProtocol(): Protocol {
     protocol.totalValueLockedUsd = BIGDECIMAL_ZERO;
     protocol.totalFeesGenerated = BIGDECIMAL_ZERO;
     protocol.cauldronIds = [];
-    protocol.totalCauldronCount = 0;
-    protocol.cumulativeUniqueUsers = 0;
-    protocol.liquidationCount = 0;
+    protocol.totalCauldronCount = BIGINT_ZERO;
+    protocol.cumulativeUniqueUsers = BIGINT_ZERO;
+    protocol.liquidationCount = BIGINT_ZERO;
     protocol.liquidationAmountUsd = BIGDECIMAL_ZERO;
     protocol.repaidAmount = BIGDECIMAL_ZERO;
     protocol.totalMimBorrowed = BIGDECIMAL_ZERO;

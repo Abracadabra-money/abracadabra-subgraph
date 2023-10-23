@@ -5,7 +5,7 @@ import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauld
 import { CAULDRON_V1_BORROW_PARAMETERS } from '../../constants';
 import { getOrCreateCollateral } from '../collateral';
 import { getOrCreateProtocol } from '../protocol';
-import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
+import { BIGDECIMAL_ZERO, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { CauldronDefinition, decodeCauldronInitV1, decodeCauldronInitV2Plus } from '../../utils';
 
 export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
@@ -44,9 +44,9 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
     CauldronEntity.interestPerSecond = cauldronDefinition.interestPerSecond;
     CauldronEntity.liquidationMultiplier = cauldronDefinition.liquidationMultiplier;
     CauldronEntity.oracle = cauldronDefinition.oracle;
-    CauldronEntity.cumulativeUniqueUsers = 0;
+    CauldronEntity.cumulativeUniqueUsers = BIGINT_ZERO;
     CauldronEntity.oracleData = CauldronContract.oracleData().toHexString();
-    CauldronEntity.liquidationCount = 0;
+    CauldronEntity.liquidationCount = BIGINT_ZERO;
     CauldronEntity.liquidationAmountUsd = BIGDECIMAL_ZERO;
     CauldronEntity.repaidAmount = BIGDECIMAL_ZERO;
     CauldronEntity.totalMimBorrowed = BIGDECIMAL_ZERO;
@@ -57,7 +57,7 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
 
     Cauldron.create(cauldronAddress);
 
-    protocol.totalCauldronCount += 1;
+    protocol.totalCauldronCount = protocol.totalCauldronCount.plus(BIGINT_ONE);
 
     const cauldronIds = protocol.cauldronIds;
     cauldronIds.push(cauldronAddress.toHexString());
