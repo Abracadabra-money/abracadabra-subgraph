@@ -39,7 +39,7 @@ This repository contains multiple subgraphs:
     - [Fantom](https://api.studio.thegraph.com/query/56065/beam-fantom/version/latest)
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/beam-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/beam-avalanche/version/latest)
-    - [Beam](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
+    - [Base](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
 
 ## Build
 
