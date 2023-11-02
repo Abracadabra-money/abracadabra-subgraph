@@ -15,7 +15,6 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
     const protocol = getOrCreateProtocol();
 
     cauldron.totalFeesGenerated = cauldron.totalFeesGenerated.plus(amount);
-    cauldron.save();
 
     protocolDailySnapshot.feesGenerated = protocolDailySnapshot.feesGenerated.plus(amount);
     protocolHourySnapshot.feesGenerated = protocolHourySnapshot.feesGenerated.plus(amount);
@@ -24,7 +23,6 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
     cauldronHourySnapshot.feesGenerated = cauldronHourySnapshot.feesGenerated.plus(amount);
 
     protocol.totalFeesGenerated = protocol.totalFeesGenerated.plus(amount);
-    protocol.save();
 
     if (feeType == FeeType.BORROW) {
         protocolDailySnapshot.borrowFeesGenerated = protocolDailySnapshot.borrowFeesGenerated.plus(amount);
@@ -32,6 +30,9 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
 
         cauldronDailySnapshot.borrowFeesGenerated = cauldronDailySnapshot.borrowFeesGenerated.plus(amount);
         cauldronHourySnapshot.borrowFeesGenerated = cauldronHourySnapshot.borrowFeesGenerated.plus(amount);
+
+        cauldron.borrowFeesGenerated = cauldron.borrowFeesGenerated.plus(amount);
+        protocol.borrowFeesGenerated = protocol.borrowFeesGenerated.plus(amount);
     }
 
     if (feeType == FeeType.INTEREST) {
@@ -40,6 +41,9 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
 
         cauldronDailySnapshot.interestFeesGenerated = cauldronDailySnapshot.interestFeesGenerated.plus(amount);
         cauldronHourySnapshot.interestFeesGenerated = cauldronHourySnapshot.interestFeesGenerated.plus(amount);
+
+        cauldron.interestFeesGenerated = cauldron.interestFeesGenerated.plus(amount);
+        protocol.interestFeesGenerated = protocol.interestFeesGenerated.plus(amount);
     }
 
     if (feeType == FeeType.LIQUADATION) {
@@ -48,6 +52,9 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
 
         cauldronDailySnapshot.liquidationFeesGenerated = cauldronDailySnapshot.liquidationFeesGenerated.plus(amount);
         cauldronHourySnapshot.liquidationFeesGenerated = cauldronHourySnapshot.liquidationFeesGenerated.plus(amount);
+
+        cauldron.liquidationFeesGenerated = cauldron.liquidationFeesGenerated.plus(amount);
+        protocol.liquidationFeesGenerated = protocol.liquidationFeesGenerated.plus(amount);
     }
 
     protocolDailySnapshot.save();
@@ -55,4 +62,7 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
 
     cauldronDailySnapshot.save();
     cauldronHourySnapshot.save();
+
+    cauldron.save();
+    protocol.save();
 }

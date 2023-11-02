@@ -1,5 +1,5 @@
 import { ethereum } from '@graphprotocol/graph-ts';
-import { BIGDECIMAL_ZERO, SECONDS_PER_DAY, BIGINT_ZERO } from 'misc';
+import { BIGDECIMAL_ZERO, SECONDS_PER_DAY, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { Cauldron, CauldronDailySnapshot } from '../../../generated/schema';
 
 export function getOrCreateCauldronDailySnapshot(cauldron: Cauldron, block: ethereum.Block): CauldronDailySnapshot {
@@ -27,6 +27,9 @@ export function getOrCreateCauldronDailySnapshot(cauldron: Cauldron, block: ethe
     snapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     snapshot.repaidAmount = BIGDECIMAL_ZERO;
     snapshot.totalCollateralShare = cauldron.totalCollateralShare;
+
+    cauldron.dailySnapshotCount = cauldron.dailySnapshotCount.plus(BIGINT_ONE);
+    cauldron.save()
 
     return snapshot;
 }

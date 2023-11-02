@@ -30,5 +30,8 @@ export function getOrCreateProtocolDailySnapshot(block: ethereum.Block): Protoco
     snapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     snapshot.repaidAmount = BIGDECIMAL_ZERO;
 
+    protocol.dailySnapshotCount = protocol.dailySnapshotCount.plus(BIGINT_ONE);
+    protocol.save();
+
     return snapshot;
 }

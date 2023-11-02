@@ -39,6 +39,9 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
     CauldronEntity.deprecated = false;
     CauldronEntity.lastActive = blockTimestamp;
     CauldronEntity.totalFeesGenerated = BIGDECIMAL_ZERO;
+    CauldronEntity.borrowFeesGenerated = BIGDECIMAL_ZERO;
+    CauldronEntity.interestFeesGenerated = BIGDECIMAL_ZERO;
+    CauldronEntity.liquidationFeesGenerated = BIGDECIMAL_ZERO;
     CauldronEntity.borrowOpeningFee = cauldronDefinition.borrowOpeningFee;
     CauldronEntity.collaterizationRate = cauldronDefinition.collaterizationRate;
     CauldronEntity.interestPerSecond = cauldronDefinition.interestPerSecond;
@@ -52,6 +55,8 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
     CauldronEntity.totalMimBorrowed = BIGDECIMAL_ZERO;
     CauldronEntity.totalValueLockedUsd = BIGDECIMAL_ZERO;
     CauldronEntity.totalCollateralShare = BIGDECIMAL_ZERO;
+    CauldronEntity.dailySnapshotCount = BIGINT_ZERO;
+    CauldronEntity.hourySnapshotCount = BIGINT_ZERO;
 
     CauldronEntity.save();
 

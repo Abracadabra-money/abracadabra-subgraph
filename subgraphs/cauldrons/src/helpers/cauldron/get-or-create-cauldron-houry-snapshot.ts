@@ -1,5 +1,5 @@
 import { ethereum } from '@graphprotocol/graph-ts';
-import { SECONDS_PER_HOUR, BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
+import { SECONDS_PER_HOUR, BIGDECIMAL_ZERO, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { Cauldron, CauldronHourySnapshot } from '../../../generated/schema';
 
 export function getOrCreateCauldronHourySnapshot(cauldron: Cauldron, block: ethereum.Block): CauldronHourySnapshot {
@@ -27,6 +27,9 @@ export function getOrCreateCauldronHourySnapshot(cauldron: Cauldron, block: ethe
     snapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     snapshot.repaidAmount = BIGDECIMAL_ZERO;
     snapshot.totalCollateralShare = cauldron.totalCollateralShare;
+
+    cauldron.hourySnapshotCount = cauldron.hourySnapshotCount.plus(BIGINT_ONE);
+    cauldron.save()
 
     return snapshot;
 }
