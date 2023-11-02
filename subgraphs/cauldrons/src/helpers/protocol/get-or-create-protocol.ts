@@ -17,6 +17,11 @@ export function getOrCreateProtocol(): Protocol {
     protocol.liquidationAmountUsd = BIGDECIMAL_ZERO;
     protocol.repaidAmount = BIGDECIMAL_ZERO;
     protocol.totalMimBorrowed = BIGDECIMAL_ZERO;
+    protocol.borrowFeesGenerated = BIGDECIMAL_ZERO;
+    protocol.interestFeesGenerated = BIGDECIMAL_ZERO;
+    protocol.liquidationFeesGenerated = BIGDECIMAL_ZERO;
+    protocol.dailySnapshotCount = BIGINT_ZERO;
+    protocol.hourySnapshotCount = BIGINT_ZERO;
     protocol.save();
     return protocol;
 }

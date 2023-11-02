@@ -9,6 +9,12 @@ type Protocol @entity {
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
 
+  borrowFeesGenerated: BigDecimal!
+
+  interestFeesGenerated: BigDecimal!
+
+  liquidationFeesGenerated: BigDecimal!
+
   " Total number of cauldrons "
   totalCauldronCount: BigInt!
 
@@ -22,7 +28,11 @@ type Protocol @entity {
 
   dailySnapshots: [ProtocolDailySnapshot!]! @derivedFrom(field: "protocol")
 
+  dailySnapshotCount: BigInt!
+
   hourySnapshots: [ProtocolHourySnapshot!]! @derivedFrom(field: "protocol")
+
+  hourySnapshotCount: BigInt!
   " Number of times this account has been liquidated "
   liquidationCount: BigInt!
 
@@ -139,14 +149,24 @@ type Cauldron @entity {
   " Amount of fees earned for the entire protocol "
   totalFeesGenerated: BigDecimal!
 
+  borrowFeesGenerated: BigDecimal!
+
+  interestFeesGenerated: BigDecimal!
+
+  liquidationFeesGenerated: BigDecimal!
+
   " Number of cumulative unique users "
   cumulativeUniqueUsers: BigInt!
 
   " Daily usage metrics for this protocol "
   dailySnapshots: [CauldronDailySnapshot!]! @derivedFrom(field: "cauldron")
 
+  dailySnapshotCount: BigInt!
+
   " Daily financial metrics for this protocol "
   hourySnapshots: [CauldronHourySnapshot!]! @derivedFrom(field: "cauldron")
+
+  hourySnapshotCount: BigInt!
 
   " All positions in this market "
   accountsStates: [AccountState!]! @derivedFrom(field: "cauldron")
