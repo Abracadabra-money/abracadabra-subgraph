@@ -40,4 +40,19 @@ module.exports = {
         },
         mimAddress: MIM_ADDRESS,
     },
+    spell: {
+        address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',
+        startBlock: 12454535,
+        spellOracle: "0x75e14253dE6a5c2af12d5f1a1EA0A2E11e69EC10",
+        sspell: {
+            enable: true,
+            address: '0x26FA3fFFB6EfE8c1E69103aCb4044C26B9A106a9',
+            startBlock: 12505995
+        },
+        mspell: {
+            enable: true,
+            address: '0xbD2fBaf2dc95bD78Cf1cD3c5235B33D1165E6797',
+            startBlock: 14491999
+        }
+    }
 };

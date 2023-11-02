@@ -1,0 +1,26 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MagicGlp
+    network: {{network}}
+    source:
+      address: "{{ magicGlp.address }}"
+      abi: WETH
+      startBlock: {{ magicGlp.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MagicGlp
+      abis:
+        - name: WETH
+          file: ./node_modules/abi/Tokens/WETH.json
+        - name: MagicGlpHarvestor
+          file: ./abis/MagicGlpHarvestor.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleLogTransfer
+      file: ./src/mappings/magic-glp.ts

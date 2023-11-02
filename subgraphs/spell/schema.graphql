@@ -1,0 +1,7 @@
+type MagicGlp @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  " Total MagicApe rewards "
+  totalRewards: BigDecimal!
+}
