@@ -29,7 +29,7 @@ export function getOrCreateCauldronDailySnapshot(cauldron: Cauldron, block: ethe
     snapshot.totalCollateralShare = cauldron.totalCollateralShare;
 
     cauldron.dailySnapshotCount = cauldron.dailySnapshotCount.plus(BIGINT_ONE);
-    cauldron.save()
+    cauldron.save();
 
     return snapshot;
 }

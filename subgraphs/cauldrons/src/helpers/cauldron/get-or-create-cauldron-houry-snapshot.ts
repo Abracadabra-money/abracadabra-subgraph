@@ -29,7 +29,7 @@ export function getOrCreateCauldronHourySnapshot(cauldron: Cauldron, block: ethe
     snapshot.totalCollateralShare = cauldron.totalCollateralShare;
 
     cauldron.hourySnapshotCount = cauldron.hourySnapshotCount.plus(BIGINT_ONE);
-    cauldron.save()
+    cauldron.save();
 
     return snapshot;
 }
