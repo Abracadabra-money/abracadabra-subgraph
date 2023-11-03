@@ -1,0 +1,40 @@
+type MSpell @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  totalValueLockedUsd: BigDecimal!
+
+  totalValueLocked: BigDecimal!
+
+  dailySnapshots: [MSpellDailySnapshot!]! @derivedFrom(field: "mspell")
+
+  dailySnapshotCount: BigInt!
+
+  hourySnapshots: [MSpellHourySnapshot!]! @derivedFrom(field: "mspell")
+
+  hourySnapshotCount: BigInt!
+}
+
+type MSpellDailySnapshot @entity {
+  id: ID!
+
+  timestamp: Int!
+
+  mspell: MSpell!
+  
+  totalValueLockedUsd: BigDecimal!
+
+  totalValueLocked: BigDecimal!
+}
+
+type MSpellHourySnapshot @entity {
+  id: ID!
+
+  timestamp: Int!
+
+  mspell: MSpell!
+
+  totalValueLockedUsd: BigDecimal!
+
+  totalValueLocked: BigDecimal!
+}

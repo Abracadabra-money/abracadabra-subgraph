@@ -1,0 +1,32 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MSpell
+    network: {{ network }}
+    source:
+      address: "{{ mspell.address }}"
+      abi: MSpell
+      startBlock: {{ mspell.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - MSpell
+        - MSpellDailySnapshot
+        - MSpellHourySnapshot
+      abis:
+        - name: MSpell
+          file: ./abis/MSpell.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Oracle
+          file: ./node_modules/abi/Oracle.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleLogDeposit
+        - event: Withdraw(indexed address,uint256)
+          handler: handleLogWithdraw
+      file: ./src/mappings/mspell.ts

@@ -42,4 +42,10 @@ module.exports = {
             '0xAE4D3a42E46399827bd094B4426e2f79Cca543CA', // safe.ops
         ],
     },
+    mspell: {
+        address: '0xBd84472B31d947314fDFa2ea42460A2727F955Af',
+        startBlock: 12800713,
+        spellAddress: '0xCE1bFFBD5374Dac86a2893119683F4911a2F7814',
+        spellOracleAddress: '',
+    },
 };

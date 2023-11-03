@@ -3,6 +3,9 @@ const MIM_ADDRESS = '0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3';
 const BENTOBOX_ADDRESS = '0xF5BCE5077908a1b7370B9ae04AdC565EBd643966';
 const BENTOBOX_START_BLOCK = 12094175;
 
+const SPELL_ADDRESS = '0x090185f2135308BaD17527004364eBcC2D37e5F6';
+const SPELL_ORACLE = '0x75e14253dE6a5c2af12d5f1a1EA0A2E11e69EC10';
+
 module.exports = {
     network: 'mainnet',
     blocks: {
@@ -48,18 +51,20 @@ module.exports = {
         ],
     },
     spell: {
-        address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',
+        address: SPELL_ADDRESS,
         startBlock: 12454535,
-        spellOracle: '0x75e14253dE6a5c2af12d5f1a1EA0A2E11e69EC10',
-        sspell: {
-            enable: true,
-            address: '0x26FA3fFFB6EfE8c1E69103aCb4044C26B9A106a9',
-            startBlock: 12505995,
-        },
-        mspell: {
-            enable: true,
-            address: '0xbD2fBaf2dc95bD78Cf1cD3c5235B33D1165E6797',
-            startBlock: 14491999,
-        },
+        spellOracleAddress: SPELL_ORACLE,
+    },
+    sspell: {
+        address: '0x26FA3fFFB6EfE8c1E69103aCb4044C26B9A106a9',
+        startBlock: 12505995,
+        spellAddress: SPELL_ADDRESS,
+        spellOracleAddress: SPELL_ORACLE,
+    },
+    mspell: {
+        address: '0xbD2fBaf2dc95bD78Cf1cD3c5235B33D1165E6797',
+        startBlock: 14491999,
+        spellAddress: SPELL_ADDRESS,
+        spellOracleAddress: SPELL_ORACLE,
     },
 };

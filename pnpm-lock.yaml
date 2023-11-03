@@ -186,6 +186,81 @@ importers:
         specifier: 1.0.24
         version: 1.0.24
 
+  subgraphs/mspell:
+    dependencies:
+      '@graphprotocol/graph-cli':
+        specifier: ^0.53.0
+        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+      '@graphprotocol/graph-ts':
+        specifier: ^0.27.0
+        version: 0.27.0
+    devDependencies:
+      abi:
+        specifier: workspace:*
+        version: link:../../packages/abi
+      assemblyscript:
+        specifier: ^0.19.20
+        version: 0.19.20
+      matchstick-as:
+        specifier: 0.5.0
+        version: 0.5.0
+      misc:
+        specifier: workspace:*
+        version: link:../../packages/misc
+      wabt:
+        specifier: 1.0.24
+        version: 1.0.24
+
+  subgraphs/spell:
+    dependencies:
+      '@graphprotocol/graph-cli':
+        specifier: ^0.53.0
+        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+      '@graphprotocol/graph-ts':
+        specifier: ^0.27.0
+        version: 0.27.0
+    devDependencies:
+      abi:
+        specifier: workspace:*
+        version: link:../../packages/abi
+      assemblyscript:
+        specifier: ^0.19.20
+        version: 0.19.20
+      matchstick-as:
+        specifier: 0.5.0
+        version: 0.5.0
+      misc:
+        specifier: workspace:*
+        version: link:../../packages/misc
+      wabt:
+        specifier: 1.0.24
+        version: 1.0.24
+
+  subgraphs/sspell:
+    dependencies:
+      '@graphprotocol/graph-cli':
+        specifier: ^0.53.0
+        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+      '@graphprotocol/graph-ts':
+        specifier: ^0.27.0
+        version: 0.27.0
+    devDependencies:
+      abi:
+        specifier: workspace:*
+        version: link:../../packages/abi
+      assemblyscript:
+        specifier: ^0.19.20
+        version: 0.19.20
+      matchstick-as:
+        specifier: 0.5.0
+        version: 0.5.0
+      misc:
+        specifier: workspace:*
+        version: link:../../packages/misc
+      wabt:
+        specifier: 1.0.24
+        version: 1.0.24
+
 packages:
 
   /@babel/code-frame@7.22.13:

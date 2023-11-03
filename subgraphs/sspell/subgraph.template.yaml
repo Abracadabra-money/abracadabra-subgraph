@@ -3,26 +3,28 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Spell
-    network: {{network}}
+    name: SSpell
+    network: {{ network }}
     source:
-      address: "{{ spell.address }}"
-      abi: Spell
-      startBlock: {{ spell.startBlock }}
+      address: "{{ sspell.address }}"
+      abi: SSpell
+      startBlock: {{ sspell.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Spell
-        - SpellDailySnapshot
-        - SpellHourySnapshot
+        - SSpell
+        - SSpellDailySnapshot
+        - SSpellHourySnapshot
       abis:
-        - name: Spell
-          file: ./abis/Spell.json
+        - name: SSpell
+          file: ./abis/SSpell.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
         - name: Oracle
           file: ./node_modules/abi/Oracle.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleLogTransfer
-      file: ./src/mappings/spell.ts
+      file: ./src/mappings/sspell.ts

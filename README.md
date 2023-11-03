@@ -12,6 +12,8 @@ This repository contains multiple subgraphs:
 - [magic-glp](./subgraphs/magic-glp/README.md) [![Tests Magic Glp Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-glp-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/magic-glp-tests.yml)
 - [level-finance](./subgraphs/level-finance/README.md) [![Tests Level Finance Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/level-finance-tests.yml)
 - [beam](./subgraphs/beam/README.md) [![Tests Beam Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/beam-tests.yml)
+- [sSpell](./subgraphs/sspell/README.md) [![Tests sSpell Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/sspell-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/sspell-tests.yml)
+- [mSpell](./subgraphs/mspell/README.md) [![Tests mSpell Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/mspell-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/mspell-tests.yml)
 
 ## Subgraphs
 
@@ -40,6 +42,10 @@ This repository contains multiple subgraphs:
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/beam-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/beam-avalanche/version/latest)
     - [Base](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
+
+7. **sSpell**: Tracks sSpell
+
+8. **mSpell**: Tracks mSpell
 
 ## Build
 

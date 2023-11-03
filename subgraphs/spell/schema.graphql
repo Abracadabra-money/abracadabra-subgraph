@@ -1,7 +1,46 @@
-type MagicGlp @entity {
+type Spell @entity {
   " Smart contract address of the token "
   id: ID!
 
-  " Total MagicApe rewards "
-  totalRewards: BigDecimal!
+  dailySnapshots: [SpellDailySnapshot!]! @derivedFrom(field: "spell")
+
+  dailySnapshotCount: BigInt!
+
+  hourySnapshots: [SpellHourySnapshot!]! @derivedFrom(field: "spell")
+
+  hourySnapshotCount: BigInt!
+
+  totalMinted: BigDecimal!
+  totalMintedUsd: BigDecimal!
+
+  totalBurned: BigDecimal!
+  totalBurnedUsd: BigDecimal!
+}
+
+type SpellDailySnapshot @entity {
+  id: ID!
+
+  timestamp: Int!
+
+  spell: Spell!
+
+  minted: BigDecimal!
+  mintedUsd: BigDecimal!
+
+  burned:  BigDecimal!
+  burnedUsd:  BigDecimal!
+}
+
+type SpellHourySnapshot @entity {
+  id: ID!
+
+  timestamp: Int!
+
+  spell: Spell!
+
+  minted: BigDecimal!
+  mintedUsd: BigDecimal!
+
+  burned:  BigDecimal!
+  burnedUsd:  BigDecimal!
 }
