@@ -16,7 +16,7 @@ export function handleLogTransfer(event: Transfer): void {
     const amount = bigIntToBigDecimal(event.params._value);
     const amountUsd = amount.times(spellPrice);
 
-    if(event.params._from.equals(Address.fromString(ZERO_ADDRESS))){
+    if (event.params._from.equals(Address.fromString(ZERO_ADDRESS))) {
         spell.totalMinted = spell.totalMinted.plus(amount);
         spell.totalMintedUsd = spell.totalMintedUsd.plus(amountUsd);
 
@@ -26,8 +26,8 @@ export function handleLogTransfer(event: Transfer): void {
         hourySnapshot.minted = hourySnapshot.minted.plus(amount);
         hourySnapshot.mintedUsd = hourySnapshot.mintedUsd.plus(amountUsd);
     }
-    
-    if(event.params._to.equals(Address.fromString(ZERO_ADDRESS))){
+
+    if (event.params._to.equals(Address.fromString(ZERO_ADDRESS))) {
         spell.totalBurned = spell.totalBurned.plus(amount);
         spell.totalBurnedUsd = spell.totalBurnedUsd.plus(amountUsd);
 

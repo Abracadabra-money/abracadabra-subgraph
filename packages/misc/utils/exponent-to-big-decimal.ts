@@ -1,5 +1,5 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { BIGINT_ONE, BIGINT_ZERO } from "../constants";
+import { BigDecimal, BigInt } from '@graphprotocol/graph-ts';
+import { BIGINT_ONE, BIGINT_ZERO } from '../constants';
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
     let bd = BigDecimal.fromString('1');

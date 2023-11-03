@@ -7,13 +7,12 @@ import { getOrCreateMspell } from './get-or-create-mspell';
 import { getOrCreateMspellDailySnapshot } from './get-or-create-mspell-daily-snapshot';
 import { getOrCreateMspellHourySnapshot } from './get-or-create-mspell-houry-snapshot';
 
-export function updateTvl(block: ethereum.Block): void{
+export function updateTvl(block: ethereum.Block): void {
     const contract = ERC20.bind(Address.fromString(SPELL_ADDRESS));
     const spellBalance = contract.balanceOf(Address.fromString(MSPELL_ADDRESS));
     const spellPrice = getSpellPrice();
     const tvl = bigIntToBigDecimal(spellBalance);
     const tvlUsd = tvl.times(spellPrice);
-
 
     const mspell = getOrCreateMspell();
     mspell.totalValueLocked = tvl;
