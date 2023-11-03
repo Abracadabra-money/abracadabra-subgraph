@@ -39,7 +39,7 @@ module.exports = {
             '0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', // 0xcalibur.eth
             '0xb4EfdA6DAf5ef75D08869A0f9C0213278fb43b6C', // deployor.eth
             '0xae64A325027C3C14Cf6abC7818aA3B9c07F5C799', // safe.main
-            '0xAE4D3a42E46399827bd094B4426e2f79Cca543CA' // safe.ops
-        ]
+            '0xAE4D3a42E46399827bd094B4426e2f79Cca543CA', // safe.ops
+        ],
     },
 };
