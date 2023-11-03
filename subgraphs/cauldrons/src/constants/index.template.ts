@@ -3,12 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts';
 export * from './types';
 export * from './cauldron-borrow-parameters';
 
-export const ABRA_DEPLOYERS = [
-    // same on all chains
-    '0xfddfe525054efaad204600d00ca86adb1cc2ea8a'.toLowerCase(),
-    '0xb4EfdA6DAf5ef75D08869A0f9C0213278fb43b6C'.toLowerCase(),
-    '0xfB3485c2e209A5cfBDC1447674256578f1A80eE3'.toLowerCase(),
-];
+export const ABRA_DEPLOYERS = '{{cauldrons.deployers}}'.toLowerCase().split(',');
 
 export const BENTOBOX_ADDRESS = '{{cauldrons.bentoBox.address}}';
 export const DEGENBOX_ADDRESS = '{{cauldrons.degenBox.address}}';

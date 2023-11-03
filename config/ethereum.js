@@ -39,6 +39,13 @@ module.exports = {
             startBlock: 13418156,
         },
         mimAddress: MIM_ADDRESS,
+        deployers: [
+            '0xfddfE525054efaAD204600d00CA86ADb1Cc2ea8a', // 0xmerlin.eth
+            '0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', // 0xcalibur.eth
+            '0xb4EfdA6DAf5ef75D08869A0f9C0213278fb43b6C', // deployor.eth
+            '0x5f0DeE98360d8200b20812e174d139A1a633EDd2', // safe.main
+            '0xDF2C270f610Dc35d8fFDA5B453E74db5471E126B' // safe.ops
+        ]
     },
     spell: {
         address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',

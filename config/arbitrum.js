@@ -34,5 +34,12 @@ module.exports = {
             startBlock: 15370694,
         },
         mimAddress: MIM_ADDRESS,
+        deployers: [
+            '0xfddfE525054efaAD204600d00CA86ADb1Cc2ea8a', // 0xmerlin.eth
+            '0xfB3485c2e209A5cfBDC1447674256578f1A80eE3', // 0xcalibur.eth
+            '0xb4EfdA6DAf5ef75D08869A0f9C0213278fb43b6C', // deployor.eth
+            '0xf46BB6dDA9709C49EfB918201D97F6474EAc5Aea', // safe.main
+            '0xA71A021EF66B03E45E0d85590432DFCfa1b7174C' // safe.ops
+        ]
     },
 };
