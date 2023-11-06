@@ -34,7 +34,9 @@ This repository contains multiple subgraphs:
 4. **Magic GLP**: Tracks Magic GLP rewards
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/magic-glp-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/magic-glp-avalanche/version/latest)
+
 5. **Level Finance**: Tracks Level Finance rewards
+    - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/level-finance-bsc)
 
 6. **Beam**: Tracks Beam
     - [Ethereum](https://api.studio.thegraph.com/query/56065/beam/version/latest)
