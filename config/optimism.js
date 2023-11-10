@@ -1,13 +1,13 @@
 const MIM_ADDRESS = '0xB153FB3d196A8eB25522705560ac152eeEc57901';
 
-const BENTOBOX_ADDRESS = '0xa93C81f564579381116ee3E007C9fCFd2EBa1723';
-const BENTOBOX_START_BLOCK = 18084162;
+const DEGENBOX_ADDRESS = '0xa93C81f564579381116ee3E007C9fCFd2EBa1723';
+const DEGENBOX_START_BLOCK = 18084162;
 
 module.exports = {
     network: 'optimism',
     blocks: {
-        address: BENTOBOX_ADDRESS,
-        startBlock: BENTOBOX_START_BLOCK,
+        address: DEGENBOX_ADDRESS,
+        startBlock: DEGENBOX_START_BLOCK,
     },
     beam: {
         address: '0x48686c24697fe9042531B64D792304e514E74339',
@@ -19,14 +19,14 @@ module.exports = {
         },
     },
     cauldrons: {
-        bentoBox: {
-            enable: false,
-        },
-        degenBox: {
-            enable: true,
-            address: BENTOBOX_ADDRESS,
-            startBlock: BENTOBOX_START_BLOCK,
-        },
+        protocolId: DEGENBOX_ADDRESS,
+        bentoBoxes: [
+            {
+                name: 'DegenBox',
+                address: DEGENBOX_ADDRESS,
+                startBlock: DEGENBOX_START_BLOCK,
+            },
+        ],
         mimAddress: MIM_ADDRESS,
         deployers: [
             '0xfddfE525054efaAD204600d00CA86ADb1Cc2ea8a', // 0xmerlin.eth
