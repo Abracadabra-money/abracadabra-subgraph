@@ -15,7 +15,7 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
 
     let cauldronDefinition: CauldronDefinition | null = null;
     if (CAULDRON_V1_BORROW_PARAMETERS.has(masterContractChainAddress)) {
-        cauldronDefinition = CauldronDefinition.fromParameters(decodeCauldronInitV1(data), CAULDRON_V1_BORROW_PARAMETERS.get(masterContractChainAddress)!);
+        cauldronDefinition = CauldronDefinition.fromParameters(decodeCauldronInitV1(data), CAULDRON_V1_BORROW_PARAMETERS.get(masterContractChainAddress));
     } else if (!CauldronContract.try_BORROW_OPENING_FEE().reverted) {
         cauldronDefinition = decodeCauldronInitV2Plus(data);
     } else {

@@ -1,6 +1,6 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { Cauldron } from '../../../generated/schema';
-import { EventType } from '../../constants';
+import { BIGINT_ZERO } from 'misc';
 import { getLiquidationPrice } from '../../utils';
 import { bigIntToBigDecimal } from 'misc';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../account';
@@ -11,8 +11,10 @@ import { getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } fr
 export function updateAccountState(
     cauldron: Cauldron,
     accountId: string,
-    eventType: string,
+    share: BigInt,
+    part: BigInt,
     amount: BigInt,
+    borrowFees: BigInt,
     block: ethereum.Block,
     transaction: ethereum.Transaction,
     isLiquidate: boolean = false,
@@ -29,62 +31,37 @@ export function updateAccountState(
     const account = getOrCreateAccount(cauldron, accountId, block);
     const accountState = getOrCreateAccountState(cauldron, account);
 
-    if (eventType == EventType.DEPOSIT) {
-        accountState.collateralShare = accountState.collateralShare.plus(amount);
+    accountState.collateralShare = accountState.collateralShare.plus(share);
+    accountState.borrowPart = accountState.borrowPart.plus(part);
+    accountState.borrowFeesPaid = accountState.borrowFeesPaid.plus(borrowFees);
 
-        const formatedAmount = bigIntToBigDecimal(amount);
-        cauldron.totalCollateralShare = cauldron.totalCollateralShare.plus(formatedAmount);
-        cauldronDailySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
-        cauldronHourySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
-    }
+    cauldron.totalCollateralShare = cauldron.totalCollateralShare.plus(bigIntToBigDecimal(share));
+    cauldronDailySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
+    cauldronHourySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
 
-    if (eventType == EventType.WITHDRAW) {
-        accountState.collateralShare = accountState.collateralShare.minus(amount);
+    cauldron.totalMimBorrowed = cauldron.totalMimBorrowed.plus(bigIntToBigDecimal(amount));
+    cauldronDailySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
+    cauldronHourySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
 
-        const formatedAmount = bigIntToBigDecimal(amount);
-        cauldron.totalCollateralShare = cauldron.totalCollateralShare.minus(formatedAmount);
-        cauldronDailySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
-        cauldronHourySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
-    }
-
-    if (eventType == EventType.BORROW) {
-        accountState.borrowPart = accountState.borrowPart.plus(amount);
-
-        const mimBorrowed = bigIntToBigDecimal(amount);
-        cauldron.totalMimBorrowed = cauldron.totalMimBorrowed.plus(mimBorrowed);
-        cauldronDailySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
-        cauldronHourySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
-
-        protocol.totalMimBorrowed = protocol.totalMimBorrowed.plus(mimBorrowed);
-        protocolDailySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;
-        protocolHourySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;
-    }
-
-    if (eventType == EventType.REPAY) {
-        accountState.borrowPart = accountState.borrowPart.minus(amount);
-
-        const mimBorrowed = bigIntToBigDecimal(amount);
-        cauldron.totalMimBorrowed = cauldron.totalMimBorrowed.minus(mimBorrowed);
-        cauldronDailySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
-        cauldronHourySnapshot.totalMimBorrowed = cauldron.totalMimBorrowed;
-
-        protocol.totalMimBorrowed = protocol.totalMimBorrowed.minus(mimBorrowed);
-        protocolDailySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;
-        protocolHourySnapshot.totalMimBorrowed = protocol.totalMimBorrowed;
+    if (amount.gt(BIGINT_ZERO)) {
+        accountState.cumulativeBorrowAmount = accountState.cumulativeBorrowAmount.plus(amount);
+    } else {
+        accountState.cumulativeRepayAmount = accountState.cumulativeRepayAmount.plus(amount.neg());
     }
 
     const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, block, transaction);
-    snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
-    snapshot.borrowPart = accountState.borrowPart;
-    snapshot.collateralShare = accountState.collateralShare;
-    snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
 
     if (isLiquidate) {
         snapshot.isLiquidated = true;
     }
 
-    if (eventType == EventType.WITHDRAW) {
-        snapshot.withdrawAmount = snapshot.withdrawAmount.plus(amount);
+    snapshot.liquidationPrice = getLiquidationPrice(cauldron, collateral, accountState);
+    snapshot.borrowPart = accountState.borrowPart;
+    snapshot.collateralShare = accountState.collateralShare;
+    snapshot.collateralPriceUsd = cauldron.collateralPriceUsd;
+
+    if (share.lt(BIGINT_ZERO)) {
+        snapshot.withdrawAmount = snapshot.withdrawAmount.plus(share);
 
         const collateralWithdrawAmountUsd = bigIntToBigDecimal(amount, collateral.decimals).times(collateral.lastPriceUsd);
         snapshot.withdrawAmountUsd = snapshot.withdrawAmountUsd.plus(collateralWithdrawAmountUsd);
@@ -101,7 +78,7 @@ export function updateAccountState(
         }
     }
 
-    if (eventType == EventType.REPAY) {
+    if (amount.lt(BIGINT_ZERO)) {
         snapshot.repaid = snapshot.repaid.plus(amount);
 
         const mimRepay = bigIntToBigDecimal(amount);
