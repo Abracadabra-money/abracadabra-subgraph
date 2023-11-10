@@ -6,6 +6,9 @@ export function getOrCreateAccountState(cauldron: Cauldron, account: Account): A
     let state = AccountState.load(id);
     if (!state) {
         state = new AccountState(id);
+        state.cumulativeBorrowAmount = BIGINT_ZERO;
+        state.cumulativeRepayAmount = BIGINT_ZERO;
+        state.borrowFeesPaid = BIGINT_ZERO;
         state.borrowPart = BIGINT_ZERO;
         state.collateralShare = BIGINT_ZERO;
         state.account = account.id;

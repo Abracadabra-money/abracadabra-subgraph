@@ -301,6 +301,12 @@ type AccountState @entity {
   " The market in which this position was opened "
   cauldron: Cauldron!
 
+  cumulativeBorrowAmount: BigInt!
+
+  cumulativeRepayAmount: BigInt!
+
+  borrowFeesPaid: BigInt!
+
   borrowPart: BigInt!
 
   collateralShare: BigInt!
