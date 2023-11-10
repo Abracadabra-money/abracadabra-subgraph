@@ -29,6 +29,8 @@ describe('mSpell', () => {
 
             assert.fieldEquals(M_SPELL, MSPELL_ADDRESS, 'totalValueLocked', '0.661736539747737957');
             assert.fieldEquals(M_SPELL, MSPELL_ADDRESS, 'totalValueLockedUsd', '0.0003556039817296394233326804614531087');
+            assert.fieldEquals(M_SPELL, MSPELL_ADDRESS, 'dailySnapshotCount', '1');
+            assert.fieldEquals(M_SPELL, MSPELL_ADDRESS, 'hourySnapshotCount', '1');
         });
 
         test('should update dailySnapshot', () => {

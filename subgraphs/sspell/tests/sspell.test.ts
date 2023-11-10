@@ -28,6 +28,8 @@ describe('sSpell', () => {
 
             assert.fieldEquals(S_SPELL, SSPELL_ADDRESS, 'totalValueLocked', '0.661736539747737957');
             assert.fieldEquals(S_SPELL, SSPELL_ADDRESS, 'totalValueLockedUsd', '0.0003556039817296394233326804614531087');
+            assert.fieldEquals(S_SPELL, SSPELL_ADDRESS, 'dailySnapshotCount', '1');
+            assert.fieldEquals(S_SPELL, SSPELL_ADDRESS, 'hourySnapshotCount', '1');
         });
 
         test('should update dailySnapshot', () => {
