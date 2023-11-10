@@ -5,8 +5,7 @@ export * from './cauldron-borrow-parameters';
 
 export const ABRA_DEPLOYERS = '{{cauldrons.deployers}}'.toLowerCase().split(',');
 
-export const BENTOBOX_ADDRESS = '{{cauldrons.bentoBox.address}}';
-export const DEGENBOX_ADDRESS = '{{cauldrons.degenBox.address}}';
+export const PROTOCOL_ID = '{{cauldrons.protocolId}}';
 export const MIM_ADDRESS = '{{cauldrons.mimAddress}}';
 
 // Ethereum Addresses

@@ -32,16 +32,19 @@ module.exports = {
         magicLlpJunior: '0xC094c2a5C349eAd7839C1805126Da71Cc1cc1A39',
     },
     cauldrons: {
-        bentoBox: {
-            enable: true,
-            address: BENTOBOX_ADDRESS,
-            startBlock: BENTOBOX_START_BLOCK,
-        },
-        degenBox: {
-            enable: true,
-            address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',
-            startBlock: 12750809,
-        },
+        protocolId: BENTOBOX_ADDRESS,
+        bentoBoxes: [
+            {
+                name: 'BentoBox',
+                address: BENTOBOX_ADDRESS,
+                startBlock: BENTOBOX_START_BLOCK,
+            },
+            {
+                name: 'DegenBox',
+                address: '0x090185f2135308BaD17527004364eBcC2D37e5F6',
+                startBlock: 12750809,
+            },
+        ],
         mimAddress: MIM_ADDRESS,
         deployers: [
             '0xfddfE525054efaAD204600d00CA86ADb1Cc2ea8a', // 0xmerlin.eth

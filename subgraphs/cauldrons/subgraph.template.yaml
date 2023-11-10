@@ -2,14 +2,14 @@ specVersion: 0.0.5
 schema:
   file: ./schema.graphql
 dataSources:
-  {{#cauldrons.bentoBox.enable}}
+  {{#cauldrons.bentoBoxes}}
   - kind: ethereum
-    name: BentoBox
-    network: {{network}}
+    name: {{ name }}
+    network: {{ network }}
     source:
-      address: "{{ cauldrons.bentoBox.address }}"
+      address: "{{ address }}"
       abi: BentoBox
-      startBlock: {{ cauldrons.bentoBox.startBlock }}
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -31,38 +31,7 @@ dataSources:
         - event: LogDeploy(indexed address,bytes,indexed address)
           handler: handleLogDeploy
       file: ./src/mappings/core.ts
-  {{/cauldrons.bentoBox.enable}}
-
-  {{#cauldrons.degenBox.enable}}
-  - kind: ethereum
-    name: DegenBox
-    network: {{network}}
-    source:
-      address: "{{ cauldrons.degenBox.address }}"
-      abi: DegenBox
-      startBlock: {{ cauldrons.degenBox.startBlock }}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - LogDeploy
-      abis:
-        - name: DegenBox
-          file: ./node_modules/abi/DegenBox.json
-        - name: ERC20
-          file: ./node_modules/abi/ERC20/ERC20.json
-        - name: SymbolBytes
-          file: ./node_modules/abi/ERC20/SymbolBytes.json
-        - name: NameBytes
-          file: ./node_modules/abi/ERC20/NameBytes.json
-        - name: Cauldron
-          file: ./abis/Cauldron.json
-      eventHandlers:
-        - event: LogDeploy(indexed address,bytes,indexed address)
-          handler: handleLogDeploy
-      file: ./src/mappings/core.ts
-  {{/cauldrons.degenBox.enable}}
+  {{/cauldrons.bentoBoxes}}
 templates:
   - name: Cauldron
     kind: ethereum/contract
@@ -79,8 +48,8 @@ templates:
       abis:
         - name: Cauldron
           file: ./abis/Cauldron.json
-        - name: DegenBox
-          file: ./node_modules/abi/DegenBox.json
+        - name: BentoBox
+          file: ./node_modules/abi/BentoBox.json
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
         - name: Oracle

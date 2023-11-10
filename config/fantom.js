@@ -19,16 +19,19 @@ module.exports = {
         },
     },
     cauldrons: {
-        bentoBox: {
-            enable: true,
-            address: BENTOBOX_ADDRESS,
-            startBlock: BENTOBOX_START_BLOCK,
-        },
-        degenBox: {
-            enable: true,
-            address: '0x74A0BcA2eeEdf8883cb91E37e9ff49430f20a616',
-            startBlock: 17010677,
-        },
+        protocolId: BENTOBOX_ADDRESS,
+        bentoBoxes: [
+            {
+                name: 'BentoBox',
+                address: BENTOBOX_ADDRESS,
+                startBlock: BENTOBOX_START_BLOCK,
+            },
+            {
+                name: 'DegenBox',
+                address: '0x74A0BcA2eeEdf8883cb91E37e9ff49430f20a616',
+                startBlock: 17010677,
+            },
+        ],
         mimAddress: MIM_ADDRESS,
         deployers: [
             '0xfddfE525054efaAD204600d00CA86ADb1Cc2ea8a', // 0xmerlin.eth

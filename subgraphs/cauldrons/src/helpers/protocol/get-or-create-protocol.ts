@@ -1,12 +1,11 @@
 import { Protocol } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO, BIGINT_ZERO } from 'misc';
-import { BENTOBOX_ADDRESS, DEGENBOX_ADDRESS } from '../../constants';
+import { PROTOCOL_ID } from '../../constants';
 
 export function getOrCreateProtocol(): Protocol {
-    const protocolId = BENTOBOX_ADDRESS || DEGENBOX_ADDRESS;
-    let protocol = Protocol.load(protocolId);
+    let protocol = Protocol.load(PROTOCOL_ID);
     if (protocol) return protocol;
-    protocol = new Protocol(protocolId);
+    protocol = new Protocol(PROTOCOL_ID);
 
     protocol.totalValueLockedUsd = BIGDECIMAL_ZERO;
     protocol.totalFeesGenerated = BIGDECIMAL_ZERO;
