@@ -3,12 +3,13 @@ import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { Cauldron } from '../../../generated/templates';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
 import { CAULDRON_V1_BORROW_PARAMETERS } from '../../constants';
+import { getOrCreateBentoBox } from '../bentobox';
 import { getOrCreateCollateral } from '../collateral';
 import { getOrCreateProtocol } from '../protocol';
 import { BIGDECIMAL_ZERO, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { CauldronDefinition, decodeCauldronInitV1, decodeCauldronInitV2Plus } from '../../utils';
 
-export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
+export function createCauldron(cauldronAddress: Address, bentoBoxAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
 
     const masterContractChainAddress = `${dataSource.network()}:${masterContract.toHexString()}`.toLowerCase();
@@ -25,8 +26,10 @@ export function createCauldron(cauldronAddress: Address, masterContract: Address
 
     const CauldronEntity = new CauldronSchema(cauldronAddress.toHexString());
     const protocol = getOrCreateProtocol();
+    const bentoBox = getOrCreateBentoBox(bentoBoxAddress, protocol);
 
     const collateral = getOrCreateCollateral(cauldronDefinition.collateral);
+    CauldronEntity.bentoBox = bentoBox.id;
     CauldronEntity.masterContract = masterContract;
     CauldronEntity.collateral = collateral.id;
     CauldronEntity.name = collateral.symbol;

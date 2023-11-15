@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.57.0
-        version: 0.57.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
         specifier: ^0.31.0
         version: 0.31.0
@@ -42,11 +42,11 @@ importers:
   subgraphs/beam:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -55,23 +55,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/blocks:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -80,20 +77,17 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
+        specifier: 0.6.0
+        version: 0.6.0
 
   subgraphs/cauldrons:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -102,23 +96,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/level-finance:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -127,23 +118,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/magic-ape:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -152,23 +140,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/magic-glp:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -177,23 +162,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/mspell:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -202,23 +184,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/spell:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -227,23 +206,20 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
   subgraphs/sspell:
     dependencies:
       '@graphprotocol/graph-cli':
-        specifier: ^0.53.0
-        version: 0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
+        specifier: 0.62.0
+        version: 0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.31.0
+        version: 0.31.0
     devDependencies:
       abi:
         specifier: workspace:*
@@ -252,22 +228,19 @@ importers:
         specifier: ^0.19.20
         version: 0.19.20
       matchstick-as:
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       misc:
         specifier: workspace:*
         version: link:../../packages/misc
-      wabt:
-        specifier: 1.0.24
-        version: 1.0.24
 
 packages:
 
-  /@babel/code-frame@7.22.13:
-    resolution: {integrity: sha512-XktuhWlJ5g+3TJXc5upd9Ks1HutSArik6jf2eAjYFyIOf4ej3RN+184cZbzDvbPnuTJIUhPKKJE3cIsYTiAT3w==}
+  /@babel/code-frame@7.23.5:
+    resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/highlight': 7.22.20
+      '@babel/highlight': 7.23.4
       chalk: 2.4.2
     dev: false
 
@@ -276,8 +249,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: false
 
-  /@babel/highlight@7.22.20:
-    resolution: {integrity: sha512-dkdMCN3py0+ksCgYmGG8jKeGA/8Tk+gJwSYYlFGxG5lmhfKNoAy004YpLxpS1W2J8m/EK2Ew+yOs9pVRwO89mg==}
+  /@babel/highlight@7.23.4:
+    resolution: {integrity: sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-validator-identifier': 7.22.20
@@ -461,52 +434,9 @@ packages:
       js-yaml: 4.1.0
     dev: false
 
-  /@graphprotocol/graph-cli@0.53.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2):
-    resolution: {integrity: sha512-K6mvEgaHrNlldbNfAL7DKQhJnp8mSuHkDwBXZm4tbdEbwKneItRObjIOEtgAcfK+Gei1mT6pTO4I+8N7tIg9XA==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
-      '@oclif/core': 2.8.6(@types/node@20.6.3)(typescript@5.2.2)
-      '@whatwg-node/fetch': 0.8.8
-      assemblyscript: 0.19.23
-      binary-install-raw: 0.0.13(debug@4.3.4)
-      chalk: 3.0.0
-      chokidar: 3.5.3
-      debug: 4.3.4(supports-color@8.1.1)
-      docker-compose: 0.23.19
-      dockerode: 2.5.8
-      fs-extra: 9.1.0
-      glob: 9.3.5
-      gluegun: 5.1.2(debug@4.3.4)
-      graphql: 15.5.0
-      immutable: 4.2.1
-      ipfs-http-client: 55.0.0(node-fetch@3.3.2)
-      jayson: 4.0.0
-      js-yaml: 3.14.1
-      prettier: 1.19.1
-      request: 2.88.2
-      semver: 7.4.0
-      sync-request: 6.1.0
-      tmp-promise: 3.0.3
-      web3-eth-abi: 1.7.0
-      which: 2.0.2
-      yaml: 1.10.2
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - bufferutil
-      - encoding
-      - node-fetch
-      - supports-color
-      - typescript
-      - utf-8-validate
-    dev: false
-
-  /@graphprotocol/graph-cli@0.57.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2):
-    resolution: {integrity: sha512-UQ+4a4qTeGYdIWHNINtwTiL7izuRe4smgSeGmTxQQMSeebehTgrpa6NV3brGWcYsmN1Bo5egM4D9stkQtRnxeA==}
-    engines: {node: '>=14'}
+  /@graphprotocol/graph-cli@0.62.0(@types/node@20.6.3)(node-fetch@3.3.2)(typescript@5.2.2):
+    resolution: {integrity: sha512-dyjhkCSXbdcul5h1wY2CmorjM4k+tjjzEFs5GFBSSdLC2VodKXEWJo9RzrpFSmRBJzwc7ywDf8Pbmy1cJTCXRA==}
+    engines: {node: '>=18'}
     hasBin: true
     dependencies:
       '@float-capital/float-subgraph-uncrashable': 0.0.0-internal-testing.5
@@ -548,11 +478,6 @@ packages:
       - typescript
       - utf-8-validate
     dev: false
-
-  /@graphprotocol/graph-ts@0.27.0:
-    resolution: {integrity: sha512-r1SPDIZVQiGMxcY8rhFSM0y7d/xAbQf5vHMWUf59js1KgoyWpM6P3tczZqmQd7JTmeyNsDGIPzd9FeaxllsU4w==}
-    dependencies:
-      assemblyscript: 0.19.10
 
   /@graphprotocol/graph-ts@0.31.0:
     resolution: {integrity: sha512-xreRVM6ho2BtolyOh2flDkNoGZximybnzUnF53zJVp0+Ed0KnAlO1/KOCUYw06euVI9tk0c9nA2Z/D5SIQV2Rg==}
@@ -829,19 +754,19 @@ packages:
   /@types/concat-stream@1.6.1:
     resolution: {integrity: sha512-eHE4cQPoj6ngxBZMvVf6Hw7Mh4jMW4U9lpGmS5GBPB9RYxlFg+CHaVN7ErNY4W9XfLIEn20b4VDYaIrbq0q4uA==}
     dependencies:
-      '@types/node': 8.10.66
+      '@types/node': 20.6.3
     dev: false
 
   /@types/connect@3.4.36:
     resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 20.6.3
     dev: false
 
   /@types/form-data@0.0.33:
     resolution: {integrity: sha512-8BSvG1kGm83cyJITQMZSulnl6QV8jqAGreJsc5tPu1Jq0vTSOiY/k24Wx82JRpWwZSqrala6sd5rWi6aNXvqcw==}
     dependencies:
-      '@types/node': 8.10.66
+      '@types/node': 20.6.3
     dev: false
 
   /@types/long@4.0.2:
@@ -891,7 +816,7 @@ packages:
   /@types/ws@7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 20.6.3
     dev: false
 
   /@whatwg-node/events@0.0.3:
@@ -1076,6 +1001,7 @@ packages:
     dependencies:
       binaryen: 101.0.0-nightly.20210723
       long: 4.0.0
+    dev: false
 
   /assemblyscript@0.19.20:
     resolution: {integrity: sha512-uull/pqWqKZkBC8pQM+oujNoRKC4bN+gv/cJ2Dl71fOzvCXqQN+q/36RpMzN4v5nryt8XoKwXQ8dbv4zGU1nbQ==}
@@ -1093,6 +1019,7 @@ packages:
       binaryen: 102.0.0-nightly.20211028
       long: 5.2.3
       source-map-support: 0.5.21
+    dev: false
 
   /assert-plus@1.0.0:
     resolution: {integrity: sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw==}
@@ -1172,6 +1099,7 @@ packages:
   /binaryen@101.0.0-nightly.20210723:
     resolution: {integrity: sha512-eioJNqhHlkguVSbblHOtLqlhtC882SOEPKmNFZaDuz1hzQjolxZ+eu3/kaS10n3sGPONsIZsO7R9fR00UyhEUA==}
     hasBin: true
+    dev: false
 
   /binaryen@102.0.0-nightly.20211028:
     resolution: {integrity: sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==}
@@ -2719,6 +2647,7 @@ packages:
 
   /long@4.0.0:
     resolution: {integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==}
+    dev: false
 
   /long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
@@ -2739,11 +2668,9 @@ packages:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
     dev: false
 
-  /matchstick-as@0.5.0:
-    resolution: {integrity: sha512-4K619YDH+so129qt4RB4JCNxaFwJJYLXPc7drpG+/mIj86Cfzg6FKs/bA91cnajmS1CLHdhHl9vt6Kd6Oqvfkg==}
+  /matchstick-as@0.6.0:
+    resolution: {integrity: sha512-E36fWsC1AbCkBFt05VsDDRoFvGSdcZg6oZJrtIe/YDBbuFh8SKbR5FcoqDhNWqSN+F7bN/iS2u8Md0SM+4pUpw==}
     dependencies:
-      '@graphprotocol/graph-ts': 0.27.0
-      assemblyscript: 0.19.23
       wabt: 1.0.24
     dev: true
 
@@ -3077,7 +3004,7 @@ packages:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
     dependencies:
-      '@babel/code-frame': 7.22.13
+      '@babel/code-frame': 7.23.5
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4

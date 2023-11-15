@@ -6,6 +6,8 @@ import { getOrCreateCollateral } from '../src/helpers/collateral';
 import { getOrCreateProtocol } from '../src/helpers/protocol';
 import { handleLogDeploy } from '../src/mappings/core';
 import {
+    BENTO_BOX_ADDRESS,
+    BENTO_BOX_ENTITY,
     CAULDRON_ENTITY,
     CAULDRON_V1_COLLATERAL_ADDRESS,
     CAULDRON_V1_DATA,
@@ -57,6 +59,18 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'totalCauldronCount', '1');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'cumulativeUniqueUsers', '0');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'liquidationCount', '0');
+        });
+
+        test('should create bentobox', () => {
+            const newLogDeployEvent = createLogDeploy(NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, NON_CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
+
+            const protocolId = getOrCreateProtocol().id;
+
+            assert.entityCount(BENTO_BOX_ENTITY, 1);
+            const bentBoxId = BENTO_BOX_ADDRESS.toHexString();
+            assert.fieldEquals(BENTO_BOX_ENTITY, bentBoxId, 'protocol', protocolId);
         });
 
         test('should create collateral', () => {
@@ -141,6 +155,18 @@ describe('handleLogDeploy()', () => {
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'totalCauldronCount', '1');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'cumulativeUniqueUsers', '0');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'liquidationCount', '0');
+        });
+
+        test('should create bentobox', () => {
+            const newLogDeployEvent = createLogDeploy(CAULDRON_V1_MASTER_CONTRACT_ADDRESS, CAULDRON_V1_DATA, CLONE_ADDRESS);
+
+            handleLogDeploy(newLogDeployEvent);
+
+            const protocolId = getOrCreateProtocol().id;
+
+            assert.entityCount(BENTO_BOX_ENTITY, 1);
+            const bentBoxId = BENTO_BOX_ADDRESS.toHexString();
+            assert.fieldEquals(BENTO_BOX_ENTITY, bentBoxId, 'protocol', protocolId);
         });
 
         test('should create collateral', () => {
