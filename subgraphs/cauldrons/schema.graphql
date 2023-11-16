@@ -278,6 +278,36 @@ type Collateral @entity {
 
   " Optional field to track the timestamp of the last token price "
   lastPriceTimestamp: BigInt!
+
+  " Daily usage metrics for this protocol "
+  dailySnapshots: [CollateralDailySnapshot!]! @derivedFrom(field: "collateral")
+
+  " Daily financial metrics for this protocol "
+  hourySnapshots: [CollateralHourySnapshot!]! @derivedFrom(field: "collateral")
+}
+
+type CollateralDailySnapshot @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  # timestamp rounded to current day by dividing by 86400
+  timestamp: Int!
+
+  collateral: Collateral!
+
+  lastPriceUsd: BigDecimal!
+}
+
+type CollateralHourySnapshot @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  # timestamp rounded to current day by dividing by 86400
+  timestamp: Int!
+
+  collateral: Collateral!
+
+  lastPriceUsd: BigDecimal!
 }
 
 type Account @entity {
