@@ -1,8 +1,8 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from '@graphprotocol/graph-ts';
 import { Collateral, CollateralDailySnapshot } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO, SECONDS_PER_DAY } from 'misc';
 
-export function getOrCreateCollateralDailySnapshot(block: ethereum.Block, collateral: Collateral): CollateralDailySnapshot{
+export function getOrCreateCollateralDailySnapshot(block: ethereum.Block, collateral: Collateral): CollateralDailySnapshot {
     const timestamp = block.timestamp.toI32();
     const dayID = timestamp / SECONDS_PER_DAY;
     const dayStartTimestamp = dayID * SECONDS_PER_DAY;

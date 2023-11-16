@@ -1,8 +1,8 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from '@graphprotocol/graph-ts';
 import { Collateral, CollateralHourySnapshot } from '../../../generated/schema';
 import { BIGDECIMAL_ZERO, SECONDS_PER_HOUR } from 'misc';
 
-export function getOrCreateCollateralHourySnapshot(block: ethereum.Block, collateral: Collateral): CollateralHourySnapshot{
+export function getOrCreateCollateralHourySnapshot(block: ethereum.Block, collateral: Collateral): CollateralHourySnapshot {
     const timestamp = block.timestamp.toI32();
     const hourIndex = timestamp / SECONDS_PER_HOUR; // get unique hour within unix history
     const hourStartUnix = hourIndex * SECONDS_PER_HOUR; // want the rounded effect
