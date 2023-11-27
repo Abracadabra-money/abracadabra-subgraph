@@ -16,8 +16,9 @@ describe('mSpell', () => {
                 .withArgs([ethereum.Value.fromAddress(Address.fromString(MSPELL_ADDRESS))])
                 .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('661736539747737957'))]);
 
-            createMockedFunction(Address.fromString(SPELL_ORACLE_ADDRESS), 'latestAnswer', 'latestAnswer():(int256)')
-                .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('60692'))]);
+            createMockedFunction(Address.fromString(SPELL_ORACLE_ADDRESS), 'latestAnswer', 'latestAnswer():(int256)').returns([
+                ethereum.Value.fromUnsignedBigInt(BigInt.fromString('60692')),
+            ]);
         });
 
         test('should update mSpell', () => {
