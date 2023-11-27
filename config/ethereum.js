@@ -68,6 +68,6 @@ module.exports = {
         address: '0xbD2fBaf2dc95bD78Cf1cD3c5235B33D1165E6797',
         startBlock: 14491999,
         spellAddress: SPELL_ADDRESS,
-        spellOracleAddress: SPELL_ORACLE,
+        spellOracleAddress: "0x8c110B94C5f1d347fAcF5E1E938AB2db60E3c9a8",
     },
 };

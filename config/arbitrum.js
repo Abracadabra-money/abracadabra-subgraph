@@ -49,6 +49,6 @@ module.exports = {
         address: '0x1DF188958A8674B5177f77667b8D173c3CdD9e51',
         startBlock: 8954570,
         spellAddress: '0x3E6648C5a70A150A88bCE65F4aD4d506Fe15d2AF',
-        spellOracleAddress: '',
+        spellOracleAddress: '0x383b3624478124697BEF675F07cA37570b73992f',
     },
 };
