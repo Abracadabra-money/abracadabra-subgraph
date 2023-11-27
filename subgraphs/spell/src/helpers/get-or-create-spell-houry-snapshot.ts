@@ -23,6 +23,12 @@ export function getOrCreateSpellHourySnapshot(block: ethereum.Block): SpellHoury
     snapshot.burned = BIGDECIMAL_ZERO;
     snapshot.burnedUsd = BIGDECIMAL_ZERO;
 
+    snapshot.totalMinted = BIGDECIMAL_ZERO;
+    snapshot.totalMintedUsd = BIGDECIMAL_ZERO;
+
+    snapshot.totalBurned = BIGDECIMAL_ZERO;
+    snapshot.totalBurnedUsd = BIGDECIMAL_ZERO;
+
     snapshot.timestamp = hourStartUnix;
 
     snapshot.save();

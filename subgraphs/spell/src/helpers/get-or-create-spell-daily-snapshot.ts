@@ -23,6 +23,12 @@ export function getOrCreateSpellDailySnapshot(block: ethereum.Block): SpellDaily
     snapshot.burned = BIGDECIMAL_ZERO;
     snapshot.burnedUsd = BIGDECIMAL_ZERO;
 
+    snapshot.totalMinted = BIGDECIMAL_ZERO;
+    snapshot.totalMintedUsd = BIGDECIMAL_ZERO;
+
+    snapshot.totalBurned = BIGDECIMAL_ZERO;
+    snapshot.totalBurnedUsd = BIGDECIMAL_ZERO;
+
     snapshot.timestamp = dayStartTimestamp;
     snapshot.save();
 

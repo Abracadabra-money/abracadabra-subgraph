@@ -22,9 +22,13 @@ export function handleLogTransfer(event: Transfer): void {
 
         dailySnapshot.minted = dailySnapshot.minted.plus(amount);
         dailySnapshot.mintedUsd = dailySnapshot.mintedUsd.plus(amountUsd);
+        dailySnapshot.totalMinted = spell.totalMinted;
+        dailySnapshot.totalMintedUsd = spell.totalMintedUsd;
 
         hourySnapshot.minted = hourySnapshot.minted.plus(amount);
         hourySnapshot.mintedUsd = hourySnapshot.mintedUsd.plus(amountUsd);
+        hourySnapshot.totalMinted = spell.totalMinted;
+        hourySnapshot.totalMintedUsd = spell.totalMintedUsd;
     }
 
     if (event.params._to.equals(Address.fromString(ZERO_ADDRESS))) {
@@ -33,9 +37,13 @@ export function handleLogTransfer(event: Transfer): void {
 
         dailySnapshot.burned = dailySnapshot.burned.plus(amount);
         dailySnapshot.burnedUsd = dailySnapshot.burnedUsd.plus(amountUsd);
+        dailySnapshot.totalBurned = spell.totalBurned;
+        dailySnapshot.totalBurnedUsd = spell.totalBurnedUsd;
 
         hourySnapshot.burned = hourySnapshot.burned.plus(amount);
         hourySnapshot.burnedUsd = hourySnapshot.burnedUsd.plus(amountUsd);
+        hourySnapshot.totalBurned = spell.totalBurned;
+        hourySnapshot.totalBurnedUsd = spell.totalBurnedUsd;
     }
 
     spell.save();

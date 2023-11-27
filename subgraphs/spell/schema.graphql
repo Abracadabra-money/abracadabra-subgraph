@@ -29,6 +29,12 @@ type SpellDailySnapshot @entity {
 
   burned:  BigDecimal!
   burnedUsd:  BigDecimal!
+
+  totalMinted: BigDecimal!
+  totalMintedUsd: BigDecimal!
+
+  totalBurned: BigDecimal!
+  totalBurnedUsd: BigDecimal!
 }
 
 type SpellHourySnapshot @entity {
@@ -43,4 +49,10 @@ type SpellHourySnapshot @entity {
 
   burned:  BigDecimal!
   burnedUsd:  BigDecimal!
+
+  totalMinted: BigDecimal!
+  totalMintedUsd: BigDecimal!
+
+  totalBurned: BigDecimal!
+  totalBurnedUsd: BigDecimal!
 }
