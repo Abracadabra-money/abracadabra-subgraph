@@ -52,6 +52,9 @@ This repository contains multiple subgraphs:
 
 8. **mSpell**: Tracks mSpell
     - [Ethereum](https://api.studio.thegraph.com/query/56065/mspell/version/latest)
+    - [Fantom](https://api.studio.thegraph.com/query/56065/mspell-fantom/version/latest)
+    - [Arbitrum](https://api.studio.thegraph.com/query/56065/mspell-arbitrum/version/latest)
+    - [Avalanche](https://api.studio.thegraph.com/query/56065/mspell-avalanche/version/latest)
 
 9. **Spell**: Tracks Spell
     - [Ethereum](https://api.studio.thegraph.com/query/56065/spell/version/latest)
