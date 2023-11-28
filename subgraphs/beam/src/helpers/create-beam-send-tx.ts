@@ -1,4 +1,3 @@
-import { log } from 'matchstick-as';
 import { SendToChain } from '../../generated/Beam/LzIndirectOFTV2';
 import { BeamSendTx } from '../../generated/schema';
 import { getOrCreateBeam } from './get-or-create-beam';
@@ -10,7 +9,7 @@ export function createBeamSendTx(event: SendToChain): void {
     const tx = new BeamSendTx(event.transaction.hash.toHexString());
     tx.beam = beam.id;
     tx.dstChainId = event.params._dstChainId;
-    tx.from = event.params._from.toHexString();
+    tx.from = event.transaction.from.toHexString();
     tx.to = event.params._toAddress.toHexString();
     tx.amount = bigIntToBigDecimal(event.params._amount);
     tx.blockNumber = event.block.number;

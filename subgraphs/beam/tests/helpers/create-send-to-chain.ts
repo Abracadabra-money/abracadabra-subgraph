@@ -10,6 +10,7 @@ export function createSendToChain(chainId: i32, amount: BigInt): SendToChain {
     log.block.number = BIGINT_ZERO;
     log.block.timestamp = BIGINT_ZERO;
     log.address = Address.fromString(ZERO_ADDRESS);
+    log.transaction.from = Address.fromString(ZERO_ADDRESS);
 
     log.parameters = new Array();
     log.parameters.push(new ethereum.EventParam('_dstChainId', ethereum.Value.fromI32(chainId)));
