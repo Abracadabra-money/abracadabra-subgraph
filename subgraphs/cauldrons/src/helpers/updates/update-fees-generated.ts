@@ -23,6 +23,8 @@ export function updateFeesGenerated(cauldron: Cauldron, amount: BigDecimal, bloc
     cauldronHourySnapshot.feesGenerated = cauldronHourySnapshot.feesGenerated.plus(amount);
 
     protocol.totalFeesGenerated = protocol.totalFeesGenerated.plus(amount);
+    protocolDailySnapshot.totalFeesGenerated = protocol.totalFeesGenerated;
+    protocolHourySnapshot.totalFeesGenerated = protocol.totalFeesGenerated;
 
     if (feeType == FeeType.BORROW) {
         protocolDailySnapshot.borrowFeesGenerated = protocolDailySnapshot.borrowFeesGenerated.plus(amount);

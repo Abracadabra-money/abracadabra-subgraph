@@ -68,6 +68,8 @@ type ProtocolDailySnapshot @entity{
     liquidationAmountUsd: BigDecimal!
 
     repaidAmount: BigDecimal!
+
+    totalFeesGenerated: BigDecimal!
 }
 
 type ProtocolHourySnapshot @entity{
@@ -97,6 +99,8 @@ type ProtocolHourySnapshot @entity{
     liquidationAmountUsd: BigDecimal!
 
     repaidAmount: BigDecimal!
+
+    totalFeesGenerated: BigDecimal!
 }
 
 type Cauldron @entity {

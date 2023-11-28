@@ -29,6 +29,7 @@ export function getOrCreateProtocolHourySnapshot(block: ethereum.Block): Protoco
     snapshot.liquidationFeesGenerated = BIGDECIMAL_ZERO;
     snapshot.liquidationAmountUsd = BIGDECIMAL_ZERO;
     snapshot.repaidAmount = BIGDECIMAL_ZERO;
+    snapshot.totalFeesGenerated = protocol.totalFeesGenerated;
 
     protocol.hourySnapshotCount = protocol.hourySnapshotCount.plus(BIGINT_ONE);
     protocol.save();
