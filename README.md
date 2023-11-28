@@ -46,6 +46,8 @@ This repository contains multiple subgraphs:
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/beam-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/beam-avalanche/version/latest)
     - [Base](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
+    - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-bsc)
+    - [Moonriver](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-moonriver)
 
 7. **sSpell**: Tracks sSpell
     - [Ethereum](https://api.studio.thegraph.com/query/56065/sspell/version/latest)
