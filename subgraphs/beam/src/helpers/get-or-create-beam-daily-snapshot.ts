@@ -18,6 +18,7 @@ export function getOrCreateBeamDailySnapshot(block: ethereum.Block): BeamDailySn
     snapshot.timestamp = hourStartUnix;
     snapshot.beam = beam.id;
     snapshot.feesGenerated = BIGDECIMAL_ZERO;
+    snapshot.feesGeneratedUsd = BIGDECIMAL_ZERO;
     snapshot.volume = BIGDECIMAL_ZERO;
     snapshot.sendCount = BIGINT_ZERO;
     snapshot.sendVolume = BIGDECIMAL_ZERO;

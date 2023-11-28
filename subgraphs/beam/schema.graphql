@@ -3,6 +3,7 @@ type Beam @entity {
     id: ID!
     # Total Beam fees generated #
     feesGenerated: BigDecimal!
+    feesGeneratedUsd: BigDecimal!
     # Total Beam volume #
     volume: BigDecimal!
     # Send tx count #
@@ -29,6 +30,7 @@ type BeamDailySnapshot @entity {
     beam: Beam!
     # Total Beam fees generated #
     feesGenerated: BigDecimal!
+    feesGeneratedUsd: BigDecimal!
     # Total Beam volume #
     volume: BigDecimal!
     # Send tx count #
@@ -50,6 +52,7 @@ type BeamHourySnapshot @entity {
     beam: Beam!
     # Total Beam fees generated #
     feesGenerated: BigDecimal!
+    feesGeneratedUsd: BigDecimal!
     # Total Beam volume #
     volume: BigDecimal!
     # Send tx count #

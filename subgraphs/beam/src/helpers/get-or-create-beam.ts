@@ -8,6 +8,7 @@ export function getOrCreateBeam(): Beam {
 
     beam = new Beam(BEAM_ADDRESS);
     beam.feesGenerated = BIGDECIMAL_ZERO;
+    beam.feesGeneratedUsd = BIGDECIMAL_ZERO;
     beam.volume = BIGDECIMAL_ZERO;
     beam.sendCount = BIGINT_ZERO;
     beam.sendVolume = BIGDECIMAL_ZERO;

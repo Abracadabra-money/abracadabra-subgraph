@@ -16,6 +16,7 @@ module.exports = {
             enable: true,
             address: '0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC',
             startBlock: 30354138,
+            oracle: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE'
         },
     },
     levelFinance: {

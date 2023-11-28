@@ -47,6 +47,8 @@ dataSources:
       abis:
         - name: OFTWrapper
           file: ./abis/OFTWrapper.json
+        - name: Oracle
+          file: ./node_modules/abi/OracleAggregator.json
       eventHandlers:
         - event: LogWrapperFeeWithdrawn(address,uint256)
           handler: handleLogWrapperFeeWithdrawn
