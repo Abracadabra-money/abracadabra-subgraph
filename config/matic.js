@@ -14,7 +14,7 @@ module.exports = {
             enable: true,
             address: '0xE1261E47b08a22Df93af46889EE504C2Aa6DfD4c',
             startBlock: 46044204,
-            oracle: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'
+            oracle: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0',
         },
     },
 };

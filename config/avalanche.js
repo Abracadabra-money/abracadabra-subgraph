@@ -20,7 +20,7 @@ module.exports = {
             enable: true,
             address: '0x287176dfBEC7E8cee0f876FC7B52960ee1784AdC',
             startBlock: 33180737,
-            oracle: '0x0A77230d17318075983913bC2145DB16C7366156'
+            oracle: '0x0A77230d17318075983913bC2145DB16C7366156',
         },
     },
     cauldrons: {
