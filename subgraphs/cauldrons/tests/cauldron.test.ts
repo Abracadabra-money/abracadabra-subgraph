@@ -332,10 +332,9 @@ describe('Cauldrons', () => {
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
 
             const cauldronDailySnapshotId = getOrCreateCauldronDailySnapshot(cauldron, log.block).id;
-            
+
             assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'totalMimBorrowed', '225.840586805430596628');
             assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'borrowFeesGenerated', '1.1347523298321543450099502487562');
-
         });
 
         test('should update cauldron houry snapshot', () => {
@@ -346,7 +345,7 @@ describe('Cauldrons', () => {
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
 
             const cauldronHourySnapshotId = getOrCreateCauldronHourySnapshot(cauldron, log.block).id;
-            
+
             assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'totalMimBorrowed', '225.840586805430596628');
             assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'borrowFeesGenerated', '1.1347523298321543450099502487562');
         });
@@ -405,7 +404,7 @@ describe('Cauldrons', () => {
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), log.block);
-            
+
             const accountState = getOrCreateAccountState(cauldron, account);
             accountState.collateralShare = BigInt.fromString('30658468234870000000000');
             accountState.save();
