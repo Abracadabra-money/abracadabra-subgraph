@@ -16,6 +16,7 @@ import {
     CAULDRON_V1_COLLATERAL_ADDRESS,
     PROTOCOL_ENTITY,
     MOCK_ACCOUNT,
+    ACCOUNT_ENTITY,
     ACCOUNT_STATE_ENTITY,
     ACCOUNT_STATE_SNAPSHOT_ENTITY,
     CAULDRON_DAILY_SNAPSHOT_ENTITY,
@@ -25,7 +26,7 @@ import {
     COLLATERAL_DAILY_SNAPSHOT_ENTITY,
     COLLATERAL_HOURY_SNAPSHOT_ENTITY,
 } from './constants';
-import { handleLogAccrue, handleLogExchangeRate, handleLogAddCollateral, handleLogRemoveCollateral, handleLogBorrow } from '../src/mappings/cauldron';
+import { handleLogAccrue, handleLogExchangeRate, handleLogAddCollateral, handleLogRemoveCollateral, handleLogBorrow, handleLogRepay } from '../src/mappings/cauldron';
 
 import { getOrCreateProtocol, getOrCreateProtocolDailySnapshot, getOrCreateProtocolHourySnapshot } from '../src/helpers/protocol';
 import { createLogAccrue } from './helpers/create-log-accrue';
@@ -34,6 +35,7 @@ import { createLogExchangeRate } from './helpers/create-log-exchange-rate';
 import { createLogAddCollateral } from './helpers/create-log-add-collateral';
 import { createLogRemoveCollateral } from './helpers/create-log-remove-collateral';
 import { createLogBorrow } from './helpers/create-log-borrow';
+import { createLogRepay } from './helpers/create-log-repay';
 import { getOrCreateCollateral, getOrCreateCollateralDailySnapshot, getOrCreateCollateralHourySnapshot } from '../src/helpers/collateral';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../src/helpers/account';
 
@@ -431,7 +433,151 @@ describe('Cauldrons', () => {
         });
     });
 
-    describe('handleLogRepay', () => {});
+    describe('handleLogRepay', () => {
+        beforeEach(() => {
+            clearStore();
+
+            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+            cauldron.collateralPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
+            cauldron.save();
+        });
+
+        test('should update cauldron', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const cauldronId = getCauldron(CLONE_ADDRESS.toHexString())!.id;
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'lastActive', log.block.timestamp.toString());
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'isActive', 'true');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'dailySnapshotCount', '1');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'hourySnapshotCount', '1');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'liquidationCount', '1');
+        });
+
+        test('should update cauldron daily snapshot', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+
+            const cauldronDailySnapshotId = getOrCreateCauldronDailySnapshot(cauldron, log.block).id;
+
+            assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'liquidationCount', '1');
+        });
+
+        test('should update cauldron houry snapshot', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+
+            const cauldronHourySnapshotId = getOrCreateCauldronHourySnapshot(cauldron, log.block).id;
+
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'liquidationCount', '1');
+        });
+
+        test('should update protocol', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const protocolId = getOrCreateProtocol().id!;
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'dailySnapshotCount', '1');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'hourySnapshotCount', '1');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'liquidationCount', '1');
+        });
+
+        test('should update protocol daily snapshot', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const protocolDailySnapshotId = getOrCreateProtocolDailySnapshot(log.block).id;
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'liquidationCount', '1');
+        });
+
+        test('should update protocol houry snapshot', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const protocolHourySnapshotId = getOrCreateProtocolHourySnapshot(log.block).id;
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'totalMimBorrowed', '-20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'liquidationFeesGenerated', '201.035617312679142954');
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'repaidAmount', '20099.969255386734545224');
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'liquidationCount', '1');
+        });
+
+        test('should update account', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+            const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), log.block);
+            assert.fieldEquals(ACCOUNT_ENTITY, account.id, 'liquidationCount', '1');
+        })
+
+        test('should update account state', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+            const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), log.block);
+            const accountState = getOrCreateAccountState(cauldron, account);
+            const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, log.block, log.transaction);
+
+            assert.fieldEquals(ACCOUNT_STATE_ENTITY, accountState.id, 'borrowPart', '-20099969255386734545224');
+            assert.fieldEquals(ACCOUNT_STATE_ENTITY, accountState.id, 'lastAction', snapshot.id);
+        });
+
+        test('should update account state snapshot', () => {
+            const log = createLogRepay();
+
+            const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
+            const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), log.block);
+
+            const accountState = getOrCreateAccountState(cauldron, account);
+            accountState.collateralShare = BigInt.fromString('140099969255386734545224');
+            accountState.borrowPart = BigInt.fromString('40099969255386734545224');
+            accountState.save();
+
+            const snapshot = getOrCreateAccountStateSnapshot(cauldron, account, accountState, log.block, log.transaction);
+
+            handleLogRepay(log);
+
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'borrowPart', '20000000000000000000000');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'isLiquidated', 'true');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'liquidationPrice', '0.178444007752976501806397235832438');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'repaid', '20099969255386734545224');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'repaidUsd', '20099.969255386734545224');
+        });
+    });
 
     describe('LogExchangeRate', () => {
         beforeEach(() => {
