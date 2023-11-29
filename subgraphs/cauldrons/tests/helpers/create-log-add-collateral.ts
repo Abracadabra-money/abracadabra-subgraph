@@ -13,7 +13,7 @@ export function createLogAddCollateral(): LogAddCollateral {
     log.parameters = new Array();
     log.parameters.push(new ethereum.EventParam('from', ethereum.Value.fromAddress(MOCK_ACCOUNT)));
     log.parameters.push(new ethereum.EventParam('to', ethereum.Value.fromAddress(MOCK_ACCOUNT)));
-    log.parameters.push(new ethereum.EventParam('share', ethereum.Value.fromUnsignedBigInt(BigInt.fromString("30658468234870000000000"))));
+    log.parameters.push(new ethereum.EventParam('share', ethereum.Value.fromUnsignedBigInt(BigInt.fromString('30658468234870000000000'))));
 
     return log;
 }

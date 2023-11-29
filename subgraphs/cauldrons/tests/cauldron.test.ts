@@ -23,7 +23,7 @@ import {
     PROTOCOL_DAILY_SNAPSHOT_ENTITY,
     PROTOCOL_HOURY_SNAPSHOT_ENTITY,
     COLLATERAL_DAILY_SNAPSHOT_ENTITY,
-    COLLATERAL_HOURY_SNAPSHOT_ENTITY
+    COLLATERAL_HOURY_SNAPSHOT_ENTITY,
 } from './constants';
 import { handleLogAccrue, handleLogExchangeRate, handleLogAddCollateral } from '../src/mappings/cauldron';
 
