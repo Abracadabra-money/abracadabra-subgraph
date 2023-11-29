@@ -23,7 +23,6 @@ export function updateTvl(block: ethereum.Block): void {
 
         if (isDeprecated(cauldron, block)) {
             cauldron.deprecated = true;
-            cauldron.save();
         }
 
         const marketTVL = cauldron.totalCollateralShare.times(cauldron.collateralPriceUsd);

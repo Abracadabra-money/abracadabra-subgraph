@@ -7,6 +7,8 @@ export const PROTOCOL_DAILY_SNAPSHOT = 'ProtocolDailySnapshot';
 export const PROTOCOL_HOURY_SNAPSHOT = 'ProtocolHourySnapshot';
 export const CAULDRON_DAILY_SNAPSHOT = 'CauldronDailySnapshot';
 export const CAULDRON_HOURY_SNAPSHOT = 'CauldronHourySnapshot';
+export const COLLATERAL_DAILY_SNAPSHOT = 'CollateralDailySnapshot';
+export const COLLATERAL_HOURY_SNAPSHOT = 'CollateralHourySnapshot';
 
 export const MOCK_ACCOUNT = Address.fromString('0x33C52FBAB377F2C9F85DD6E678AE6BAF78A20EBE');
 
