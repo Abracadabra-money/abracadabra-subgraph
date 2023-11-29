@@ -1,5 +1,5 @@
 import { ethereum } from '@graphprotocol/graph-ts';
-import { BIGDECIMAL_ZERO, SECONDS_PER_DAY, BIGINT_ONE } from 'misc';
+import { BIGDECIMAL_ZERO, SECONDS_PER_DAY, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { ProtocolDailySnapshot } from '../../../generated/schema';
 import { getOrCreateProtocol } from './get-or-create-protocol';
 
@@ -19,8 +19,8 @@ export function getOrCreateProtocolDailySnapshot(block: ethereum.Block): Protoco
     snapshot = new ProtocolDailySnapshot(id.toString());
     snapshot.timestamp = dayStartTimestamp;
     snapshot.protocol = protocol.id;
-    snapshot.cumulativeUniqueUsers = BIGINT_ONE;
-    snapshot.liquidationCount = BIGINT_ONE;
+    snapshot.cumulativeUniqueUsers = BIGINT_ZERO;
+    snapshot.liquidationCount = BIGINT_ZERO;
     snapshot.totalValueLockedUsd = protocol.totalValueLockedUsd;
     snapshot.totalMimBorrowed = protocol.totalMimBorrowed;
     snapshot.feesGenerated = BIGDECIMAL_ZERO;

@@ -1,14 +1,17 @@
 import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts';
 
-export const CAULDRON_ENTITY_TYPE = 'Cauldron';
-export const PROTOCOL_ENTITY_TYPE = 'Protocol';
-export const COLLATERAL_ENTITY_TYPE = 'Collateral';
-export const PROTOCOL_DAILY_SNAPSHOT = 'ProtocolDailySnapshot';
-export const PROTOCOL_HOURY_SNAPSHOT = 'ProtocolHourySnapshot';
-export const CAULDRON_DAILY_SNAPSHOT = 'CauldronDailySnapshot';
-export const CAULDRON_HOURY_SNAPSHOT = 'CauldronHourySnapshot';
-export const COLLATERAL_DAILY_SNAPSHOT = 'CollateralDailySnapshot';
-export const COLLATERAL_HOURY_SNAPSHOT = 'CollateralHourySnapshot';
+export const CAULDRON_ENTITY = 'Cauldron';
+export const PROTOCOL_ENTITY = 'Protocol';
+export const COLLATERAL_ENTITY = 'Collateral';
+export const PROTOCOL_DAILY_SNAPSHOT_ENTITY = 'ProtocolDailySnapshot';
+export const PROTOCOL_HOURY_SNAPSHOT_ENTITY = 'ProtocolHourySnapshot';
+export const CAULDRON_DAILY_SNAPSHOT_ENTITY = 'CauldronDailySnapshot';
+export const CAULDRON_HOURY_SNAPSHOT_ENTITY = 'CauldronHourySnapshot';
+export const COLLATERAL_DAILY_SNAPSHOT_ENTITY = 'CollateralDailySnapshot';
+export const COLLATERAL_HOURY_SNAPSHOT_ENTITY = 'CollateralHourySnapshot';
+export const ACCOUNT_ENTITY = 'Account';
+export const ACCOUNT_STATE_ENTITY = 'AccountState';
+export const ACCOUNT_STATE_SNAPSHOT_ENTITY = 'AccountStateSnapshot';
 
 export const MOCK_ACCOUNT = Address.fromString('0x33C52FBAB377F2C9F85DD6E678AE6BAF78A20EBE');
 

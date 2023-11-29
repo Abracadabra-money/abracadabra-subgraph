@@ -17,6 +17,10 @@ export function updateAccountState(
     transaction: ethereum.Transaction,
     isLiquidate: boolean = false,
 ): void {
+    const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
+    const account = getOrCreateAccount(cauldron, accountId, block);
+    const accountState = getOrCreateAccountState(cauldron, account);
+
     const protocol = getOrCreateProtocol();
 
     const protocolDailySnapshot = getOrCreateProtocolDailySnapshot(block);
@@ -25,14 +29,10 @@ export function updateAccountState(
     const cauldronDailySnapshot = getOrCreateCauldronDailySnapshot(cauldron, block);
     const cauldronHourySnapshot = getOrCreateCauldronHourySnapshot(cauldron, block);
 
-    const collateral = getOrCreateCollateral(Address.fromString(cauldron.collateral));
-    const account = getOrCreateAccount(cauldron, accountId, block);
-    const accountState = getOrCreateAccountState(cauldron, account);
-
     if (eventType == EventType.DEPOSIT) {
         accountState.collateralShare = accountState.collateralShare.plus(amount);
 
-        const formatedAmount = bigIntToBigDecimal(amount);
+        const formatedAmount = bigIntToBigDecimal(amount, collateral.decimals);
         cauldron.totalCollateralShare = cauldron.totalCollateralShare.plus(formatedAmount);
         cauldronDailySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
         cauldronHourySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
@@ -41,7 +41,7 @@ export function updateAccountState(
     if (eventType == EventType.WITHDRAW) {
         accountState.collateralShare = accountState.collateralShare.minus(amount);
 
-        const formatedAmount = bigIntToBigDecimal(amount);
+        const formatedAmount = bigIntToBigDecimal(amount, collateral.decimals);
         cauldron.totalCollateralShare = cauldron.totalCollateralShare.minus(formatedAmount);
         cauldronDailySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
         cauldronHourySnapshot.totalCollateralShare = cauldron.totalCollateralShare;
