@@ -540,7 +540,7 @@ describe('Cauldrons', () => {
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             const account = getOrCreateAccount(cauldron, MOCK_ACCOUNT.toHexString(), log.block);
             assert.fieldEquals(ACCOUNT_ENTITY, account.id, 'liquidationCount', '1');
-        })
+        });
 
         test('should update account state', () => {
             const log = createLogRepay();
