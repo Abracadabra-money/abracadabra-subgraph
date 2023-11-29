@@ -196,6 +196,10 @@ describe('Cauldrons', () => {
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             cauldron.collateralPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
             cauldron.save();
+
+            const collateral = getOrCreateCollateral(NON_CAULDRON_V1_COLLATERAL_ADDRESS);
+            collateral.lastPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
+            collateral.save();
         });
 
         test('should update cauldron', () => {
@@ -210,6 +214,7 @@ describe('Cauldrons', () => {
             assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'hourySnapshotCount', '1');
             assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'cumulativeUniqueUsers', '1');
             assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'totalCollateralShare', '-30658.46823487');
+            assert.fieldEquals(CAULDRON_ENTITY, cauldronId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update cauldron daily snapshot', () => {
@@ -223,6 +228,7 @@ describe('Cauldrons', () => {
             assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'totalValueLockedUsd', '-17.75431895481321700000898190995924');
             assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'cumulativeUniqueUsers', '1');
             assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'totalCollateralShare', '-30658.46823487');
+            assert.fieldEquals(CAULDRON_DAILY_SNAPSHOT_ENTITY, cauldronDailySnapshotId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update cauldron houry snapshot', () => {
@@ -236,6 +242,7 @@ describe('Cauldrons', () => {
             assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'totalValueLockedUsd', '-17.75431895481321700000898190995924');
             assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'cumulativeUniqueUsers', '1');
             assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'totalCollateralShare', '-30658.46823487');
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT_ENTITY, cauldronHourySnapshotId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update protocol', () => {
@@ -248,6 +255,7 @@ describe('Cauldrons', () => {
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'hourySnapshotCount', '1');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'totalValueLockedUsd', '-17.75431895481321700000898190995924');
             assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_ENTITY, protocolId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update protocol daily snapshot', () => {
@@ -258,6 +266,7 @@ describe('Cauldrons', () => {
             const protocolDailySnapshotId = getOrCreateProtocolDailySnapshot(log.block).id;
             assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'totalValueLockedUsd', '-17.75431895481321700000898190995924');
             assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_DAILY_SNAPSHOT_ENTITY, protocolDailySnapshotId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update protocol houry snapshot', () => {
@@ -268,6 +277,7 @@ describe('Cauldrons', () => {
             const protocolHourySnapshotId = getOrCreateProtocolHourySnapshot(log.block).id;
             assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'totalValueLockedUsd', '-17.75431895481321700000898190995924');
             assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'cumulativeUniqueUsers', '1');
+            assert.fieldEquals(PROTOCOL_HOURY_SNAPSHOT_ENTITY, protocolHourySnapshotId, 'liquidationAmountUsd', '17.75431895481321700000898190995924');
         });
 
         test('should update account state', () => {
@@ -298,7 +308,9 @@ describe('Cauldrons', () => {
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'borrowPart', '0');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'collateralShare', '-30658468234870000000000');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'collateralPriceUsd', '0.00057910000000000000000029296669');
-            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'isLiquidated', 'false');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'isLiquidated', 'true');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'withdrawAmount', '30658468234870000000000');
+            assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'withdrawAmountUsd', '17.75431895481321700000898190995924');
         });
     });
 
