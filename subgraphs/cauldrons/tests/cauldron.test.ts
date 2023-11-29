@@ -20,7 +20,7 @@ import {
     CAULDRON_V1_COLLATERAL_ADDRESS,
     PROTOCOL_ENTITY_TYPE,
     COLLATERAL_DAILY_SNAPSHOT,
-    COLLATERAL_HOURY_SNAPSHOT
+    COLLATERAL_HOURY_SNAPSHOT,
 } from './constants';
 import { handleLogAccrue, handleLogExchangeRate } from '../src/mappings/cauldron';
 
@@ -162,12 +162,13 @@ describe('Cauldrons', () => {
             createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
-            cauldron.totalCollateralShare = BigDecimal.fromString("10000");
-            cauldron.save();cauldron
+            cauldron.totalCollateralShare = BigDecimal.fromString('10000');
+            cauldron.save();
+            cauldron;
         });
 
         test('should update cauldron', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -182,7 +183,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update cauldron daily snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -194,7 +195,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update cauldron houry snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -202,11 +203,11 @@ describe('Cauldrons', () => {
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
 
             const cauldronHourySnapshotId = getOrCreateCauldronHourySnapshot(cauldron, log.block).id;
-            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT, cauldronHourySnapshotId, 'totalValueLockedUsd', "5.7910000000000000000029296669");
+            assert.fieldEquals(CAULDRON_HOURY_SNAPSHOT, cauldronHourySnapshotId, 'totalValueLockedUsd', '5.7910000000000000000029296669');
         });
 
         test('should update collateral', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -218,7 +219,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update collateral daily snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -231,7 +232,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update collateral houry snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -244,7 +245,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update protocol', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -254,7 +255,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update protocol daily snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
@@ -264,7 +265,7 @@ describe('Cauldrons', () => {
         });
 
         test('should update protocol houry snapshot', () => {
-            const amount = BigInt.fromString("1726817475392850975651");
+            const amount = BigInt.fromString('1726817475392850975651');
             const log = createLogExchangeRate(amount);
 
             handleLogExchangeRate(log);
