@@ -1,4 +1,4 @@
-import { BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
+import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
 import { newMockEvent } from 'matchstick-as/assembly';
 import { LogRepay } from '../../generated/templates/Cauldron/Cauldron';
 import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT } from '../constants';
@@ -9,8 +9,58 @@ export function createLogRepay(): LogRepay {
     log.block.number = BLOCK_NUMBER;
     log.block.timestamp = BLOCK_TIMESTAMP;
     log.address = CLONE_ADDRESS;
-    log.transaction.input = Bytes.fromHexString(
-        '0x912860c5000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000ef633d1af20ed99a69b7cf46da5be63da07ed5ee000000000000000000000000ef633d1af20ed99a69b7cf46da5be63da07ed5ee00000000000000000000000000000000000000000000000000000000000000020000000000000000000000004ee82b2990c0a65f7793e7c51cb87cf596fb98e30000000000000000000000007c3ffcad1d967889a1e9969aca6251b6f7441da400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000004419f1bb792af1e494800000000000000000000000000000000000000000000000000002b8821a17a11',
+    
+    log.logIndex = BigInt.fromI32(1);
+
+    const eventLogs: ethereum.Log[] = [
+        new ethereum.Log(
+            Address.fromString('0x9617b633EF905860D919b88E1d9d9a6191795341'),
+            [
+                Bytes.fromHexString("0x8ad4d3ff00da092c7ad9a573ea4f5f6a3dffc6712dc06d3f78f49b862297c402"),
+                Bytes.fromHexString("0x000000000000000000000000779b400527494c5c195680cf2d58302648481d50"),
+                Bytes.fromHexString("0x000000000000000000000000e0d6b751ab1b28098d581d1f2265e76e16a3f10e"),
+            ],
+            Bytes.empty(),
+            Bytes.empty(),
+            Bytes.empty(),
+            Bytes.empty(),
+            BigInt.fromI32(79),
+            BigInt.fromI32(0),
+            BigInt.fromI32(0),
+            '0x',
+            null
+        ),
+        new ethereum.Log(
+            Address.fromString('0x9617b633EF905860D919b88E1d9d9a6191795341'),
+            [
+                Bytes.fromHexString("0xc8e512d8f188ca059984b5853d2bf653da902696b8512785b182b2c813789a6e"),
+                Bytes.fromHexString("0x000000000000000000000000e0d6b751ab1b28098d581d1f2265e76e16a3f10e"),
+                Bytes.fromHexString("0x000000000000000000000000779b400527494c5c195680cf2d58302648481d50"),
+            ],
+            Bytes.empty(),
+            Bytes.empty(),
+            Bytes.empty(),
+            Bytes.empty(),
+            BigInt.fromI32(79),
+            BigInt.fromI32(1),
+            BigInt.fromI32(0),
+            '0x',
+            null
+        )
+    ]
+
+    log.receipt = new ethereum.TransactionReceipt(
+        Bytes.fromHexString('0x834f743bfd0e544e508618fe61022dbc747c8eb68996bfbcb8f14041daf15d2c'),
+        BigInt.fromI32(79),
+        Bytes.fromHexString('0x240ba21032b84c5a77f3ab01b6f05bebb5320f3483a51c3f5aff7f1e6594f81c'),
+        BigInt.fromI32(16989558),
+        BigInt.fromI32(8199547),
+        BigInt.fromI32(275105),
+        Address.fromString('0x9617b633EF905860D919b88E1d9d9a6191795341'),
+        eventLogs,
+        BigInt.fromI32(1),
+        Bytes.empty(),
+        Bytes.fromHexString('0x00000000000000400000000000000804000000000000000000000001000040000000001000000000000000000200000000000008100000000000000000000802000000800000002000010000800000000000000000008000000000000100008800000008000020000000000000000000000000002000004000000000000080000000000210000000000000000002000010000000100500020000008000000000000000000000000000002000000000000000000000000080000000000000000800000000000000000004000000810000000000004010022000000000001000000000000000000000000000080000080000001010000000000000000000000000')
     );
 
     log.parameters = new Array();
