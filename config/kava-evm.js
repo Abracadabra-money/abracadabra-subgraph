@@ -23,7 +23,7 @@ module.exports = {
         protocolId: DEGENBOX_ADDRESS,
         bentoBoxes: [
             {
-                name: 'DegenBox',
+                name: 'BentoBox',
                 address: DEGENBOX_ADDRESS,
                 startBlock: 5738563,
             },
