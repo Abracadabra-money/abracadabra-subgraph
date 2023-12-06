@@ -27,6 +27,7 @@ This repository contains multiple subgraphs:
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/cauldrons-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/cauldrons-avalanche/version/latest)
     - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/cauldrons-bsc)
+    - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/cauldrons)
 
 3. **Magic APE**: Tracks Magic APE rewards,apy and tvl
     - [Ethereum](https://api.studio.thegraph.com/query/56065/magic-ape/version/latest)
@@ -48,6 +49,7 @@ This repository contains multiple subgraphs:
     - [Base](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
     - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-bsc)
     - [Moonriver](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-moonriver)
+    - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/beam)
 
 7. **sSpell**: Tracks sSpell
     - [Ethereum](https://api.studio.thegraph.com/query/56065/sspell/version/latest)
