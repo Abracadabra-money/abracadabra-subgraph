@@ -9,7 +9,7 @@ import { HASHES } from '../constants';
 
 export function handleLogTransfer(event: Transfer): void {
     const hash = event.transaction.hash.toHexString();
-    if(HASHES.includes(hash)) return;
+    if (HASHES.includes(hash)) return;
 
     const dailySnapshot = getOrCreateSpellDailySnapshot(event.block);
     const hourySnapshot = getOrCreateSpellHourySnapshot(event.block);

@@ -58,10 +58,7 @@ module.exports = {
         address: SPELL_ADDRESS,
         startBlock: 12454535,
         spellOracleAddress: SPELL_ORACLE,
-        hashes: [
-            "0x288aaa6ad467997eb9f6786822a1cdb29322b7ae84055d53cf906058b32677bc",
-            "0x8b5b93d00df18f13fe7d16de01bf3472a5dc1a12cdb1bf0f040dca2261ab3b4f"
-        ]
+        hashes: ['0x288aaa6ad467997eb9f6786822a1cdb29322b7ae84055d53cf906058b32677bc', '0x8b5b93d00df18f13fe7d16de01bf3472a5dc1a12cdb1bf0f040dca2261ab3b4f'],
     },
     sspell: {
         address: '0x26FA3fFFB6EfE8c1E69103aCb4044C26B9A106a9',
