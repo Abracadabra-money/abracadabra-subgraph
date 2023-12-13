@@ -5,8 +5,12 @@ import { getOrCreateSpellDailySnapshot } from '../helpers/get-or-create-spell-da
 import { getOrCreateSpellHourySnapshot } from '../helpers/get-or-create-spell-houry-snapshot';
 import { ZERO_ADDRESS, bigIntToBigDecimal } from 'misc';
 import { getSpellPrice } from '../helpers/get-spell-price';
+import { HASHES } from '../constants';
 
 export function handleLogTransfer(event: Transfer): void {
+    const hash = event.transaction.hash.toHexString();
+    if(HASHES.includes(hash)) return;
+
     const dailySnapshot = getOrCreateSpellDailySnapshot(event.block);
     const hourySnapshot = getOrCreateSpellHourySnapshot(event.block);
     const spell = getOrCreateSpell();
