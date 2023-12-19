@@ -18,6 +18,9 @@ type Protocol @entity {
   " Total number of cauldrons "
   totalCauldronCount: BigInt!
 
+  " All bentoboxes that belong to this protocol "
+  bentoBoxes: [BentoBox!]! @derivedFrom(field: "protocol")
+
   " All cauldrons that belong to this protocol "
   cauldrons: [Cauldron!]! @derivedFrom(field: "protocol")
 
@@ -103,9 +106,21 @@ type ProtocolHourySnapshot @entity{
     totalFeesGenerated: BigDecimal!
 }
 
+type BentoBox @entity {
+  " Contract address of the bentoBox "
+  id: ID!
+
+  protocol: Protocol!
+
+  cauldrons: [Cauldron!]! @derivedFrom(field: "bentoBox")
+}
+
 type Cauldron @entity {
   " Smart contract address of the cauldron "
   id: ID!
+
+  " BentoBox used by the cauldron "
+  bentoBox: BentoBox!
 
   " Master contract address of the cauldron "
   masterContract: Bytes!
@@ -187,6 +202,16 @@ type Cauldron @entity {
   totalMimBorrowed: BigDecimal!
 
   totalCollateralShare: BigDecimal!
+
+  addCollateralEvents: [AddCollateralEvent!]! @derivedFrom(field: "cauldron")
+
+  removeCollateralEvents: [RemoveCollateralEvent!]! @derivedFrom(field: "cauldron")
+
+  borrowEvents: [BorrowEvent!]! @derivedFrom(field: "cauldron")
+
+  repayEvents: [RepayEvent!]! @derivedFrom(field: "cauldron")
+
+  liquidationEvents: [LiquidationEvent!]! @derivedFrom(field: "cauldron")
 }
 
 type CauldronDailySnapshot @entity {
@@ -323,6 +348,16 @@ type Account @entity {
 
   " Number of times this account has been liquidated "
   liquidationCount: BigInt!
+
+  addCollateralEvents: [AddCollateralEvent!]! @derivedFrom(field: "account")
+
+  removeCollateralEvents: [RemoveCollateralEvent!]! @derivedFrom(field: "account")
+
+  borrowEvents: [BorrowEvent!]! @derivedFrom(field: "account")
+
+  repayEvents: [RepayEvent!]! @derivedFrom(field: "account")
+
+  liquidationEvents: [LiquidationEvent!]! @derivedFrom(field: "account")
 }
 
 type AccountState @entity {
@@ -343,6 +378,166 @@ type AccountState @entity {
 
   " Position daily snapshots for open positions "
   snapshots: [AccountStateSnapshot!]! @derivedFrom(field: "state")
+
+  addCollateralEvents: [AddCollateralEvent!]! @derivedFrom(field: "accountState")
+
+  removeCollateralEvents: [RemoveCollateralEvent!]! @derivedFrom(field: "accountState")
+
+  borrowEvents: [BorrowEvent!]! @derivedFrom(field: "accountState")
+
+  repayEvents: [RepayEvent!]! @derivedFrom(field: "accountState")
+
+  liquidationEvents: [LiquidationEvent!]! @derivedFrom(field: "accountState")
+}
+
+interface Event {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+}
+
+type AddCollateralEvent implements Event @entity(immutable: true) {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+
+  from: Bytes!
+
+  share: BigInt!
+
+  amount: BigInt!
+
+  amountUsd: BigDecimal
+}
+
+type RemoveCollateralEvent implements Event @entity(immutable: true) {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+
+  to: Bytes!
+
+  share: BigInt!
+
+  amount: BigInt!
+
+  amountUsd: BigDecimal
+}
+
+type BorrowEvent implements Event @entity(immutable: true) {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+
+  to: Bytes!
+
+  amount: BigInt!
+
+  part: BigInt!
+}
+
+type RepayEvent implements Event @entity(immutable: true) {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+
+  from: Bytes!
+
+  amount: BigInt!
+
+  part: BigInt!
+}
+
+type LiquidationEvent implements Event @entity(immutable: true) {
+  id: ID!
+
+  blockNumber: BigInt!
+
+  transactionHash: Bytes!
+
+  logIndex: BigInt!
+
+  timestamp: BigInt!
+
+  cauldron: Cauldron!
+
+  account: Account!
+
+  accountState: AccountState!
+
+  liquidator: Bytes!
+
+  to: Bytes!
+
+  liquidateShare: BigInt!
+
+  liquidateAmount: BigInt!
+
+  liquidateAmountUsd: BigDecimal
+
+  repayAmount: BigInt!
+
+  repayPart: BigInt!
 }
 
 type AccountStateSnapshot @entity {

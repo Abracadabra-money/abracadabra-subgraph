@@ -2,6 +2,7 @@ import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts';
 
 export const CAULDRON_ENTITY = 'Cauldron';
 export const PROTOCOL_ENTITY = 'Protocol';
+export const BENTO_BOX_ENTITY = 'BentoBox';
 export const COLLATERAL_ENTITY = 'Collateral';
 export const PROTOCOL_DAILY_SNAPSHOT_ENTITY = 'ProtocolDailySnapshot';
 export const PROTOCOL_HOURY_SNAPSHOT_ENTITY = 'ProtocolHourySnapshot';
@@ -12,6 +13,11 @@ export const COLLATERAL_HOURY_SNAPSHOT_ENTITY = 'CollateralHourySnapshot';
 export const ACCOUNT_ENTITY = 'Account';
 export const ACCOUNT_STATE_ENTITY = 'AccountState';
 export const ACCOUNT_STATE_SNAPSHOT_ENTITY = 'AccountStateSnapshot';
+export const ADD_COLLATERAL_EVENT_ENTITY = 'AddCollateralEvent';
+export const REMOVE_COLLATERAL_EVENT_ENTITY = 'RemoveCollateralEvent';
+export const BORROW_EVENT_ENTITY = 'BorrowEvent';
+export const REPAY_EVENT_ENTITY = 'RepayEvent';
+export const LIQUIDATION_EVENT_ENTITY = 'LiquidationEvent';
 
 export const MOCK_ACCOUNT = Address.fromString('0x33C52FBAB377F2C9F85DD6E678AE6BAF78A20EBE');
 
@@ -25,6 +31,7 @@ export const CAULDRON_V1_DATA = Bytes.fromHexString(
     '0x0000000000000000000000007da96a3891add058ada2e826306d812c638d87a70000000000000000000000006cc0cd7d25e291029b55c767b9a2d1d9a18ae6680000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7d1eab13ad0104d2750b8863b489d65364e32d000000000000000000000000000000000001ed09bead87c0378d8e64000000000000000000000000000000007da96a3891add058ada2e826306d812c638d87a7',
 );
 export const CLONE_ADDRESS = Address.fromString('0xCfc571f3203756319c231d3Bc643Cee807E74636');
+export const BENTO_BOX_ADDRESS = Address.fromString('0xd96f48665a1410C0cd669A88898ecA36B9Fc2cce');
 export const SPELL_ORACLE_ADDRESS = Address.fromString('0x75e14253de6a5c2af12d5f1a1ea0a2e11e69ec10');
 export const SPELL_ORACLE_DATA = Bytes.fromHexString('0x00');
 export const SPELL_ORACLE_PRICE = BigInt.fromString('2131832523236974503283');
@@ -34,6 +41,7 @@ export const NON_CAULDRON_V1_COLLATERAL_ADDRESS = Address.fromString('0x090185f2
 export const CAULDRON_V1_COLLATERAL_ADDRESS = Address.fromString('0x7Da96a3891Add058AdA2E826306D812C638D87a7');
 
 // Mock collateral params
+export const COLLATERAL_ADDRESS = Address.fromString('0x090185f2135308BaD17527004364eBcC2D37e5F6');
 export const COLLATERAL_NAME = 'Spell Token';
 export const COLLATERAL_SYMBOL = 'SPELL';
 export const COLLATERAL_DECIMALS = 18;
@@ -41,6 +49,14 @@ export const COLLATERAL_DECIMALS = 18;
 // Mock block params
 export const BLOCK_NUMBER = BigInt.fromI32(13492855);
 export const BLOCK_TIMESTAMP = BigInt.fromI32(1635249440);
+
+// Mock event params
+export const EVENT_LOG_INDEX = BigInt.fromI32(12);
+export const REMOVE_COLLATERAL_EVENT_LOG_INDEX = BigInt.fromI32(0);
+export const REPAY_EVENT_LOG_INDEX = BigInt.fromI32(1);
+
+// Mock transaction params
+export const TRANSACTION_HASH = Bytes.fromHexString('0xe257c692a8d10445663ad0eca7024d5d61d46806b76241140c8ef69ddda1b823');
 
 // Mock cook borrow
 export const MOCK_COOK_BORROW = Bytes.fromHexString(

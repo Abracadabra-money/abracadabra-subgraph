@@ -1,10 +1,16 @@
 import { BigDecimal, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
-import { assert, beforeEach, clearStore, createMockedFunction, describe, test } from 'matchstick-as';
+import { assert, afterEach, beforeEach, clearStore, clearInBlockStore, createMockedFunction, describe, mockInBlockStore, test } from 'matchstick-as';
 import { createCauldron, getCauldron, getOrCreateCauldronDailySnapshot, getOrCreateCauldronHourySnapshot } from '../src/helpers/cauldron';
 import {
+    BENTO_BOX_ADDRESS,
     CLONE_ADDRESS,
     BLOCK_NUMBER,
     BLOCK_TIMESTAMP,
+    EVENT_LOG_INDEX,
+    REMOVE_COLLATERAL_EVENT_LOG_INDEX,
+    REPAY_EVENT_LOG_INDEX,
+    TRANSACTION_HASH,
+    COLLATERAL_ADDRESS,
     COLLATERAL_DECIMALS,
     COLLATERAL_NAME,
     COLLATERAL_SYMBOL,
@@ -25,6 +31,14 @@ import {
     PROTOCOL_HOURY_SNAPSHOT_ENTITY,
     COLLATERAL_DAILY_SNAPSHOT_ENTITY,
     COLLATERAL_HOURY_SNAPSHOT_ENTITY,
+    ADD_COLLATERAL_EVENT_ENTITY,
+    REMOVE_COLLATERAL_EVENT_ENTITY,
+    LIQUIDATION_EVENT_ENTITY,
+    BORROW_EVENT_ENTITY,
+    REPAY_EVENT_ENTITY,
+    SPELL_ORACLE_ADDRESS,
+    SPELL_ORACLE_DATA,
+    SPELL_ORACLE_PRICE,
 } from './constants';
 import { handleLogAccrue, handleLogExchangeRate, handleLogAddCollateral, handleLogRemoveCollateral, handleLogBorrow, handleLogRepay } from '../src/mappings/cauldron';
 
@@ -38,6 +52,7 @@ import { createLogBorrow } from './helpers/create-log-borrow';
 import { createLogRepay } from './helpers/create-log-repay';
 import { getOrCreateCollateral, getOrCreateCollateralDailySnapshot, getOrCreateCollateralHourySnapshot } from '../src/helpers/collateral';
 import { getOrCreateAccount, getOrCreateAccountState, getOrCreateAccountStateSnapshot } from '../src/helpers/account';
+import { RemoveCollateralEvent } from '../generated/schema';
 
 describe('Cauldrons', () => {
     beforeEach(() => {
@@ -47,7 +62,27 @@ describe('Cauldrons', () => {
 
         createMockedFunction(CLONE_ADDRESS, 'oracleData', 'oracleData():(bytes)')
             .withArgs([])
-            .returns([ethereum.Value.fromBytes(Bytes.fromHexString('0x00'))]);
+            .returns([ethereum.Value.fromBytes(SPELL_ORACLE_DATA)]);
+
+        createMockedFunction(CLONE_ADDRESS, 'bentoBox', 'bentoBox():(address)')
+            .withArgs([])
+            .returns([ethereum.Value.fromAddress(BENTO_BOX_ADDRESS)]);
+
+        createMockedFunction(CLONE_ADDRESS, 'collateral', 'collateral():(address)')
+            .withArgs([])
+            .returns([ethereum.Value.fromAddress(COLLATERAL_ADDRESS)]);
+
+        createMockedFunction(CLONE_ADDRESS, 'oracle', 'oracle():(address)')
+            .withArgs([])
+            .returns([ethereum.Value.fromAddress(SPELL_ORACLE_ADDRESS)]);
+
+        createMockedFunction(BENTO_BOX_ADDRESS, 'toAmount', 'toAmount(address,uint256,bool):(uint256)')
+            .withArgs([
+                ethereum.Value.fromAddress(COLLATERAL_ADDRESS),
+                ethereum.Value.fromUnsignedBigInt(BigInt.fromString('30658468234870000000000')),
+                ethereum.Value.fromBoolean(false),
+            ])
+            .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('30100000000000000000000'))]);
 
         createMockedFunction(NON_CAULDRON_V1_COLLATERAL_ADDRESS, 'symbol', 'symbol():(string)')
             .withArgs([])
@@ -72,13 +107,17 @@ describe('Cauldrons', () => {
         createMockedFunction(CAULDRON_V1_COLLATERAL_ADDRESS, 'decimals', 'decimals():(uint8)')
             .withArgs([])
             .returns([ethereum.Value.fromI32(COLLATERAL_DECIMALS)]);
+
+        createMockedFunction(SPELL_ORACLE_ADDRESS, 'peekSpot', 'peekSpot(bytes):(uint256)')
+            .withArgs([ethereum.Value.fromBytes(SPELL_ORACLE_DATA)])
+            .returns([ethereum.Value.fromUnsignedBigInt(SPELL_ORACLE_PRICE)]);
     });
 
     describe('handleLogAddCollateral', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             cauldron.collateralPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
@@ -187,13 +226,33 @@ describe('Cauldrons', () => {
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'collateralPriceUsd', '0.00057910000000000000000029296669');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'isLiquidated', 'false');
         });
+        test('should create AddCollateralEvent', () => {
+            const log = createLogAddCollateral();
+
+            handleLogAddCollateral(log);
+
+            assert.entityCount(ADD_COLLATERAL_EVENT_ENTITY, 1);
+            const id = `${TRANSACTION_HASH.toHexString()}-${EVENT_LOG_INDEX}`;
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'blockNumber', BLOCK_NUMBER.toString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'transactionHash', TRANSACTION_HASH.toHexString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'logIndex', EVENT_LOG_INDEX.toString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'timestamp', BLOCK_TIMESTAMP.toString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'cauldron', CLONE_ADDRESS.toHexString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'account', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'accountState', `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`);
+
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'from', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'share', '30658468234870000000000');
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'amount', '30100000000000000000000');
+            assert.fieldEquals(ADD_COLLATERAL_EVENT_ENTITY, id, 'amountUsd', '14.119308');
+        });
     });
 
     describe('handleLogRemoveCollateral', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             cauldron.collateralPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
@@ -314,13 +373,34 @@ describe('Cauldrons', () => {
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'withdrawAmount', '30658468234870000000000');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'withdrawAmountUsd', '17.75431895481321700000898190995924');
         });
+
+        test('should create RemoveCollateralEvent', () => {
+            const log = createLogRemoveCollateral();
+
+            handleLogRemoveCollateral(log);
+
+            assert.entityCount(REMOVE_COLLATERAL_EVENT_ENTITY, 1);
+            const id = `${TRANSACTION_HASH.toHexString()}-${REMOVE_COLLATERAL_EVENT_LOG_INDEX}`;
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'blockNumber', BLOCK_NUMBER.toString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'transactionHash', TRANSACTION_HASH.toHexString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'logIndex', REMOVE_COLLATERAL_EVENT_LOG_INDEX.toString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'timestamp', BLOCK_TIMESTAMP.toString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'cauldron', CLONE_ADDRESS.toHexString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'account', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'accountState', `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`);
+
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'to', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'share', '30658468234870000000000');
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'amount', '30100000000000000000000');
+            assert.fieldEquals(REMOVE_COLLATERAL_EVENT_ENTITY, id, 'amountUsd', '14.119308');
+        });
     });
 
     describe('handleLogBorrow', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
         });
 
         test('should update cauldron', () => {
@@ -431,13 +511,33 @@ describe('Cauldrons', () => {
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'isLiquidated', 'false');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'liquidationPrice', '0.009207920348274545015940053237694711');
         });
+
+        test('should create BorrowEvent', () => {
+            const log = createLogBorrow();
+
+            handleLogBorrow(log);
+
+            assert.entityCount(BORROW_EVENT_ENTITY, 1);
+            const id = `${TRANSACTION_HASH.toHexString()}-${EVENT_LOG_INDEX}`;
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'blockNumber', BLOCK_NUMBER.toString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'transactionHash', TRANSACTION_HASH.toHexString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'logIndex', EVENT_LOG_INDEX.toString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'timestamp', BLOCK_TIMESTAMP.toString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'cauldron', CLONE_ADDRESS.toHexString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'account', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'accountState', `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`);
+
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'to', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'amount', '228085218296263023347');
+            assert.fieldEquals(BORROW_EVENT_ENTITY, id, 'part', '225840586805430596628');
+        });
     });
 
     describe('handleLogRepay', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             cauldron.collateralPriceUsd = BigDecimal.fromString('0.00057910000000000000000029296669');
@@ -577,13 +677,81 @@ describe('Cauldrons', () => {
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'repaid', '20099969255386734545224');
             assert.fieldEquals(ACCOUNT_STATE_SNAPSHOT_ENTITY, snapshot.id, 'repaidUsd', '20099.969255386734545224');
         });
+
+        test('should create RepayEvent', () => {
+            const log = createLogRepay();
+
+            handleLogRepay(log);
+
+            assert.entityCount(REPAY_EVENT_ENTITY, 1);
+            const id = `${TRANSACTION_HASH.toHexString()}-${REPAY_EVENT_LOG_INDEX}`;
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'blockNumber', BLOCK_NUMBER.toString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'transactionHash', TRANSACTION_HASH.toHexString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'logIndex', REPAY_EVENT_LOG_INDEX.toString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'timestamp', BLOCK_TIMESTAMP.toString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'cauldron', CLONE_ADDRESS.toHexString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'account', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'accountState', `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`);
+
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'from', MOCK_ACCOUNT.toHexString());
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'amount', '20103561731267914295418');
+            assert.fieldEquals(REPAY_EVENT_ENTITY, id, 'part', '20099969255386734545224');
+        });
+
+        describe('with RemoveCollateralEvent', () => {
+            beforeEach(() => {
+                const removeCollateralEventId = `${TRANSACTION_HASH.toHexString()}-${REMOVE_COLLATERAL_EVENT_LOG_INDEX}`;
+
+                const removeCollateralEvent = new RemoveCollateralEvent(removeCollateralEventId);
+                removeCollateralEvent.blockNumber = BLOCK_NUMBER;
+                removeCollateralEvent.transactionHash = TRANSACTION_HASH;
+                removeCollateralEvent.logIndex = REMOVE_COLLATERAL_EVENT_LOG_INDEX;
+                removeCollateralEvent.timestamp = BLOCK_TIMESTAMP;
+                removeCollateralEvent.cauldron = CLONE_ADDRESS.toHexString();
+                removeCollateralEvent.account = MOCK_ACCOUNT.toHexString();
+                removeCollateralEvent.accountState = `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`;
+                removeCollateralEvent.to = MOCK_ACCOUNT;
+                removeCollateralEvent.share = BigInt.fromString('30658468234870000000000');
+                removeCollateralEvent.amount = BigInt.fromString('30100000000000000000000');
+                removeCollateralEvent.amountUsd = BigDecimal.fromString('14.119308');
+                removeCollateralEvent.save();
+
+                mockInBlockStore(REMOVE_COLLATERAL_EVENT_ENTITY, removeCollateralEventId, removeCollateralEvent);
+            });
+            afterEach(() => {
+                clearInBlockStore();
+                clearStore();
+            });
+            test('should create LiquidationEvent', () => {
+                const logRepay = createLogRepay();
+                handleLogRepay(logRepay);
+
+                assert.entityCount(LIQUIDATION_EVENT_ENTITY, 1);
+                const id = `${TRANSACTION_HASH.toHexString()}-${REPAY_EVENT_LOG_INDEX}`;
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'blockNumber', BLOCK_NUMBER.toString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'transactionHash', TRANSACTION_HASH.toHexString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'logIndex', REPAY_EVENT_LOG_INDEX.toString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'timestamp', BLOCK_TIMESTAMP.toString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'cauldron', CLONE_ADDRESS.toHexString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'account', MOCK_ACCOUNT.toHexString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'accountState', `${CLONE_ADDRESS.toHexString()}-${MOCK_ACCOUNT.toHexString()}`);
+
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'liquidator', MOCK_ACCOUNT.toHexString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'to', MOCK_ACCOUNT.toHexString());
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'liquidateShare', '30658468234870000000000');
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'liquidateAmount', '30100000000000000000000');
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'liquidateAmountUsd', '14.119308');
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'repayAmount', '20103561731267914295418');
+                assert.fieldEquals(LIQUIDATION_EVENT_ENTITY, id, 'repayPart', '20099969255386734545224');
+            });
+        });
     });
 
     describe('LogExchangeRate', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
 
             const cauldron = getCauldron(CLONE_ADDRESS.toHexString())!;
             cauldron.totalCollateralShare = BigDecimal.fromString('10000');
@@ -704,7 +872,7 @@ describe('Cauldrons', () => {
         beforeEach(() => {
             clearStore();
 
-            createCauldron(CLONE_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
+            createCauldron(CLONE_ADDRESS, BENTO_BOX_ADDRESS, NON_CAULDRON_V1_MASTER_CONTRACT_ADDRESS, BLOCK_NUMBER, BLOCK_TIMESTAMP, NON_CAULDRON_V1_DATA);
         });
 
         test('should update cauldron', () => {

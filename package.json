@@ -14,7 +14,7 @@
         "prepare": "husky install"
     },
     "dependencies": {
-        "@graphprotocol/graph-cli": "^0.57.0",
+        "@graphprotocol/graph-cli": "0.62.0",
         "@graphprotocol/graph-ts": "^0.31.0"
     },
     "devDependencies": {

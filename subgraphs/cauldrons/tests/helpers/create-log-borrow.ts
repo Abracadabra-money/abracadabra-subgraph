@@ -1,13 +1,15 @@
 import { BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { newMockEvent } from 'matchstick-as/assembly';
 import { LogBorrow } from '../../generated/templates/Cauldron/Cauldron';
-import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, MOCK_ACCOUNT } from '../constants';
+import { BLOCK_NUMBER, BLOCK_TIMESTAMP, CLONE_ADDRESS, EVENT_LOG_INDEX, MOCK_ACCOUNT, TRANSACTION_HASH } from '../constants';
 
 export function createLogBorrow(): LogBorrow {
     const logBorrowEvent: LogBorrow = changetype<LogBorrow>(newMockEvent());
 
     logBorrowEvent.block.number = BLOCK_NUMBER;
     logBorrowEvent.block.timestamp = BLOCK_TIMESTAMP;
+    logBorrowEvent.logIndex = EVENT_LOG_INDEX;
+    logBorrowEvent.transaction.hash = TRANSACTION_HASH;
     logBorrowEvent.address = CLONE_ADDRESS;
 
     logBorrowEvent.parameters = new Array();

@@ -1,13 +1,15 @@
 import { LogAccrue, LogBorrow, LogAddCollateral, LogRemoveCollateral, LogRepay, LogExchangeRate } from '../../generated/templates/Cauldron/Cauldron';
 import { getCauldron } from '../helpers/cauldron';
 import { getOrCreateCollateral } from '../helpers/collateral';
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, store } from '@graphprotocol/graph-ts';
 import { updateAccountState, updateLiquidationCount, updateTokenPrice } from '../helpers/updates';
 import { updateTvl, updateLastActive, updateFeesGenerated } from '../helpers/updates';
-import { bigIntToBigDecimal, BIGDECIMAL_ONE } from 'misc';
+import { bigIntToBigDecimal, BIGDECIMAL_ONE, BIGINT_ONE } from 'misc';
 import { getOrCreateAccount } from '../helpers/account';
 import { BORROW_OPENING_FEE_PRECISION, LIQUIDATION_MULTIPLIER_PRECISION, DISTRIBUTION_PART, DISTRIBUTION_PRECISION, EventType, FeeType } from '../constants';
 import { isLiquidate } from '../utils/is-liquidate';
+import { createAddCollateralEvent, createBorrowEvent, createLiquidationEvent, createRemoveCollateralEvent, createRepayEvent } from '../helpers/events';
+import { RemoveCollateralEvent } from '../../generated/schema';
 
 export function handleLogAddCollateral(event: LogAddCollateral): void {
     const cauldron = getCauldron(event.address.toHexString());
@@ -15,6 +17,7 @@ export function handleLogAddCollateral(event: LogAddCollateral): void {
     updateLastActive(cauldron, event.block);
     updateAccountState(cauldron, event.params.to.toHexString(), EventType.DEPOSIT, event.params.share, event.block, event.transaction);
     updateTvl(event.block);
+    createAddCollateralEvent(event);
 }
 
 export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
@@ -23,6 +26,7 @@ export function handleLogRemoveCollateral(event: LogRemoveCollateral): void {
     updateLastActive(cauldron, event.block);
     updateAccountState(cauldron, event.params.from.toHexString(), EventType.WITHDRAW, event.params.share, event.block, event.transaction, isLiquidate(event));
     updateTvl(event.block);
+    createRemoveCollateralEvent(event);
 }
 
 export function handleLogBorrow(event: LogBorrow): void {
@@ -34,6 +38,7 @@ export function handleLogBorrow(event: LogBorrow): void {
     const borrowAmount = borrowAmountWithFee.div(cauldron.borrowOpeningFee.divDecimal(BORROW_OPENING_FEE_PRECISION.toBigDecimal()).plus(BIGDECIMAL_ONE));
     const feeAmount = borrowAmountWithFee.minus(borrowAmount);
     updateFeesGenerated(cauldron, feeAmount, event.block, FeeType.BORROW);
+    createBorrowEvent(event);
 }
 
 export function handleLogRepay(event: LogRepay): void {
@@ -58,6 +63,15 @@ export function handleLogRepay(event: LogRepay): void {
             .div(DISTRIBUTION_PRECISION);
 
         updateFeesGenerated(cauldron, bigIntToBigDecimal(distributionAmount), event.block, FeeType.LIQUADATION);
+    }
+
+    const removeCollateralEvent = RemoveCollateralEvent.loadInBlock(`${event.transaction.hash.toHexString()}-${event.logIndex.minus(BIGINT_ONE)}`);
+    if (removeCollateralEvent !== null) {
+        // It is a liquidation
+        createLiquidationEvent(event, removeCollateralEvent);
+        store.remove('RemoveCollateralEvent', removeCollateralEvent.id);
+    } else {
+        createRepayEvent(event);
     }
 }
 
