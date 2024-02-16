@@ -41,6 +41,7 @@ module.exports = {
             '0xb4ad8B57Bd6963912c80FCbb6Baea99988543c1c', // safe.main
             '0xf68b78CB64C49967719214aa029a29712ddd567f', // safe.ops
         ],
+        disabled: []
     },
     mspell: {
         address: '0xa668762fb20bcd7148Db1bdb402ec06Eb6DAD569',

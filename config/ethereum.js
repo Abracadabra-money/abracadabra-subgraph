@@ -53,6 +53,10 @@ module.exports = {
             '0x5f0DeE98360d8200b20812e174d139A1a633EDd2', // safe.main
             '0xDF2C270f610Dc35d8fFDA5B453E74db5471E126B', // safe.ops
         ],
+        disabled: [
+            '0x692887E8877C6Dd31593cda44c382DB5b289B684', // ape
+            '0x7259e152103756e1616A77Ae982353c3751A6a90'  // yv-3crypto
+        ]
     },
     spell: {
         address: SPELL_ADDRESS,

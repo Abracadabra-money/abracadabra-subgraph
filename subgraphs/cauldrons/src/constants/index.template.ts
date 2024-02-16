@@ -17,3 +17,5 @@ export const BORROW_OPENING_FEE_PRECISION = BigInt.fromI32(100000);
 export const COLLATERIZATION_RATE_PRECISION = BigInt.fromI32(100000);
 export const DISTRIBUTION_PART = BigInt.fromI32(10);
 export const DISTRIBUTION_PRECISION = BigInt.fromI32(100);
+
+export const DISABLED_CAULDRONS = ['{{cauldrons.disabled}}'.toLowerCase().split(',')].flat();

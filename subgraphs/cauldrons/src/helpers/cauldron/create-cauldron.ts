@@ -2,13 +2,15 @@ import { Address, BigInt, Bytes, dataSource, log } from '@graphprotocol/graph-ts
 import { Cauldron as CauldronSchema } from '../../../generated/schema';
 import { Cauldron } from '../../../generated/templates';
 import { Cauldron as CauldronTemplate } from '../../../generated/templates/Cauldron/Cauldron';
-import { CAULDRON_V1_BORROW_PARAMETERS } from '../../constants';
+import { CAULDRON_V1_BORROW_PARAMETERS, DISABLED_CAULDRONS } from '../../constants';
 import { getOrCreateCollateral } from '../collateral';
 import { getOrCreateProtocol } from '../protocol';
 import { BIGDECIMAL_ZERO, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { CauldronDefinition, decodeCauldronInitV1, decodeCauldronInitV2Plus } from '../../utils';
 
 export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
+    if(DISABLED_CAULDRONS.includes(cauldronAddress.toHexString().toLowerCase())) return;
+
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
 
     const masterContractChainAddress = `${dataSource.network()}:${masterContract.toHexString()}`.toLowerCase();
