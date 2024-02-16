@@ -9,7 +9,7 @@ import { BIGDECIMAL_ZERO, BIGINT_ZERO, BIGINT_ONE } from 'misc';
 import { CauldronDefinition, decodeCauldronInitV1, decodeCauldronInitV2Plus } from '../../utils';
 
 export function createCauldron(cauldronAddress: Address, masterContract: Address, blockNumber: BigInt, blockTimestamp: BigInt, data: Bytes): void {
-    if(DISABLED_CAULDRONS.includes(cauldronAddress.toHexString().toLowerCase())) return;
+    if (DISABLED_CAULDRONS.includes(cauldronAddress.toHexString().toLowerCase())) return;
 
     const CauldronContract = CauldronTemplate.bind(cauldronAddress);
 

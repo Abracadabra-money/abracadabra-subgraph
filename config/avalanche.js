@@ -50,7 +50,7 @@ module.exports = {
             '0xae64A325027C3C14Cf6abC7818aA3B9c07F5C799', // safe.main
             '0xAE4D3a42E46399827bd094B4426e2f79Cca543CA', // safe.ops
         ],
-        disabled: []
+        disabled: [],
     },
     mspell: {
         address: '0xBd84472B31d947314fDFa2ea42460A2727F955Af',

@@ -55,8 +55,8 @@ module.exports = {
         ],
         disabled: [
             '0x692887E8877C6Dd31593cda44c382DB5b289B684', // ape
-            '0x7259e152103756e1616A77Ae982353c3751A6a90'  // yv-3crypto
-        ]
+            '0x7259e152103756e1616A77Ae982353c3751A6a90', // yv-3crypto
+        ],
     },
     spell: {
         address: SPELL_ADDRESS,

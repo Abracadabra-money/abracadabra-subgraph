@@ -54,6 +54,6 @@ module.exports = {
             '0x9d9bC38bF4A128530EA45A7d27D0Ccb9C2EbFaf6', // safe.main
             '0x5a1DE6c40EF68A3F00ADe998E9e0D687E4419450', // safe.ops
         ],
-        disabled: []
+        disabled: [],
     },
 };
