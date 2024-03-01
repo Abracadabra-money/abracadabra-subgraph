@@ -28,6 +28,7 @@ This repository contains multiple subgraphs:
     - [Avalanche](https://api.studio.thegraph.com/query/56065/cauldrons-avalanche/version/latest)
     - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/cauldrons-bsc)
     - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/cauldrons)
+    - [Blast](https://blast.graph.abracadabra.money/subgraphs/name/cauldrons)
 
 3. **Magic APE**: Tracks Magic APE rewards,apy and tvl
     - [Ethereum](https://api.studio.thegraph.com/query/56065/magic-ape/version/latest)
