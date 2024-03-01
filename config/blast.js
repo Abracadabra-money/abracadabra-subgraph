@@ -4,7 +4,7 @@ const BENTOBOX_ADDRESS = '0xC8f5Eb8A632f9600D1c7BC91e97dAD5f8B1e3748';
 const BENTOBOX_START_BLOCK = 203509;
 
 module.exports = {
-    network: 'mainnet',
+    network: 'blast',
     blocks: {
         address: BENTOBOX_ADDRESS,
         startBlock: BENTOBOX_START_BLOCK,
