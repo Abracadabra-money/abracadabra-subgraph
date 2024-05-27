@@ -1,5 +1,5 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts';
-import { Stake } from '../../generated/Stake/stake';
+import { Stake } from '../../generated/Stake/Stake';
 import { STAKE_ADDRESS } from '../constants';
 
 export function getStakeBalance(account: Address): BigInt {

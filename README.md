@@ -15,6 +15,7 @@ This repository contains multiple subgraphs:
 - [sSpell](./subgraphs/sspell/README.md) [![Tests sSpell Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/sspell-test.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/sspell-test.yml)
 - [mSpell](./subgraphs/mspell/README.md) [![Tests mSpell Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/mspell-test.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/mspell-test.yml)
 - [Spell](./subgraphs/spell/README.md) [![Tests Spell Subgraph](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/spell-tests.yml/badge.svg)](https://github.com/Abracadabra-money/abracadabra-subgraph/actions/workflows/spell-tests.yml)
+- [Curve](./subgraphs/curve/README.md)
 
 ## Subgraphs
 
@@ -63,6 +64,9 @@ This repository contains multiple subgraphs:
 
 9. **Spell**: Tracks Spell
     - [Ethereum](https://api.studio.thegraph.com/query/56065/spell/version/latest)
+
+9. **Curve**:
+    - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/curve)
 
 ## Build
 
