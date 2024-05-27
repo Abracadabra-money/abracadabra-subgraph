@@ -1,0 +1,8 @@
+type Account @entity {
+  " Smart contract address of the token "
+  id: ID!
+
+  lpBalance: BigInt!
+
+  stakedBalance: BigInt!
+}

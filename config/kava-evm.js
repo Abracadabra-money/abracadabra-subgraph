@@ -38,4 +38,14 @@ module.exports = {
         ],
         disabled: [],
     },
+    curve: {
+        pool: {
+            address: '0x591199e16e006dec3edcf79ae0fcea1dd0f5b69d',
+            startBlock: 5707410
+        },
+        stake: {
+            address: '0xdc398735150d538b2f18ccd13a55f6a54488a677',
+            startBlock: 5793762
+        }
+    }
 };
