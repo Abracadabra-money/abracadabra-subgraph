@@ -27,7 +27,7 @@ This repository contains multiple subgraphs:
     - [Fantom](https://api.studio.thegraph.com/query/56065/cauldrons-fantom/version/latest)
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/cauldrons-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/cauldrons-avalanche/version/latest)
-    - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/cauldrons-bsc)
+    - [BSC](https://api.studio.thegraph.com/query/56065/cauldrons-bsc/version/latest)
     - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/cauldrons)
     - [Blast](https://blast.graph.abracadabra.money/subgraphs/name/cauldrons)
 
@@ -49,8 +49,8 @@ This repository contains multiple subgraphs:
     - [Arbitrum](https://api.studio.thegraph.com/query/56065/beam-arbitrum/version/latest)
     - [Avalanche](https://api.studio.thegraph.com/query/56065/beam-avalanche/version/latest)
     - [Base](https://api.studio.thegraph.com/query/56065/beam-base/version/latest)
-    - [BSC](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-bsc)
-    - [Moonriver](https://api.thegraph.com/subgraphs/name/0xfantaholic/beam-moonriver)
+    - [BSC](https://api.studio.thegraph.com/query/56065/beam-bsc/version/latest)
+    - [Moonriver](https://api.studio.thegraph.com/query/56065/beam-moonriver/version/latest)
     - [Kava](https://kava.graph.abracadabra.money/subgraphs/name/beam)
 
 7. **sSpell**: Tracks sSpell
